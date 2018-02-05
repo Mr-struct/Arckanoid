@@ -2,10 +2,9 @@
 public class Main  {
 
 	public static void main(String[] args) {
-		@SuppressWarnings("unused")
 		Modele modele = new Modele();
-	
-		Vue ve = new Vue (800,800, modele);
+		Controller controller = new Controller(modele);
+		Vue vue = new Vue (800,800, modele);
 	}
 
 }
