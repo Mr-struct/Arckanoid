@@ -3,17 +3,28 @@ public class Balle {
 	
 	//attributs 
 	
-	private int  x, y, vX, vY; 
+	private int  x, y, vX, vY;
+	private int rX, rY; //coordonnées relative à la raquette quand la balle est accrochée
 		
-	//constructeur 
+	//TODO ancien constructeur, à remplacer par celui du dessous
 	public Balle(int x, int y , int vX, int vY) {
 		this.x = x ;
 		this.y = y;
 		this.vX = vX;
 		this.vY = vY;
+		this.rX = 50;
+		this.rY = -10;
 	}
 	
-	
+	//constructeur
+	public Balle(int x, int y , int vX, int vY, int rX, int rY) {
+		this.x = x ;
+		this.y = y;
+		this.vX = vX;
+		this.vY = vY;
+		this.rX = rX;
+		this.rY = rY; 
+	}
 	
 	// geter and seter
 	public int getX() {
@@ -56,5 +67,20 @@ public class Balle {
 		this.vY = vY;
 	}
 
+	public int getrX() {
+		return rX;
+	}
+
+	public void setrX(int rX) {
+		this.rX = rX;
+	}
+
+	public int getrY() {
+		return rY;
+	}
+
+	public void setrY(int rY) {
+		this.rY = rY;
+	}
 	
 }

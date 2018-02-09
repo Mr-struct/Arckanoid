@@ -15,8 +15,6 @@ public class Affichage extends JPanel {
 	public Affichage (Modele modele) {
 		super();
 		this.modele = modele;
-		modele.intitBriques();
-		modele.initBalle();
 	}
 	
 	public void paintComponent(Graphics g) {
