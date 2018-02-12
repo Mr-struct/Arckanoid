@@ -1,4 +1,6 @@
-import java.util.*;
+import java.awt.event.MouseEvent;
+import java.util.TimerTask;
+
 
 public class Controleur {
 	
@@ -9,18 +11,21 @@ public class Controleur {
 	public Controleur(Modele modele) {
 		this.modele = modele;
 		
+		/* pas besoin de init ici vue que l'init se fait dans le constructeur du modele
 		//initialisation des briques
-		modele.intitBriques();
+		modele.intitBriques(0, 0);
 		
-		//initialisation de la premiËre balle
+		//initialisation de la premi√®re balle
 		modele.initBalle();
-		
+		*/
 		//TODO attendre que l'interface ait fini de s'afficher avant de lancer le jeu
 		lancerJeu();
 		
-		//TODO test du lancement de balle aprËs 5 secondes, ‡ remplacer par un lancement manuel
+		//TODO test du lancement de balle apr√®s 5 secondes, √† remplacer par un lancement manuel
 		java.util.Timer tLancement = new java.util.Timer();
+		
 		tLancement.schedule(new TimerTask(){
+			
 			public void run() {
 				lancerBalles();
 			}
@@ -30,14 +35,23 @@ public class Controleur {
 	
 	//lance le timer pour la logique du jeu
 	public void lancerJeu(){
+		
 		tLogique.schedule(new TimerTask(){
+			
 			public void run() {
+				
 				for(Balle b : modele.balles){
+					
 				synchronized(b){
-						if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachÈes ‡ la raquette (celles dont la vÈlocitÈ est nulle) suivent la raquette
-							b.setX(modele.raquette.getX() + b.getrX());
-							b.setY(modele.raquette.getY() + b.getrY());
-						}else{ //les balles ayant une vÈlocitÈ se dÈplacent selon celle-ci
+					
+						if(b.getvX() == 0 && b.getvY() == 0){ //les balles attach√©es √† la raquette (celles dont la v√©locit√© est nulle) suivent la raquette
+							
+							b.setX((modele.raquette.getX()+65) + b.getrX()); //faut les centrer sur la raquette du coup  c'est modele.raquette.getX() + b.getrX() + la moitier du width de la raquette c√†d 65
+							
+							b.setY((modele.raquette.getY()-20) + b.getrY()); //meme chose ici - la taille de la balle c√†d 20
+						}else
+						{ 
+							//les balles ayant une v√©locit√© se d√©placent selon celle-ci
 							b.setX(b.getX() + b.getvX());
 							b.setY(b.getY() + b.getvY());
 						}
@@ -47,13 +61,20 @@ public class Controleur {
 		}, 0, 10);
 	}
 	
-	//Action permettant de lancer les balles attachÈes ‡ la raquette (celles dont la vÈlocitÈ est nulle) en leur donnant une velocitÈ initiale
+	//Action permettant de lancer les balles attach√©es √† la raquette (celles dont la v√©locit√© est nulle) en leur donnant une velocit√© initiale
 	public void lancerBalles(){
+		
+		//faire en sorte que le premier lancement de la balle suit le pointeur de la souris et attend qu'on clic dessus 
+		
 		for(Balle b : modele.balles){
+			
 			synchronized(b){
+				
 				if(b.getvX() == 0 && b.getvY() == 0){
+					
 					b.setvX(2);
 					b.setvY(-2);
+					
 				}
 			}
 		}
@@ -61,6 +82,21 @@ public class Controleur {
 	
 	//suspend le jeu, le jeu peut reprendre en appelant lancerJeu
 	public void suspendreJeu(){
+		
 		tLogique.cancel();
+	}
+
+	
+
+	public void moveRaquette(MouseEvent e) {
+		
+		modele.raquette.setX(e.getX() - modele.raquette.getWidth()/2);
+		
+	}
+	
+	
+	public Modele getModele() {
+		
+		return this.modele;
 	}
 }

@@ -1,24 +1,153 @@
-import java.awt.Color;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
+
 
 public class Modele {
+
 	protected ArrayList<Brique> briques = new ArrayList<Brique>(); 
-	protected Raquette raquette = new Raquette(400,680,100,20,Color.CYAN);
-	protected Balle balle; //TODO retirer ce chanp et utiliser uniquement l'array "balles", nécessaire pour le multiballe
+
+	protected Raquette raquette;
+
+	protected Balle balle; //TODO retirer ce chanp et utiliser uniquement l'array "balles", nÃ©cessaire pour le multiballe
+
 	protected ArrayList<Balle> balles = new ArrayList<Balle>();
+
+	protected  String fileLevel;
+
+	protected String levelName;
+
+	protected String levelRank;
 	
-	//TODO déplaccer initBriques et initBalle dans le controleur une fois le terrain terminé
-	public void intitBriques() {
-		for(int i = 0; i < 10; i++) {
-			for(int j= 0; j < 3;j++) {
-				briques.add(new Brique( (i*50)+150, (j*100)+30 ,40 ,20 ) );
+	protected String levelBackground;
+
+	public Modele(String fileLevel) {
+
+		raquette = new Raquette(500,680,150,30);
+
+		this.fileLevel = fileLevel;
+		this.levelBackground = this.fileLevel+".png";
+		System.out.println(levelBackground);
+
+		try {
+			intitlevel();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
+
+	public void initBalle(){
+
+		// la position de la balle est set dans le controleur dans le lancerJeu()
+		balle = new Balle (0,0,0,0,0,0,20,20); 
+		balles.add(balle);
+
+	}
+	public void intitlevel() throws IOException{
+
+		initBalle();
+		String test = readFile(fileLevel);
+		String [] out = null;
+
+		// on recupere les lignes du fichier dans out 
+		for(int i = 0; i < test.length();i++) {
+			out = test.split("\n");
+		}
+		System.out.println("taille de out est de :" +out.length);
+
+		this.levelRank = out[out.length-4];
+		this.levelName = out[out.length-3];
+		int colums = Integer.parseInt(out[out.length-2]);
+		int lines =  Integer.parseInt(out[out.length-1]);;
+
+
+		char [] [] char2D = new char [colums][lines];
+		char2D = arrayStringTo2DArrayChar(char2D, out, colums, lines);
+
+		for(int i = 0; i < colums; i++) {
+
+			for(int j = 0; j < lines ;j++) {
+
+				// initialise les brique avec juste un random faut changer Ã§a avec une proba 
+		
+
+				// matrice inversser
+				switch(char2D[j][i]) {
+
+				case 'B': // pour les briques bleu
+					
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,0, 1) );
+					break;
+					
+				case 'V': // pour les briques vertes 
+
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,1, 2) );
+					break;
+
+				case 'S': //pour les briques en metal
+
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,2, 3) );
+					break;
+
+				case 'R': // pour les briques rouge
+
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,3, 4) );
+					break;
+					
+				case 'G' : // pour les brique or
+
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,4, 5) );
+
+					break;
+
+
+				};
 			}
 		}
 	}
-	
-	public void initBalle(){
-		balle = new Balle ( raquette.getX()+50 ,raquette.getY()-10,0,0);
-		balles.add(balle);
+
+	public String readFile(String filename) throws IOException
+	{
+		String content = null;
+
+		File file = new File(filename); //for ex foo.txt
+
+		FileReader reader = null;
+
+		reader = new FileReader(file);
+
+		char[] chars = new char[(int) file.length()];
+
+		reader.read(chars);
+
+		content = new String(chars);
+
+		reader.close();
+
+		if(reader !=null){
+
+			reader.close();
+		}
+
+		return content;
 	}
-	 
+
+	public char [][] arrayStringTo2DArrayChar(char[][]char2D,String [] str,int cols,int lines){
+		//Assumes all lines are the same length
+		char2D = new char[cols][lines];
+
+		for(int i = 0; i < str.length-2; i++)  {
+			String line = str[i];
+			char2D[i] = line.toCharArray();
+		}
+		return char2D;
+
+	}
+
+
 }

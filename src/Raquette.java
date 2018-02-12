@@ -1,15 +1,11 @@
-import java.awt.Color;
-
 public class Raquette {
 
 	private int  x, y, width, height;
-	private Color color; 
-	public Raquette( int x , int y ,int width , int height , Color color){
+	public Raquette( int x , int y ,int width , int height){
 		this.x = x;
 		this.setY(y);
 		this.width = width;
 		this.height = height;
-		this.color = color;
 	}
 
 	public int getX() {

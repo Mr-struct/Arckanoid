@@ -1,51 +1,47 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.swing.JFrame;
 
+@SuppressWarnings("serial")
 public class Vue extends JFrame {
 	
-	private Modele modele;
+	private Controleur controller;
 	
 	private Affichage affichage;
 	
-	public Vue(int w , int h ,Modele modele) {
+	public Vue(int w , int h ,Controleur controller) {
 		
 		super("ma fenetre de jeu");
-		this.modele = modele;
+		
+		this.controller = controller;
 		
 		this.setLayout(new BorderLayout());
 		
-		affichage = new Affichage(modele);
-		
-		affichage.setBackground(Color.GRAY);
+		affichage = new Affichage(w,h,controller.getModele());
 		
 		affichage.setSize(w,h);
 		
-		this.getContentPane().add(affichage, BorderLayout.CENTER);
-		
 		this.setSize(w,h);
 		
+		this.setResizable(false);
+		
+		this.getContentPane().add(affichage);
+		
 		this.setLocationRelativeTo(null);
+		
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		
 		setVisible(true);
 		
-		this.addMouseMotionListener(new MouseAdapter(){
-			@Override
-			public void mouseDragged(MouseEvent e) {
-			}
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				modele.raquette.setX(e.getX() - modele.raquette.getWidth()/2);
-			}
-		});
-		//mise à jour de l'affichage (20 milisecondes = 1/50 secondes
-		java.util.Timer timerAffichage = new java.util.Timer();
+		this.addMouseMotionListener(new RaquetteListener());
+		
+		//mise ï¿½ jour de l'affichage (20 milisecondes = 1/50 secondes
+		Timer timerAffichage = new Timer();
 		timerAffichage.schedule(new TimerTask(){
 			public void run(){
 				affichage.repaint();
@@ -53,5 +49,20 @@ public class Vue extends JFrame {
 		}, 0, 20);
 		
 	}
+	//ici on implement les listener
+		class RaquetteListener implements MouseMotionListener {
+
+			@Override
+			public void mouseDragged(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				controller.moveRaquette(e);
+			}
+			
+		}
 
 }

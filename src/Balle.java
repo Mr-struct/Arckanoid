@@ -1,29 +1,20 @@
-
 public class Balle {
 	
 	//attributs 
 	
-	private int  x, y, vX, vY;
-	private int rX, rY; //coordonnées relative à la raquette quand la balle est accrochée
-		
-	//TODO ancien constructeur, à remplacer par celui du dessous
-	public Balle(int x, int y , int vX, int vY) {
-		this.x = x ;
-		this.y = y;
-		this.vX = vX;
-		this.vY = vY;
-		this.rX = 50;
-		this.rY = -10;
-	}
-	
+	private int  x, y, vX, vY ,width, height;
+	private int rX, rY; //coordonnÃ©es relative Ã  la raquette quand la balle est accrochÃ©e
 	//constructeur
-	public Balle(int x, int y , int vX, int vY, int rX, int rY) {
+	public Balle(int x, int y , int vX, int vY, int rX, int rY, int w, int h) {
+		
 		this.x = x ;
 		this.y = y;
 		this.vX = vX;
 		this.vY = vY;
 		this.rX = rX;
 		this.rY = rY; 
+		this.width = w;
+		this.height = h;
 	}
 	
 	// geter and seter
@@ -81,6 +72,22 @@ public class Balle {
 
 	public void setrY(int rY) {
 		this.rY = rY;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
 	}
 	
 }
