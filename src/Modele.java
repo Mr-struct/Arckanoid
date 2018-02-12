@@ -3,6 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.TimerTask;
 
 
 public class Modele {
@@ -22,6 +23,13 @@ public class Modele {
 	protected String levelRank;
 	
 	protected String levelBackground;
+	
+	private java.util.Timer tLogique = new java.util.Timer();
+	
+	protected int maxX = 1000;
+	
+	protected int minX = 200;
+	protected Vue  vue;
 
 	public Modele(String fileLevel) {
 
@@ -37,6 +45,8 @@ public class Modele {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		this.vue = new Vue(1200, 800, this);
 
 
 	}
@@ -147,6 +157,62 @@ public class Modele {
 		}
 		return char2D;
 
+	}
+	
+	
+
+	
+	//lance le timer pour la logique du jeu
+	public void lancerJeu(){
+		
+		tLogique.schedule(new TimerTask(){
+			
+			public void run() {
+				
+				for(Balle b : balles){
+					
+				synchronized(b){
+					
+						if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachées à la raquette (celles dont la vélocité est nulle) suivent la raquette
+							
+							b.setX((raquette.getX()+65) + b.getrX()); //faut les centrer sur la raquette du coup  c'est modele.raquette.getX() + b.getrX() + la moitier du width de la raquette càd 65
+							
+							b.setY((raquette.getY()-20) + b.getrY()); //meme chose ici - la taille de la balle càd 20
+						}else
+						{ 
+							//les balles ayant une vélocité se déplacent selon celle-ci
+							b.setX(b.getX() + b.getvX());
+							b.setY(b.getY() + b.getvY());
+						}
+					}
+				}
+			}
+		}, 0, 10);
+	}
+	
+	//Action permettant de lancer les balles attachées à la raquette (celles dont la vélocité est nulle) en leur donnant une velocité initiale
+	public void lancerBalles(){
+		
+		//faire en sorte que le premier lancement de la balle suit le pointeur de la souris et attend qu'on clic dessus 
+		
+		for(Balle b : balles){
+			
+			synchronized(b){
+				
+				if(b.getvX() == 0 && b.getvY() == 0){
+					
+					b.setvX(2);
+					b.setvY(-2);
+					
+				}
+			}
+		}
+	}
+	
+	//suspend le jeu, le jeu peut reprendre en appelant lancerJeu
+	public void suspendreJeu(){
+		
+		tLogique.cancel();
 	}
 
 

@@ -12,15 +12,17 @@ public class Vue extends JFrame {
 	
 	private Affichage affichage;
 	
-	public Vue(int w , int h ,Controleur controller) {
+	private Modele modele;
+	
+	public Vue(int w , int h, Modele modele) {
 		
 		super("ma fenetre de jeu");
 		
-		this.controller = controller;
+		this.modele = modele;
 		
 		this.setLayout(new BorderLayout());
 		
-		affichage = new Affichage(w,h,controller.getModele());
+		affichage = new Affichage(w,h,modele);
 		
 		affichage.setSize(w,h);
 		
@@ -37,6 +39,8 @@ public class Vue extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		
 		setVisible(true);
+		
+		this.controller = new Controleur(modele, this);
 		
 		this.addMouseMotionListener(new RaquetteListener());
 		
