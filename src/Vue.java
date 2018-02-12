@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -44,6 +45,7 @@ public class Vue extends JFrame {
 		
 		this.addMouseMotionListener(new RaquetteListener());
 		
+		this.addMouseListener(new LancerBalle());
 		//mise � jour de l'affichage (20 milisecondes = 1/50 secondes
 		Timer timerAffichage = new Timer();
 		timerAffichage.schedule(new TimerTask(){
@@ -54,7 +56,44 @@ public class Vue extends JFrame {
 		
 	}
 	//ici on implement les listener
-		class RaquetteListener implements MouseMotionListener {
+	
+	class LancerBalle implements MouseListener {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			
+				controller.lancerBalles();
+
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	class RaquetteListener implements MouseMotionListener {
 
 			@Override
 			public void mouseDragged(MouseEvent arg0) {

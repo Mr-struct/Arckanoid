@@ -26,7 +26,7 @@ public class Modele {
 	
 	private java.util.Timer tLogique = new java.util.Timer();
 	
-	protected int maxX = 1000;
+	protected int maxX = 990;
 	
 	protected int minX = 200;
 	protected Vue  vue;

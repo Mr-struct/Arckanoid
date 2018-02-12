@@ -70,27 +70,7 @@ public class Affichage extends JPanel {
 		
 		//dessine le fond 
 		g2d.drawImage(imgBackground, 0,0,this.getWidth(),this.getHeight(), null);
-	
 		
-		//de la transparance sur les coter de la fenaitre pour un effet !
-		Color transparentbalck0 = new Color(59, 59, 112, 128);
-		
-		Color transparentblack1 = new Color(159, 59, 240,255);
-		
-		//dégradé1 de couleur
-		GradientPaint gp1 = new GradientPaint(this.getWidth()-100, 0, transparentbalck0, this.getWidth()-100, this.getHeight(), transparentblack1, true);                
-	    
-		g2d.setPaint(gp1);
-		
-	    g2d.fillRect((this.getWidth()-200), 0, 200, this.getHeight());
-	    
-	    //dégrade2 de couleur
-		
-	    GradientPaint gp2 = new GradientPaint(100, 0, transparentbalck0, 100, this.getHeight(), transparentblack1, true);                
-	    
-	    g2d.setPaint(gp2);
-		
-	    g2d.fillRect(0, 0, 200, this.getHeight());
 	    
 	    //couleur mis a jour pour la transparence 
 	    g2d.setColor(new Color(6,6,6,128));
@@ -134,6 +114,7 @@ public class Affichage extends JPanel {
 		
 		}
 		
+		
 
 		//dessine l'ombre de la balle
 		g2d.fillOval(modele.balle.getX()+5,modele.balle.getY()+5,modele.balle.getWidth(),modele.balle.getHeight());
@@ -146,6 +127,26 @@ public class Affichage extends JPanel {
 		g2d.drawImage(imgDefaultRaquette, modele.raquette.getX(),modele.raquette.getY(),modele.raquette.getWidth(),modele.raquette.getHeight(), null);
 		
 		
+		//de la transparance sur les coter de la fenaitre pour un effet !
+		Color transparentbalck0 = new Color(59, 59, 112, 128);
+		
+		Color transparentblack1 = new Color(159, 59, 240,255);
+		
+		//dégradé1 de couleur
+		GradientPaint gp1 = new GradientPaint(this.getWidth()-100, 0, transparentbalck0, this.getWidth()-100, this.getHeight(), transparentblack1, true);                
+	    
+		g2d.setPaint(gp1);
+		
+	    g2d.fillRect((this.getWidth()-200), 0, 200, this.getHeight());
+	    
+	    //dégrade2 de couleur
+		
+	    GradientPaint gp2 = new GradientPaint(100, 0, transparentbalck0, 100, this.getHeight(), transparentblack1, true);                
+	    
+	    g2d.setPaint(gp2);
+		
+	    g2d.fillRect(0, 0, 200, this.getHeight());
+	    
 		/*
 		 * reste à faire dessiner les bonnus
 		 * et les effet de victoir d'explosion ect...
@@ -168,11 +169,12 @@ public class Affichage extends JPanel {
 		g2d.drawRect(this.getWidth()-1180, 10, 170, 200);//droite
 		
 		
-		// dessine les poto gauche et droite 
+		/* dessine les poto gauche et droite 
 		g2d.setColor(Color.MAGENTA);
 		g2d.fillRect(this.getWidth()-995, 0, 5, this.getHeight());//gauche
 		g2d.fillRect(this.getWidth()-200, 0, 5, this.getHeight());//droite
-		//getWidth
+		 * 
+		 */
 		
 	}
 	
