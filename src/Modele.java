@@ -183,6 +183,18 @@ public class Modele {
 							//les balles ayant une vélocité se déplacent selon celle-ci
 							b.setX(b.getX() + b.getvX());
 							b.setY(b.getY() + b.getvY());
+							//collision avec les murs
+							if((b.getvX() < 0 && b.getX() <= minX) || (b.getvX() > 0 && b.getX() + b.getWidth() >= maxX )){
+								b.setvX(-b.getvX());
+							}
+							//collision avec le plafond
+							if(b.getvY() < 0 && b.getY() <= 0){
+								b.setvY(-b.getvY());
+							}
+							//collision avec la raquette
+							if(b.getvY() > 0 && b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth()){
+								b.setvY(-b.getvY());
+							}
 						}
 					}
 				}

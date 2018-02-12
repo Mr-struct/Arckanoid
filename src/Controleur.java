@@ -22,16 +22,6 @@ public class Controleur {
 		//TODO attendre que l'interface ait fini de s'afficher avant de lancer le jeu
 		modele.lancerJeu();
 		
-		//TODO test du lancement de balle après 5 secondes, à remplacer par un lancement manuel
-		java.util.Timer tLancement = new java.util.Timer();
-		
-		tLancement.schedule(new TimerTask(){
-			
-			public void run() {
-				modele.lancerBalles();
-			}
-		}, 5000);
-		
 	}
 
 	public void moveRaquette(MouseEvent e) {
