@@ -6,6 +6,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class Affichage extends JPanel {
 		this.modele = modele;
 		
 		this.setSize(width,height);
-		System.out.println(this.getWidth()+" X "+this.getHeight());
+		System.out.println(modele.gameWidth+" X "+modele.gameHeight);
 		
 		  //create the font to use. Specify the size!
 	    try {
@@ -68,10 +69,14 @@ public class Affichage extends JPanel {
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
 		
-		//dessine le fond 
-		g2d.drawImage(imgBackground, 0,0,this.getWidth(),this.getHeight(), null);
 		
+		 AffineTransform tx = new AffineTransform();
+		tx.scale((float) this.getWidth()/ (float)modele.gameWidth, (float) this.getHeight()/ (float)modele.gameHeight);
+	    g2d.setTransform(tx);
 	    
+	  //dessine le fond 
+	  g2d.drawImage(imgBackground, 0,0,modele.gameWidth,modele.gameHeight, null);
+	  		
 	    //couleur mis a jour pour la transparence 
 	    g2d.setColor(new Color(6,6,6,128));
 	    // dessine les briques en fonction du type
@@ -133,19 +138,19 @@ public class Affichage extends JPanel {
 		Color transparentblack1 = new Color(159, 59, 240,255);
 		
 		//dégradé1 de couleur
-		GradientPaint gp1 = new GradientPaint(this.getWidth()-100, 0, transparentbalck0, this.getWidth()-100, this.getHeight(), transparentblack1, true);                
+		GradientPaint gp1 = new GradientPaint(modele.gameWidth-100, 0, transparentbalck0, modele.gameWidth-100, modele.gameHeight, transparentblack1, true);                
 	    
 		g2d.setPaint(gp1);
 		
-	    g2d.fillRect((this.getWidth()-200), 0, 200, this.getHeight());
+	    g2d.fillRect((modele.gameWidth-200), 0, 200, modele.gameHeight);
 	    
 	    //dégrade2 de couleur
 		
-	    GradientPaint gp2 = new GradientPaint(100, 0, transparentbalck0, 100, this.getHeight(), transparentblack1, true);                
+	    GradientPaint gp2 = new GradientPaint(100, 0, transparentbalck0, 100, modele.gameHeight, transparentblack1, true);                
 	    
 	    g2d.setPaint(gp2);
 		
-	    g2d.fillRect(0, 0, 200, this.getHeight());
+	    g2d.fillRect(0, 0, 200, modele.gameHeight);
 	    
 		/*
 		 * reste à faire dessiner les bonnus
@@ -156,23 +161,23 @@ public class Affichage extends JPanel {
 		
 		g2d.setFont(myFont);
 		g2d.setColor(Color.magenta);
-		g2d.drawString("SCORE : ",this.getWidth()-170 , 40);
-		g2d.drawString("00000000",this.getWidth()-170 , 80);
-		g2d.drawString(modele.levelRank,this.getWidth()-170 , 120);
-		g2d.drawString(modele.levelName,this.getWidth()-170 , 160);
-		g2d.drawString("Bonus : ",this.getWidth()-1170 , 40);
+		g2d.drawString("SCORE : ",modele.gameWidth-170 , 40);
+		g2d.drawString("00000000",modele.gameWidth-170 , 80);
+		g2d.drawString(modele.levelRank,modele.gameWidth-170 , 120);
+		g2d.drawString(modele.levelName,modele.gameWidth-170 , 160);
+		g2d.drawString("Bonus : ",modele.gameWidth-1170 , 40);
 		
 		// dessine le cadre à droite 
 		g2d.setStroke(new BasicStroke(5));
 		g2d.setColor(Color.BLACK);
-		g2d.drawRect(this.getWidth()-180, 10, 170, 200);//gauche	
-		g2d.drawRect(this.getWidth()-1180, 10, 170, 200);//droite
+		g2d.drawRect(modele.gameWidth-180, 10, 170, 200);//gauche	
+		g2d.drawRect(modele.gameWidth-1180, 10, 170, 200);//droite
 		
 		
 		/* dessine les poto gauche et droite 
 		g2d.setColor(Color.MAGENTA);
-		g2d.fillRect(this.getWidth()-995, 0, 5, this.getHeight());//gauche
-		g2d.fillRect(this.getWidth()-200, 0, 5, this.getHeight());//droite
+		g2d.fillRect(modele.gameWidth-995, 0, 5, modele.gameHeight);//gauche
+		g2d.fillRect(modele.gameWidth-200, 0, 5, modele.gameHeight);//droite
 		 * 
 		 */
 		

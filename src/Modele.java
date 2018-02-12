@@ -26,9 +26,14 @@ public class Modele {
 	
 	private java.util.Timer tLogique = new java.util.Timer();
 	
-	protected int maxX = 990;
+	protected int gameWidth = 1200;
+	
+	protected int gameHeight = 800;
 	
 	protected int minX = 200;
+	
+	protected int maxX = gameWidth-200;
+	
 	protected Vue  vue;
 
 	public Modele(String fileLevel) {
@@ -46,8 +51,7 @@ public class Modele {
 			e.printStackTrace();
 		}
 		
-		this.vue = new Vue(1200, 800, this);
-
+		this.vue = new Vue(gameWidth, gameHeight, this);
 
 	}
 

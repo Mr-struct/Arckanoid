@@ -29,13 +29,13 @@ public class Vue extends JFrame {
 		
 		this.setSize(w,h);
 		
-		this.setResizable(false);
+		//this.setResizable(false);
 		
 		this.getContentPane().add(affichage);
 		
 		this.setLocationRelativeTo(null);
 		
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		//this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		
