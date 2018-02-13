@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.TimerTask;
 
 
@@ -58,7 +57,7 @@ public class Modele {
 	public void initBalle(){
 
 		// la position de la balle est set dans le controleur dans le lancerJeu()
-		balle = new Balle (0,0,0,0,0,0,20,20); 
+		balle = new Balle (0, 0, 0, 0, raquette.getWidth()/2, -20, 20, 20); 
 		balles.add(balle);
 
 	}
@@ -176,14 +175,10 @@ public class Modele {
 				for(Balle b : balles){
 					
 				synchronized(b){
-					
 						if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachées à la raquette (celles dont la vélocité est nulle) suivent la raquette
-							
-							b.setX((raquette.getX()+65) + b.getrX()); //faut les centrer sur la raquette du coup  c'est modele.raquette.getX() + b.getrX() + la moitier du width de la raquette càd 65
-							
-							b.setY((raquette.getY()-20) + b.getrY()); //meme chose ici - la taille de la balle càd 20
-						}else
-						{ 
+							b.setX((raquette.getX()) + b.getrX());
+							b.setY((raquette.getY()) + b.getrY());
+						}else{ 
 							//les balles ayant une vélocité se déplacent selon celle-ci
 							b.setX(b.getX() + b.getvX());
 							b.setY(b.getY() + b.getvY());
@@ -196,7 +191,7 @@ public class Modele {
 								b.setvY(-b.getvY());
 							}
 							//collision avec la raquette
-							if(b.getvY() > 0 && b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth()){
+							if(b.getvY() > 0 && b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth()){
 								b.setvY(-b.getvY());
 							}
 						}
@@ -204,6 +199,18 @@ public class Modele {
 				}
 			}
 		}, 0, 10);
+	}
+	
+	//d�place la raquette vers la position x
+	public void deplacerRaquette(int x){
+		int m = raquette.getWidth()/2;
+		if(x - m <= minX){
+			raquette.setX(minX);
+		}else if(x + m >= maxX){
+			raquette.setX(maxX - 2 * m);
+		}else{
+			raquette.setX(x - m);
+		}
 	}
 	
 	//Action permettant de lancer les balles attachées à la raquette (celles dont la vélocité est nulle) en leur donnant une velocité initiale

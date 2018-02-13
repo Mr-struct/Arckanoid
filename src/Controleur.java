@@ -1,5 +1,4 @@
 import java.awt.event.MouseEvent;
-import java.util.TimerTask;
 
 
 public class Controleur {
@@ -24,9 +23,9 @@ public class Controleur {
 		
 	}
 
-	public void moveRaquette(MouseEvent e) {
+	public void deplacerRaquette(MouseEvent e) {
 		
-		modele.raquette.setX(e.getX() - modele.raquette.getWidth()/2);
+		modele.deplacerRaquette(e.getX() * modele.gameWidth / vue.getWidth());
 		
 	}
 	

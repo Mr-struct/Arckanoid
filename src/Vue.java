@@ -103,7 +103,7 @@ public class Vue extends JFrame {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				controller.moveRaquette(e);
+				controller.deplacerRaquette(e);
 			}
 			
 		}
