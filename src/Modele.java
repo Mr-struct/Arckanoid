@@ -1,8 +1,5 @@
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.TimerTask;
+import java.io.*;
+import java.util.*;
 
 
 public class Modele {
@@ -14,6 +11,8 @@ public class Modele {
 	protected Balle balle; //TODO retirer ce chanp et utiliser uniquement l'array "balles", nécessaire pour le multiballe
 
 	protected ArrayList<Balle> balles = new ArrayList<Balle>();
+	
+	protected ArrayList<Bonus> bonus = new ArrayList<Bonus>();
 
 	protected  String fileLevel;
 
@@ -162,8 +161,13 @@ public class Modele {
 
 	}
 	
-	
 
+	private boolean collisionBrique(Balle balle, Brique brique){
+		balle.setvX(-balle.getvX());
+		balle.setvY(-balle.getvY());
+		briques.remove(brique);
+		return true;
+	}
 	
 	//lance le timer pour la logique du jeu
 	public void lancerJeu(){
@@ -193,6 +197,15 @@ public class Modele {
 							//collision avec la raquette
 							if(b.getvY() > 0 && b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth()){
 								b.setvY(-b.getvY());
+							}
+							//collision avec les briques
+							Iterator<Brique> i = briques.iterator();
+							boolean c = false;
+							while(i.hasNext() && !c){
+								Brique brique = i.next();
+								if(b.getX() + b.getWidth() > brique.getX() && b.getX() < brique.getX() + brique.getWidth() && b.getY() + b.getHeight() > brique.getY() && b.getY() < brique.getY() + brique.getHeight()){
+									c = collisionBrique(b, brique);
+								}
 							}
 						}
 					}
