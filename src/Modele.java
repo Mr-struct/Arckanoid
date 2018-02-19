@@ -45,13 +45,20 @@ public class Modele {
 	protected int maxX = gameWidth-200;
 
 	protected Vue  vueJeu;
+	
+	private SoundPlay impactSound;
 
 	public Modele(String fileLevel) {
 
-		raquette = new Raquette(500,680,150,30);
-
+		this.raquette = new Raquette(500,680,150,30);
+		
+		this.impactSound = new SoundPlay();
+		this.impactSound.setPnogrameChange(14);
+		
 		this.fileLevel = fileLevel;
+		
 		this.levelBackground = this.fileLevel+".png";
+		
 		System.out.println(levelBackground);
 
 		try {
@@ -108,27 +115,27 @@ public class Modele {
 
 				case 'B': // pour les briques bleu
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,0, 1) );
+					briques.add(new Brique( (i*(colums-1)*10)+240, (j*lines*10)+50 ,80   ,30    ,0, 1) );
 					break;
 
 				case 'V': // pour les briques vertes 
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,1, 2) );
+					briques.add(new Brique( (i*(colums-1)*10)+240, (j*lines*10)+50 ,80   ,30    ,1, 2) );
 					break;
 
 				case 'S': //pour les briques en metal
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,2, 3) );
+					briques.add(new Brique( (i*(colums-1)*10)+240, (j*lines*10)+50 ,80   ,30    ,2, 3) );
 					break;
 
 				case 'R': // pour les briques rouge
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,3, 4) );
+					briques.add(new Brique( (i*(colums-1)*10)+240, (j*lines*10)+50 ,80   ,30    ,3, 4) );
 					break;
 
 				case 'G' : // pour les brique or
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,4, 5) );
+					briques.add(new Brique( (i*(colums-1)*10)+240, (j*lines*10)+50 ,80   ,30    ,4, 5) );
 					break;
 
 
@@ -243,6 +250,7 @@ public class Modele {
 							}
 							//collision avec la raquette
 							if(b.getvY() > 0 && b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth()){
+								impactSound.note_on(60);
 								b.setvY(-b.getvY());
 							}
 							//collision avec les briques
@@ -251,6 +259,7 @@ public class Modele {
 							while(i.hasNext() && !c){
 								Brique brique = i.next();
 								if(b.getX() + b.getWidth() > brique.getX() && b.getX() < brique.getX() + brique.getWidth() && b.getY() + b.getHeight() > brique.getY() && b.getY() < brique.getY() + brique.getHeight()){
+									impactSound.note_on(65);
 									c = collisionBrique(b, brique);
 								}
 							}

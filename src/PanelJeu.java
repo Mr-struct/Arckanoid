@@ -174,14 +174,12 @@ public class PanelJeu extends JPanel {
 
 			//dessine les ombres des paneau du bonus et de du score 
 			g2d.setColor(new Color(5,5,5,128));
-			g2d.fillRect(modele.gameWidth-175, 5, 170, 5);//gaucheHaut
 			g2d.fillRect(modele.gameWidth-10, 10, 5, 200);//gaucheGauche
 			g2d.fillRect(modele.gameWidth-175,210, 170, 5);//gaucheBAS
 
 			g2d.setColor(new Color(5,5,5,128));
-			g2d.fillRect(modele.gameWidth-175, 5, 170, 5);//droiteHaut
-			g2d.fillRect(modele.gameWidth-10, 10, 5, 200);//droiteGauche
-			g2d.fillRect(modele.gameWidth-175,210, 170, 5);//droiteBas
+			g2d.fillRect(180, 10, 5, 200);//droiteGauche
+			g2d.fillRect(15,210, 170, 5);//droiteBas
 		}
 
 		// doit afficher une annimation quand un objet est détruit 

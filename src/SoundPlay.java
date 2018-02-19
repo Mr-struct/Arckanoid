@@ -1,74 +1,85 @@
-import java.io.File;
-import java.io.IOException;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import java.util.logging.Level;
+
+import java.util.logging.Logger;
+
+import javax.sound.midi.MidiSystem;
+
+import javax.sound.midi.MidiChannel;
+
+import javax.sound.midi.MidiUnavailableException;
+
+import javax.sound.midi.Synthesizer;
+
 
 public class SoundPlay {
-	private float volume;
-	private int delay;
-	private String audioFilePath;
-	private FloatControl gainControl;
-	private Clip audioClip;
-	public SoundPlay(String file ,int delay,float volume) {
-		this.delay = delay;
-		this.audioFilePath = file;
-		this.volume = volume;
-		
-	}
-	
-	public float getVolume() {
-		return volume;
-	}
-	public void setVolume(float valume) {
-		this.volume = valume;
-	}
-	
-	public synchronized void playSound() {
 
-		new Thread(new Runnable() {
+    public int volume = 100;
+
+    private Synthesizer synthetiseur;
+
+    private MidiChannel canal;
+
+    
+    public SoundPlay(){
+
+        try {
+            //On récupère le synthétiseur, on l'ouvre et on obtient un canal
+            synthetiseur = MidiSystem.getSynthesizer();
+            synthetiseur.open();
+            
+        } catch (MidiUnavailableException ex) {
+            
+        	Logger.getLogger(SoundPlay.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        canal = synthetiseur.getChannels()[0];      
+
+        //On initialise l'instrument 0 (le piano) pour le canal
+
+    canal.programChange(0);
+
+    }
+
+    
+
+    //Joue la note dont le numéro est en paramètre
+
+     public synchronized void note_on(int note){
+    	new Thread(new Runnable() {
 			public void run() {
-				Boolean playCompleted = true;
-
-				File audioFile = new File(audioFilePath);
-
-				try {
-					AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-					AudioFormat format = audioStream.getFormat();
-					DataLine.Info info = new DataLine.Info(Clip.class, format);
-					audioClip = (Clip) AudioSystem.getLine(info);
-				    audioClip.open(audioStream);
-					audioClip.start();
-
-					while (playCompleted) {
-						// wait for the playback completes
-						try {
-							Thread.sleep(delay);
-
-						} catch (InterruptedException ex) {
-							ex.printStackTrace();
-						}
-						audioClip.close();
-					}
-
-				} catch (UnsupportedAudioFileException ex) {
-					System.out.println("The specified audio file is not supported.");
-					ex.printStackTrace();
-				} catch (LineUnavailableException ex) {
-					System.out.println("Audio line for playing back is unavailable.");
-					ex.printStackTrace();
-				} catch (IOException ex) {
-					System.out.println("Error playing the audio file.");
-					ex.printStackTrace();
+				canal.noteOn(note, volume);
+				Boolean b = true;
+				while(b) {
+					try {
+						Thread.sleep(1);
+						b = false;
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					
 				}
+				}
+				canal.noteOff(note);
 			}
 		}).start();
-	}
-	
+    }
+
+    //Arrête de jouer la note dont le numéro est en paramètre
+
+    public void note_off(int note){
+
+        canal.noteOff(note);
+
+    }
+
+    //Set le type d'instrument dont le numéro MIDI est précisé en paramètre
+
+    public void setPnogrameChange(int instru){
+
+        canal.programChange(instru);
+
+    }
+
 }
+

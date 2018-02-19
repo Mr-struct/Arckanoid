@@ -7,11 +7,11 @@ import java.awt.event.MouseMotionListener;
 public class ControleurJeu implements MouseMotionListener,MouseListener {
 	
 	private Modele modele;
-	private Vue vueJeu;
+	private PanelJeu vueJeu;
 	// constructeur 
-	public ControleurJeu(Modele modele, Vue vueJeu) {
+	public ControleurJeu(Modele modele, PanelJeu panelJeu) {
 		this.modele = modele;
-		this.vueJeu = vueJeu;
+		this.vueJeu = panelJeu;
 	}
 	
 	@Override
