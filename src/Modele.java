@@ -93,27 +93,27 @@ public class Modele {
 
 				case 'B': // pour les briques bleu
 					
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,0, 1) );
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,60   ,30    ,0, 1) );
 					break;
 					
 				case 'V': // pour les briques vertes 
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,1, 2) );
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,60   ,30    ,1, 2) );
 					break;
 
 				case 'S': //pour les briques en metal
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,2, 3) );
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,60   ,30    ,2, 3) );
 					break;
 
 				case 'R': // pour les briques rouge
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,3, 4) );
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,60   ,30    ,3, 4) );
 					break;
 					
 				case 'G' : // pour les brique or
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,4, 5) );
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,60   ,30    ,4, 5) );
 
 					break;
 
@@ -163,8 +163,37 @@ public class Modele {
 	
 
 	private boolean collisionBrique(Balle balle, Brique brique){
-		balle.setvX(-balle.getvX());
-		balle.setvY(-balle.getvY());
+		//balle.setvX(-balle.getvX());
+		//balle.setvY(-balle.getvY());
+		
+		boolean diagonale = true;
+		//dessus et dessous
+		if(balle.getX() >= brique.getX() && balle.getX() + balle.getWidth() <= brique.getX() + brique.getWidth()){
+			diagonale = false;
+			//dessus
+			if(balle.getvY() > 0 && balle.getY() + balle.getHeight() < brique.getY() + brique.getHeight())
+				balle.setvY(-balle.getvY());
+			//dessous
+			if(balle.getvY() < 0 && balle.getY() > brique.getY())
+				balle.setvY(-balle.getvY());
+		}
+		//gauche et droite
+		if(balle.getY() >= brique.getY() && balle.getY() + balle.getHeight() <= brique.getY() + brique.getHeight()){
+			diagonale = false;
+			//gauche
+			if(balle.getvX() > 0 && balle.getY() + balle.getWidth() < brique.getX() + brique.getWidth())
+				balle.setvX(-balle.getvX());
+			//droite
+			if(balle.getvX() < 0 && balle.getX() > brique.getX())
+				balle.setvX(-balle.getvX());
+		}
+		//diagonales
+		if(diagonale){
+			if((balle.getvX() > 0 && balle.getX() <= brique.getX()) || (balle.getvX() < 0 && balle.getX() + balle.getWidth() >= brique.getX() + brique.getWidth()))
+				balle.setvX(-balle.getvX());
+			if((balle.getvY() > 0 && balle.getY() <= brique.getY()) || (balle.getvY() < 0 && balle.getY() + balle.getHeight() >= brique.getY() + brique.getHeight()))
+				balle.setvY(-balle.getvY());
+		}
 		briques.remove(brique);
 		return true;
 	}
