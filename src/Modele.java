@@ -1,5 +1,19 @@
-import java.io.*;
-import java.util.*;
+
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.TimerTask;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 
 public class Modele {
@@ -7,32 +21,30 @@ public class Modele {
 	protected ArrayList<Brique> briques = new ArrayList<Brique>(); 
 
 	protected Raquette raquette;
-
-	protected Balle balle; //TODO retirer ce chanp et utiliser uniquement l'array "balles", nécessaire pour le multiballe
-
-	protected ArrayList<Balle> balles = new ArrayList<Balle>();
 	
-	protected ArrayList<Bonus> bonus = new ArrayList<Bonus>();
+	protected ArrayList<Balle> balles = new ArrayList<Balle>();
 
 	protected  String fileLevel;
 
 	protected String levelName;
 
 	protected String levelRank;
-	
+
 	protected String levelBackground;
-	
+
 	private java.util.Timer tLogique = new java.util.Timer();
-	
-	protected int gameWidth = 1200;
-	
-	protected int gameHeight = 800;
-	
+
+	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+	protected int gameWidth = (int) screenSize.getWidth();
+
+	protected int gameHeight =(int) screenSize.getHeight();
+
 	protected int minX = 200;
-	
+
 	protected int maxX = gameWidth-200;
-	
-	protected Vue  vue;
+
+	protected Vue  vueJeu;
 
 	public Modele(String fileLevel) {
 
@@ -48,16 +60,18 @@ public class Modele {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		this.vue = new Vue(gameWidth, gameHeight, this);
 
 	}
 
 	public void initBalle(){
 
 		// la position de la balle est set dans le controleur dans le lancerJeu()
-		balle = new Balle (0, 0, 0, 0, raquette.getWidth()/2, -20, 20, 20); 
+		Balle balle = new Balle (0, 0, 0, 0, (raquette.getWidth()/2)-5, -20, 20, 20); 
+		Balle balle2 = new Balle (0, 0, 0, 0, (raquette.getWidth()/2)-40, -20, 20, 20); 
+		Balle balle3 = new Balle (0, 0, 0, 0, (raquette.getWidth()/2)+40, -20, 20, 20); 
 		balles.add(balle);
+		balles.add(balle2);
+		balles.add(balle3);
 
 	}
 	public void intitlevel() throws IOException{
@@ -71,6 +85,7 @@ public class Modele {
 			out = test.split("\n");
 		}
 		System.out.println("taille de out est de :" +out.length);
+		System.out.println("taille de la fenaitre est de  :" +gameWidth +"X" +gameHeight);
 
 		this.levelRank = out[out.length-4];
 		this.levelName = out[out.length-3];
@@ -86,35 +101,34 @@ public class Modele {
 			for(int j = 0; j < lines ;j++) {
 
 				// initialise les brique avec juste un random faut changer ça avec une proba 
-		
+
 
 				// matrice inversser
 				switch(char2D[j][i]) {
 
 				case 'B': // pour les briques bleu
-					
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,60   ,30    ,0, 1) );
+
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,0, 1) );
 					break;
-					
+
 				case 'V': // pour les briques vertes 
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,60   ,30    ,1, 2) );
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,1, 2) );
 					break;
 
 				case 'S': //pour les briques en metal
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,60   ,30    ,2, 3) );
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,2, 3) );
 					break;
 
 				case 'R': // pour les briques rouge
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,60   ,30    ,3, 4) );
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,3, 4) );
 					break;
-					
+
 				case 'G' : // pour les brique or
 
-					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,60   ,30    ,4, 5) );
-
+					briques.add(new Brique( (i*(colums-1)*10)+250, (j*lines*10)+50 ,80   ,30    ,4, 5) );
 					break;
 
 
@@ -160,7 +174,9 @@ public class Modele {
 		return char2D;
 
 	}
-	
+
+
+
 
 	private boolean collisionBrique(Balle balle, Brique brique){
 		//balle.setvX(-balle.getvX());
@@ -208,11 +224,11 @@ public class Modele {
 				for(Balle b : balles){
 					
 				synchronized(b){
-						if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachées à la raquette (celles dont la vélocité est nulle) suivent la raquette
+						if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachÃ©es Ã  la raquette (celles dont la vÃ©locitÃ© est nulle) suivent la raquette
 							b.setX((raquette.getX()) + b.getrX());
 							b.setY((raquette.getY()) + b.getrY());
 						}else{ 
-							//les balles ayant une vélocité se déplacent selon celle-ci
+							//les balles ayant une vÃ©locitÃ© se dÃ©placent selon celle-ci
 							b.setX(b.getX() + b.getvX());
 							b.setY(b.getY() + b.getvY());
 							//collision avec les murs
@@ -241,9 +257,9 @@ public class Modele {
 				}
 			}
 		}, 0, 10);
-	}
-	
-	//d�place la raquette vers la position x
+}
+
+	//d�place la raquette vers la position x
 	public void deplacerRaquette(int x){
 		int m = raquette.getWidth()/2;
 		if(x - m <= minX){
@@ -254,31 +270,76 @@ public class Modele {
 			raquette.setX(x - m);
 		}
 	}
-	
+
 	//Action permettant de lancer les balles attachées à la raquette (celles dont la vélocité est nulle) en leur donnant une velocité initiale
 	public void lancerBalles(){
-		
+
 		//faire en sorte que le premier lancement de la balle suit le pointeur de la souris et attend qu'on clic dessus 
-		
+
 		for(Balle b : balles){
-			
+
 			synchronized(b){
-				
+
 				if(b.getvX() == 0 && b.getvY() == 0){
-					
+
 					b.setvX(2);
 					b.setvY(-2);
-					
+
 				}
 			}
 		}
 	}
-	
+
 	//suspend le jeu, le jeu peut reprendre en appelant lancerJeu
 	public void suspendreJeu(){
-		
+
 		tLogique.cancel();
 	}
+	
+	public synchronized void playSound(String audioFilePath ,int delay ) {
 
+		new Thread(new Runnable() {
+			public void run() {
+				Boolean playCompleted = true;
+
+				File audioFile = new File(audioFilePath);
+
+				try {
+					AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+
+					AudioFormat format = audioStream.getFormat();
+
+					DataLine.Info info = new DataLine.Info(Clip.class, format);
+
+					Clip audioClip = (Clip) AudioSystem.getLine(info);
+					
+					
+				    audioClip.open(audioStream);
+				    
+					audioClip.start();
+
+					while (playCompleted) {
+						// wait for the playback completes
+						try {
+							Thread.sleep(delay);
+
+						} catch (InterruptedException ex) {
+							System.out.println("execpt");
+						}
+						audioClip.close();
+					}
+				} catch (UnsupportedAudioFileException ex) {
+					System.out.println("The specified audio file is not supported.");
+					ex.printStackTrace();
+				} catch (LineUnavailableException ex) {
+					System.out.println("Audio line for playing back is unavailable.");
+					ex.printStackTrace();
+				} catch (IOException ex) {
+					System.out.println("Error playing the audio file.");
+					ex.printStackTrace();
+				}
+			}
+		}).start();
+	}
 
 }

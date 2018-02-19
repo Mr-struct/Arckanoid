@@ -74,8 +74,8 @@ public class Affichage extends JPanel {
 		tx.scale((float) this.getWidth()/ (float)modele.gameWidth, (float) this.getHeight()/ (float)modele.gameHeight);
 	    g2d.setTransform(tx);
 	    
-	  //dessine le fond 
-	  g2d.drawImage(imgBackground, 0,0,modele.gameWidth,modele.gameHeight, null);
+	    //dessine le fond 
+	    g2d.drawImage(imgBackground, 0,0,modele.gameWidth,modele.gameHeight, null);
 	  		
 	    //couleur mis a jour pour la transparence 
 	    g2d.setColor(new Color(6,6,6,128));
@@ -122,10 +122,11 @@ public class Affichage extends JPanel {
 		
 
 		//dessine l'ombre de la balle
-		g2d.fillOval(modele.balle.getX()+5,modele.balle.getY()+5,modele.balle.getWidth(),modele.balle.getHeight());
+		for (Balle balle: modele.balles) {
+			g2d.fillOval(balle.getX()+5,balle.getY()+5,balle.getWidth(),balle.getHeight());
 		//dessine la balle
-		g2d.drawImage(imgDefaultBalle, modele.balle.getX(),modele.balle.getY(),modele.balle.getWidth(),modele.balle.getHeight(), this);
-		
+			g2d.drawImage(imgDefaultBalle, balle.getX(),balle.getY(),balle.getWidth(),balle.getHeight(), this);
+		}
 		//dessine l'ombre de la raquette 
 		g2d.fillRoundRect(modele.raquette.getX()+10, modele.raquette.getY()+10, modele.raquette.getWidth(), modele.raquette.getHeight(),10,10);
 		// dessine la raquette
@@ -167,11 +168,21 @@ public class Affichage extends JPanel {
 		g2d.drawString(modele.levelName,modele.gameWidth-170 , 160);
 		g2d.drawString("Bonus : ",modele.gameWidth-1170 , 40);
 		
-		// dessine le cadre à droite 
-		g2d.setStroke(new BasicStroke(5));
+		// dessine le cadre à droite  de score et de bonus
+		g2d.setStroke(new BasicStroke(0));
 		g2d.setColor(Color.BLACK);
-		g2d.drawRect(modele.gameWidth-180, 10, 170, 200);//gauche	
-		g2d.drawRect(modele.gameWidth-1180, 10, 170, 200);//droite
+		g2d.drawRect(modele.gameWidth-180, 10, 170, 200);//droite	
+		g2d.drawRect(modele.gameWidth-1190, 10, 170, 200);//gauche
+		//l'effet de transparance des carrers d'affichage de score et de bonus 
+		
+		g2d.setColor(new Color(0,0,0,128));
+		
+		g2d.fillRect(modele.gameWidth-10, 15, 5,200);//droite
+		g2d.fillRect(modele.gameWidth-175, 210, 165, 5);//droite
+		
+		
+		g2d.fillRect(modele.gameWidth-1020, 15, 5, 200);//gauche
+		g2d.fillRect(modele.gameWidth-1185, 210, 165, 5);//gauche
 		
 		
 		/* dessine les poto gauche et droite 

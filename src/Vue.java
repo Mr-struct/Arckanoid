@@ -1,37 +1,43 @@
+
 import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class Vue extends JFrame {
 	
-	private Controleur controller;
-	
-	private Affichage affichage;
-	
+	private PanelJeu panelJeu;
+	private JPanel thisPanel;
+	private PanelMenu panelMenu;
+	@SuppressWarnings("unused")
 	private Modele modele;
 	
-	public Vue(int w , int h, Modele modele) {
+	public Vue(Modele modele) {
 		
-		super("ma fenetre de jeu");
+		super("Arkanoid");
 		
 		this.modele = modele;
 		
 		this.setLayout(new BorderLayout());
 		
-		affichage = new Affichage(w,h,modele);
+		panelJeu = new PanelJeu(modele.gameWidth,modele.gameHeight,modele);
 		
-		affichage.setSize(w,h);
+		panelMenu = new PanelMenu(modele.gameWidth,modele.gameHeight,modele);
 		
-		this.setSize(w,h);
+		this.setSize(modele.gameWidth,modele.gameHeight);
 		
-		//this.setResizable(false);
+		thisPanel = new JPanel();
+
+		thisPanel.setLayout(new BorderLayout());
 		
-		this.getContentPane().add(affichage);
+		thisPanel.add(panelMenu, BorderLayout.CENTER);
+		
+		this.setContentPane(thisPanel);
 		
 		this.setLocationRelativeTo(null);
 		
@@ -41,71 +47,94 @@ public class Vue extends JFrame {
 		
 		setVisible(true);
 		
-		this.controller = new Controleur(modele, this);
+		ControleurJeu controleurJeu = new ControleurJeu(modele, this);
+		this.addMouseMotionListener(controleurJeu);
 		
-		this.addMouseMotionListener(new RaquetteListener());
+		this.addMouseListener(controleurJeu);
 		
-		this.addMouseListener(new LancerBalle());
-		//mise � jour de l'affichage (20 milisecondes = 1/50 secondes
+		//mise � jour de l'panelJeu (20 milisecondes = 1/50 secondes
 		Timer timerAffichage = new Timer();
 		timerAffichage.schedule(new TimerTask(){
 			public void run(){
-				affichage.repaint();
+				panelJeu.repaint();
 			}
 		}, 0, 20);
 		
-	}
-	//ici on implement les listener
-	
-	class LancerBalle implements MouseListener {
 
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			
-				controller.lancerBalles();
-
-			
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
-	
-	class RaquetteListener implements MouseMotionListener {
+		// mon met les listener sur les buttons
+		panelMenu.exit.addMouseListener(new MouseListener() {
+		      public void mousePressed(MouseEvent e) {
+		    	  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		    	  dispose();
+					 System.exit(0);
+		    	  //dispose();
+		    	 
+		        }
 
 			@Override
-			public void mouseDragged(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent arg0) {
+				 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				 dispose();
+				 System.exit(0);
+				 //dispose(); 
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void mouseMoved(MouseEvent e) {
-				controller.deplacerRaquette(e);
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
 			}
-			
-		}
 
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		      } );
+		
+		
+		panelMenu.newGame.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			
+				thisPanel.removeAll();
+				thisPanel.add(panelJeu,BorderLayout.CENTER);
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}	
+		});
+		
+	}
+		
 }
