@@ -12,8 +12,6 @@ public class ControleurJeu implements MouseMotionListener,MouseListener {
 	public ControleurJeu(Modele modele, Vue vueJeu) {
 		this.modele = modele;
 		this.vueJeu = vueJeu;
-		modele.lancerJeu();
-		
 	}
 	
 	@Override

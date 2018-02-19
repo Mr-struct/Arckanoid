@@ -100,6 +100,7 @@ public class Vue extends JFrame {
 				thisPanel.removeAll();
 				panelJeu = new PanelJeu(getWidth(),getHeight(),modele);
 				thisPanel.add(panelJeu,BorderLayout.CENTER);
+				modele.lancerJeu();
 				//mise � jour de l'panelJeu (20 milisecondes = 1/50 secondes
 				Timer timerAffichage = new Timer();
 				timerAffichage.schedule(new TimerTask(){
@@ -107,7 +108,6 @@ public class Vue extends JFrame {
 						panelJeu.repaint();
 					}
 				}, 0, 20);
-				
 			}
 
 			@Override
@@ -130,7 +130,6 @@ public class Vue extends JFrame {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
 				
 			}	
 		});
