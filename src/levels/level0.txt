@@ -1,10 +1,10 @@
-SSSSSSSSS
-oBVRGRVBo
-ooBBBBBoo
-oooBBBooo
-ooooBoooo
-ooooooooo
+SSSSSSSSSS
+oBVRGGRVBo
+ooBBBBBBoo
+oooBBBBooo
+ooooBBoooo
+oooooooooo
 level 0
 The WAY
-9
+10
 6

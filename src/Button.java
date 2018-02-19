@@ -22,11 +22,12 @@ import javax.swing.JButton;
 public class Button extends JButton implements MouseListener{
 	private String name;
 	private Font buttonFont;
-	private Button meClass;
 	private float alpha = .3f;
+	SoundPlay sound;
 	public Button (String str) {
 		this.setName(str);  
-
+		sound = new SoundPlay();
+		sound.setPnogrameChange(34);
 		try {
 			buttonFont = Font.createFont(Font.TRUETYPE_FONT, new File("./Fonts/Streamster.ttf")).deriveFont(25f);
 		} catch (FontFormatException e) {
@@ -64,59 +65,6 @@ public class Button extends JButton implements MouseListener{
 		g2d.drawString(this.name, this.getWidth() / 2 - (this.getWidth()/ 2 /4)-10, (this.getHeight() / 2) +5);
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 	}
-	
-	public synchronized void playSound(String audioFilePath ,int delay ) {
-		
-		  new Thread(new Runnable() {
-		    public void run() {
-		    		
-		    		Boolean playCompleted = true;
-		    		File audioFile = new File(audioFilePath);
-		    	   
-		           try {
-		               AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-		    
-		               AudioFormat format = audioStream.getFormat();
-		    
-		               DataLine.Info info = new DataLine.Info(Clip.class, format);
-		    
-		               Clip audioClip = (Clip) AudioSystem.getLine(info);
-		            
-		               audioClip.open(audioStream);
-		              /* ((FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(+10.f);
-		               /*
-		                * 
-		               FloatControl volume = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
-		               volume.setValue(1110);
-		               */
-		               audioClip.start();
-		                
-		               while (playCompleted) {
-		                   // wait for the playback completes
-		                   try {
-		                       Thread.sleep(delay);
-		                       
-		                   } catch (InterruptedException ex) {
-		                       ex.printStackTrace();
-		                   }
-		                   audioClip.close();
-		               }
-		                
-		               
-		                
-		           } catch (UnsupportedAudioFileException ex) {
-		               System.out.println("The specified audio file is not supported.");
-		               ex.printStackTrace();
-		           } catch (LineUnavailableException ex) {
-		               System.out.println("Audio line for playing back is unavailable.");
-		               ex.printStackTrace();
-		           } catch (IOException ex) {
-		               System.out.println("Error playing the audio file.");
-		               ex.printStackTrace();
-		           }
-		    }
-		   }).start();
-		}
 
 		public synchronized void mouseExited(MouseEvent me)
 	    {
@@ -126,7 +74,7 @@ public class Button extends JButton implements MouseListener{
 
 	    public synchronized void mouseEntered(MouseEvent me)
 	    {
-	    		this.playSound("./Sounds/ButtonSelected.wav",100); // joue le sond pendant 100 miliseconde
+	    		sound.note_on(67);
 	            alpha = 1.f;
 	           
 	    }

@@ -34,7 +34,7 @@ public class PanelJeu extends JPanel {
 		this.setSize(width,height);
 
 		try {
-			myFont = Font.createFont(Font.TRUETYPE_FONT, new File("./Fonts/SFAlienEncounters.ttf")).deriveFont(14f);
+			myFont = Font.createFont(Font.TRUETYPE_FONT, new File("./Fonts/SFAlienEncountersSolid.ttf")).deriveFont(14f);
 		} catch (FontFormatException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
@@ -159,27 +159,27 @@ public class PanelJeu extends JPanel {
 			//affiche le score dans un carrer
 
 			g2d.setFont(myFont);
-			g2d.setColor(Color.magenta);
+			g2d.setColor(Color.CYAN);
 			g2d.drawString("SCORE : ",modele.gameWidth-170 , 40);
 			g2d.drawString("00000000",modele.gameWidth-170 , 80);
 			g2d.drawString(modele.levelRank,modele.gameWidth-170 , 120);
 			g2d.drawString(modele.levelName,modele.gameWidth-170 , 160);
-			g2d.drawString("Bonus : ",20 , 40);
+			g2d.drawString("Bonus : ",30 , 40);
 
 			// dessine le cadre à droite 
 			g2d.setStroke(new BasicStroke(1));
 			g2d.setColor(Color.BLACK);
-			g2d.drawRect(modele.gameWidth-180, 10, 170, 200);//gauche	
-			g2d.drawRect(10, 10, 170, 200);//droite
+			g2d.drawRect(modele.gameWidth-180, 10, 160, 200);//gauche	
+			g2d.drawRect(20, 10, 160, 200);//droite
 
 			//dessine les ombres des paneau du bonus et de du score 
 			g2d.setColor(new Color(5,5,5,128));
-			g2d.fillRect(modele.gameWidth-10, 10, 5, 200);//gaucheGauche
-			g2d.fillRect(modele.gameWidth-175,210, 170, 5);//gaucheBAS
+			g2d.fillRect(modele.gameWidth-20, 15, 10, 205);//gaucheGauche
+			g2d.fillRect(modele.gameWidth-175,210, 155, 10);//gaucheBAS
 
 			g2d.setColor(new Color(5,5,5,128));
-			g2d.fillRect(180, 10, 5, 200);//droiteGauche
-			g2d.fillRect(15,210, 170, 5);//droiteBas
+			g2d.fillRect(180, 15, 10, 205);//droiteGauche
+			g2d.fillRect(25,210, 155, 10);//droiteBas
 		}
 
 		// doit afficher une annimation quand un objet est détruit 
