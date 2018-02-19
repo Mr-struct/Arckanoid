@@ -210,7 +210,9 @@ public class Modele {
 			if((balle.getvY() > 0 && balle.getY() <= brique.getY()) || (balle.getvY() < 0 && balle.getY() + balle.getHeight() >= brique.getY() + brique.getHeight()))
 				balle.setvY(-balle.getvY());
 		}
-		briques.remove(brique);
+		synchronized (briques){
+			briques.remove(brique);
+		}
 		return true;
 	}
 	
