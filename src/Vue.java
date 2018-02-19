@@ -25,7 +25,7 @@ public class Vue extends JFrame {
 		
 		this.setLayout(new BorderLayout());
 		
-		panelJeu = new PanelJeu(modele.gameWidth,modele.gameHeight,modele);
+		
 		
 		panelMenu = new PanelMenu(modele.gameWidth,modele.gameHeight,modele);
 		
@@ -51,14 +51,6 @@ public class Vue extends JFrame {
 		this.addMouseMotionListener(controleurJeu);
 		
 		this.addMouseListener(controleurJeu);
-		
-		//mise � jour de l'panelJeu (20 milisecondes = 1/50 secondes
-		Timer timerAffichage = new Timer();
-		timerAffichage.schedule(new TimerTask(){
-			public void run(){
-				panelJeu.repaint();
-			}
-		}, 0, 20);
 		
 
 		// mon met les listener sur les buttons
@@ -106,7 +98,15 @@ public class Vue extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 			
 				thisPanel.removeAll();
+				panelJeu = new PanelJeu(getWidth(),getHeight(),modele);
 				thisPanel.add(panelJeu,BorderLayout.CENTER);
+				//mise � jour de l'panelJeu (20 milisecondes = 1/50 secondes
+				Timer timerAffichage = new Timer();
+				timerAffichage.schedule(new TimerTask(){
+					public void run(){
+						panelJeu.repaint();
+					}
+				}, 0, 20);
 				
 			}
 
@@ -134,6 +134,9 @@ public class Vue extends JFrame {
 				
 			}	
 		});
+		
+		
+				
 		
 	}
 		

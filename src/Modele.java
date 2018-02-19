@@ -35,10 +35,10 @@ public class Modele {
 	private java.util.Timer tLogique = new java.util.Timer();
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-	protected int gameWidth = (int) screenSize.getWidth();
-
-	protected int gameHeight =(int) screenSize.getHeight();
+	
+	protected int gameWidth = 1366;
+	
+	protected int gameHeight = 768;
 
 	protected int minX = 200;
 

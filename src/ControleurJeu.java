@@ -31,13 +31,12 @@ public class ControleurJeu implements MouseMotionListener,MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-		modele.lancerBalles();
 		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		modele.lancerBalles();
 		
 	}
 

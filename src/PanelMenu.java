@@ -35,7 +35,6 @@ public class PanelMenu extends JPanel {
 		
 		this.modele = modele;
 		this.setSize(width,height);
-		this.move = 0;
 		
 		//init les fonts
 		 try {
