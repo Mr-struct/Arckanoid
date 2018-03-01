@@ -123,9 +123,9 @@ public class Affichage extends JPanel {
 
 		//dessine l'ombre de la balle
 		for (Balle balle: modele.balles) {
-			g2d.fillOval(balle.getX()+5,balle.getY()+5,balle.getWidth(),balle.getHeight());
+			g2d.fillOval(balle.getiX()+5,balle.getiY()+5,balle.getWidth(),balle.getHeight());
 		//dessine la balle
-			g2d.drawImage(imgDefaultBalle, balle.getX(),balle.getY(),balle.getWidth(),balle.getHeight(), this);
+			g2d.drawImage(imgDefaultBalle, balle.getiX(),balle.getiY(),balle.getWidth(),balle.getHeight(), this);
 		}
 		//dessine l'ombre de la raquette 
 		g2d.fillRoundRect(modele.raquette.getX()+10, modele.raquette.getY()+10, modele.raquette.getWidth(), modele.raquette.getHeight(),10,10);

@@ -78,7 +78,7 @@ public class PanelJeu extends JPanel {
 		//dessine l'ombre de la balle
 		synchronized (modele.balles){
 			for(Balle balle : modele.balles) {
-				g2d.fillOval(balle.getX()+5,balle.getY()+5,balle.getWidth(),balle.getHeight());
+				g2d.fillOval(balle.getiX()+5,balle.getiY()+5,balle.getWidth(),balle.getHeight());
 			}
 		}
 		//dessine l'ombre de la raquette 
@@ -129,7 +129,7 @@ public class PanelJeu extends JPanel {
 			synchronized (modele.balles){
 				for(Balle balle: modele.balles) {
 					//dessine la balle
-					g2d.drawImage(imgDefaultBalle, balle.getX(),balle.getY(),balle.getWidth(),balle.getHeight(), this);
+					g2d.drawImage(imgDefaultBalle, balle.getiX(),balle.getiY(),balle.getWidth(),balle.getHeight(), this);
 				}
 			}
 			

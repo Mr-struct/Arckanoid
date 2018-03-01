@@ -1,19 +1,8 @@
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.TimerTask;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import java.awt.*;
+import java.io.*;
+import java.util.*;
+import javax.sound.sampled.*;
 
 
 public class Modele {
@@ -91,8 +80,8 @@ public class Modele {
 		for(int i = 0; i < test.length();i++) {
 			out = test.split("\n");
 		}
-		System.out.println("taille de out est de :" +out.length);
-		System.out.println("taille de la fenaitre est de  :" +gameWidth +"X" +gameHeight);
+		System.out.println("taille de out est de : " +out.length);
+		System.out.println("taille de la vue est de : " +gameWidth +"X" +gameHeight);
 
 		this.levelRank = out[out.length-4];
 		this.levelName = out[out.length-3];
@@ -251,6 +240,7 @@ public class Modele {
 							//collision avec la raquette
 							if(b.getvY() > 0 && b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth()){
 								impactSound.note_on(60);
+								b.setvX(((b.getX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * b.getvY());
 								b.setvY(-b.getvY());
 							}
 							//collision avec les briques
@@ -293,8 +283,8 @@ public class Modele {
 
 				if(b.getvX() == 0 && b.getvY() == 0){
 
-					b.setvX(2);
-					b.setvY(-2);
+					b.setvY(-4);
+					b.setvX(((b.getX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * -b.getvY());
 
 				}
 			}
