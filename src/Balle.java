@@ -1,3 +1,5 @@
+import java.util.Timer;
+
 public class Balle {
 	
 	//attributs 
@@ -5,6 +7,9 @@ public class Balle {
 	private int dx, dy, width, height;
 	private double x, y, vX, vY;
 	private int rX, rY; //coordonnées relative à la raquette quand la balle est accrochée
+	
+	public Timer timer = new Timer();
+	
 	//constructeur
 	public Balle(int x, int y , int vX, int vY, int rX, int rY, int w, int h) {
 		

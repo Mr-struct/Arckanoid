@@ -20,8 +20,10 @@ public class Modele {
 	protected String levelRank;
 
 	protected String levelBackground;
-
-	private java.util.Timer tLogique = new java.util.Timer();
+	
+	private boolean running;
+	
+	private Object runningLock = new Object();
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
@@ -36,9 +38,12 @@ public class Modele {
 	protected Vue  vueJeu;
 	
 	private SoundPlay impactSound;
-
+	
+	//initialise le niveau selon les param�tres du fichier fileLevel
 	public Modele(String fileLevel) {
-
+		
+		running = false;
+		
 		this.raquette = new Raquette(500,680,150,30);
 		
 		this.impactSound = new SoundPlay();
@@ -58,10 +63,11 @@ public class Modele {
 		}
 
 	}
-
+	
+	//initialise la premi�re balle. sa position sera calcul�e automatiquement en fonction de la raquette
 	public void initBalle(){
 
-		// la position de la balle est set dans le controleur dans le lancerJeu()
+		// la balle se positionne automatiquement au niveau de la raquette
 		Balle balle = new Balle (0, 0, 0, 0, (raquette.getWidth()/2)-5, -20, 20, 20); 
 		Balle balle2 = new Balle (0, 0, 0, 0, (raquette.getWidth()/2)-40, -20, 20, 20); 
 		Balle balle3 = new Balle (0, 0, 0, 0, (raquette.getWidth()/2)+40, -20, 20, 20); 
@@ -70,6 +76,8 @@ public class Modele {
 		balles.add(balle3);
 
 	}
+	
+	//initialise le terrain
 	public void intitlevel() throws IOException{
 
 		initBalle();
@@ -170,13 +178,9 @@ public class Modele {
 		return char2D;
 
 	}
-
-
-
-
+	
+	//appel�e quand balle entre en collision avec brique, calcule les effets de la collision sur la balle et la brique
 	private boolean collisionBrique(Balle balle, Brique brique){
-		//balle.setvX(-balle.getvX());
-		//balle.setvY(-balle.getvY());
 		
 		boolean diagonale = true;
 		//dessus et dessous
@@ -201,91 +205,77 @@ public class Modele {
 		}
 		//diagonales
 		if(diagonale){
-			if((balle.getvX() > 0 && balle.getX() <= brique.getX()) || (balle.getvX() < 0 && balle.getX() + balle.getWidth() >= brique.getX() + brique.getWidth()))
+			if((balle.getvX() > 0 && balle.getX() < brique.getX()) || (balle.getvX() < 0 && balle.getX() + balle.getWidth() > brique.getX() + brique.getWidth()))
 				balle.setvX(-balle.getvX());
-			if((balle.getvY() > 0 && balle.getY() <= brique.getY()) || (balle.getvY() < 0 && balle.getY() + balle.getHeight() >= brique.getY() + brique.getHeight()))
+			if((balle.getvY() > 0 && balle.getY() < brique.getY()) || (balle.getvY() < 0 && balle.getY() + balle.getHeight() > brique.getY() + brique.getHeight()))
 				balle.setvY(-balle.getvY());
 		}
 		synchronized (briques){
-			briques.remove(brique);
+			if(briques.contains(brique)){
+				briques.remove(brique);
+				if(briques.isEmpty()) gagne();
+			}
 		}
 		return true;
 	}
 	
-	//lance le timer pour la logique du jeu
-	public void lancerJeu(){
-		
-		tLogique.schedule(new TimerTask(){
-			
-			public void run() {
-				
-				for(Balle b : balles){
-					
-				synchronized(b){
-						if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachÃ©es Ã  la raquette (celles dont la vÃ©locitÃ© est nulle) suivent la raquette
-							b.setX((raquette.getX()) + b.getrX());
-							b.setY((raquette.getY()) + b.getrY());
-						}else{ 
-							//les balles ayant une vÃ©locitÃ© se dÃ©placent selon celle-ci
-							b.setX(b.getX() + b.getvX());
-							b.setY(b.getY() + b.getvY());
-							//collision avec les murs
-							if((b.getvX() < 0 && b.getX() <= minX) || (b.getvX() > 0 && b.getX() + b.getWidth() >= maxX )){
-								b.setvX(-b.getvX());
-							}
-							//collision avec le plafond
-							if(b.getvY() < 0 && b.getY() <= 0){
-								b.setvY(-b.getvY());
-							}
-							//collision avec la raquette
-							if(b.getvY() > 0 && b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth()){
-								impactSound.note_on(60);
-								b.setvX(((b.getX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * b.getvY());
-								b.setvY(-b.getvY());
-							}
-							//collision avec les briques
-							Iterator<Brique> i = briques.iterator();
-							boolean c = false;
-							while(i.hasNext() && !c){
-								Brique brique = i.next();
-								if(b.getX() + b.getWidth() > brique.getX() && b.getX() < brique.getX() + brique.getWidth() && b.getY() + b.getHeight() > brique.getY() && b.getY() < brique.getY() + brique.getHeight()){
-									impactSound.note_on(65);
-									c = collisionBrique(b, brique);
-								}
-							}
-						}
+	//met � jour la position de la balle b et teste ses collisions, appel� periodiquement
+	private void physiqueBalle(Balle b){
+		synchronized(b){
+			if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachÃ©es Ã  la raquette (celles dont la vÃ©locitÃ© est nulle) suivent la raquette
+				b.setX((raquette.getX()) + b.getrX());
+				b.setY((raquette.getY()) + b.getrY());
+			}else{ 
+				//les balles ayant une vÃ©locitÃ© se dÃ©placent selon celle-ci
+				b.setX(b.getX() + b.getvX());
+				b.setY(b.getY() + b.getvY());
+				//balle perdue (sortie de l'�cran par le bas)
+				if(b.getY() > gameHeight){
+					synchronized(balles){
+						balles.remove(b);
+						if(balles.isEmpty()) perdu();
+					}
+					b.timer.cancel();
+				}
+				//collision avec les murs
+				if((b.getvX() < 0 && b.getX() <= minX) || (b.getvX() > 0 && b.getX() + b.getWidth() >= maxX )){
+					b.setvX(-b.getvX());
+				}
+				//collision avec le plafond
+				if(b.getvY() < 0 && b.getY() <= 0){
+					b.setvY(-b.getvY());
+				}
+				//collision avec la raquette
+				if(b.getvY() > 0 && b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth()){
+					impactSound.note_on(60);
+					b.setvX(((b.getX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * b.getvY());
+					b.setvY(-b.getvY());
+				}
+				//collision avec les briques
+				Iterator<Brique> i = briques.iterator();
+				boolean c = false;
+				while(i.hasNext() && !c){
+					Brique brique = i.next();
+					if(b.getX() + b.getWidth() > brique.getX() && b.getX() < brique.getX() + brique.getWidth() && b.getY() + b.getHeight() > brique.getY() && b.getY() < brique.getY() + brique.getHeight()){
+						impactSound.note_on(65);
+						c = collisionBrique(b, brique);
 					}
 				}
 			}
-		}, 0, 10);
-}
-
-	//d�place la raquette vers la position x
-	public void deplacerRaquette(int x){
-		int m = raquette.getWidth()/2;
-		if(x - m <= minX){
-			raquette.setX(minX);
-		}else if(x + m >= maxX){
-			raquette.setX(maxX - 2 * m);
-		}else{
-			raquette.setX(x - m);
 		}
 	}
-
-	//Action permettant de lancer les balles attachées à la raquette (celles dont la vélocité est nulle) en leur donnant une velocité initiale
-	public void lancerBalles(){
-
-		//faire en sorte que le premier lancement de la balle suit le pointeur de la souris et attend qu'on clic dessus 
-
-		for(Balle b : balles){
-
-			synchronized(b){
-
-				if(b.getvX() == 0 && b.getvY() == 0){
-
-					b.setvY(-4);
-					b.setvX(((b.getX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * -b.getvY());
-
+	
+	//active la logique du jeu
+	public void lancerJeu(){
+		synchronized(runningLock){
+			if(!running){
+				running = true;
+				for(Balle b : balles){
+					b.timer.schedule(new TimerTask(){
+						public void run() {
+							physiqueBalle(b);
+						}
+					}, 0, 10);
 				}
 			}
 		}
@@ -293,8 +283,64 @@ public class Modele {
 
 	//suspend le jeu, le jeu peut reprendre en appelant lancerJeu
 	public void suspendreJeu(){
+		synchronized(runningLock){
+			if(running){
+				running = false;
+				for(Balle b : balles) b.timer.cancel();
+			}
+		}
+	}
+	
+	//renvoie true si la partie est en cours et false si elle est suspendue
+	public boolean isRunning(){
+		return running;
+	}
+	
+	//appel� lorsque le jeu est gagn�
+	public void gagne(){
+		System.out.println("Gagne!");
+		suspendreJeu();
+	}
+	
+	//appel� lorsque le jeu est perdu 
+	public void perdu(){
+		System.out.println("Perdu!");
+		suspendreJeu();
+	}
 
-		tLogique.cancel();
+	//d�place la raquette vers la position x
+	public void deplacerRaquette(int x){
+		if(running){
+			int m = raquette.getWidth()/2;
+			if(x - m <= minX){
+				raquette.setX(minX);
+			}else if(x + m >= maxX){
+				raquette.setX(maxX - 2 * m);
+			}else{
+				raquette.setX(x - m);
+			}
+		}
+	}
+
+	//Action permettant de lancer les balles attachées à la raquette (celles dont la vélocité est nulle) en leur donnant une velocité initiale
+	public void lancerBalles(){
+
+		//faire en sorte que le premier lancement de la balle suit le pointeur de la souris et attend qu'on clic dessus 
+		
+		if(running){
+			for(Balle b : balles){
+	
+				synchronized(b){
+	
+					if(b.getvX() == 0 && b.getvY() == 0){
+	
+						b.setvY(-4);
+						b.setvX(((b.getX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * -b.getvY());
+	
+					}
+				}
+			}
+		}
 	}
 	
 	public synchronized void playSound(String audioFilePath ,int delay ) {
