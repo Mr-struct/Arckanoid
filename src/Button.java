@@ -22,12 +22,14 @@ import javax.swing.JButton;
 public class Button extends JButton implements MouseListener{
 	private String name;
 	private Font buttonFont;
-	private float alpha = .3f;
-	SoundPlay sound;
+	private float alpha;
+	protected SoundPlay sound;
 	public Button (String str) {
+		
 		this.setName(str);  
-		sound = new SoundPlay();
-		sound.setPnogrameChange(34);
+		this.alpha = .5f;
+		this.sound = new SoundPlay();
+		this.sound.setPnogrameChange(34);
 		try {
 			buttonFont = Font.createFont(Font.TRUETYPE_FONT, new File("./Fonts/Streamster.ttf")).deriveFont(25f);
 		} catch (FontFormatException e) {
@@ -68,7 +70,7 @@ public class Button extends JButton implements MouseListener{
 
 		public synchronized void mouseExited(MouseEvent me)
 	    {
-	          alpha = 0.3f;
+	          alpha = 0.5f;
 	          
 	    }
 
@@ -82,7 +84,6 @@ public class Button extends JButton implements MouseListener{
 	    @Override
 	    public void mousePressed(MouseEvent me)
 	    {
-	     
 	    }
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
@@ -92,6 +93,6 @@ public class Button extends JButton implements MouseListener{
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			
+			alpha = .5f;
 		}
 }

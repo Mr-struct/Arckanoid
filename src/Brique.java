@@ -1,17 +1,20 @@
 public class Brique {
 
 	private int x , y, width,height;;
-	protected int type;
-	protected int value;
-	public Brique(int x, int y, int width, int height, int type,int value) {
+	private  int type;
+	private  int value;
+	private int numberOfColision;
+	protected int note;
+	public Brique(int x, int y, int width, int height, int type,int value,int numberOfColision,int note) {
 		
 		this.x = x;
 		this.y = y;
-		this.setWidth(width);
+		this.width = width;
 		this.height = height;
 		this.type = type;
 		this.value = value*10;
-		
+		this.note = note;
+		this.numberOfColision = numberOfColision ;
 	}
 
 	public int getX() {
@@ -40,6 +43,30 @@ public class Brique {
 
 	public void setWidth(int width) {
 		this.width = width;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+
+	public int getNumberOfColision() {
+		return numberOfColision;
+	}
+
+	public void setNumberOfColision(int numberOfColision) {
+		this.numberOfColision = numberOfColision;
 	}
 
 	public enum BriqueType {
