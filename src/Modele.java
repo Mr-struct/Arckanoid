@@ -273,12 +273,29 @@ public class Modele {
 		}
 		
 		musicImpacte = (brique.note);
-		
-		impactSound.note_on(musicImpacte);	
-		
-		brique.setNumberOfColision(brique.getNumberOfColision() - 1);
+		impactSound.note_on(musicImpacte);
 		
 		synchronized (briques){
+			if(brique.getNumberOfColision() > 1){
+				brique.setNumberOfColision(brique.getNumberOfColision() - 1);
+				if(brique.getType() == 2) brique.setType(5);
+			}else if(briques.contains(brique)){
+				
+				intScore = intScore + brique.getValue();
+				stringScore = String.valueOf(intScore);
+				synchronized(bonus) {bonus.add(new Bonus(brique.getX()+10,brique.getY(),50,50));}
+				CollisionEffects effect = new CollisionEffects(brique.getX()+30,brique.getY(), "+"+brique.getValue());
+				synchronized(effects) {effects.add(effect);}
+				effect.timer.schedule(new TimerTask(){
+						public void run() {
+							effect.setY(effect.getY()-1);
+						}
+					}, 0, 20);
+				briques.remove(brique);
+				if(briques.isEmpty()) gagne();
+			}
+			
+			/*
 			if(brique.getNumberOfColision() == 0) {
 
 				intScore = intScore + brique.getValue();
@@ -299,6 +316,7 @@ public class Modele {
 				temps = new Brique(temps.getX(),temps.getY(),temps.getWidth(),temps.getHeight(),5,2,1,65);
 				briques.add(temps);
 			}
+			*/
 		};
 		
 		return true;
