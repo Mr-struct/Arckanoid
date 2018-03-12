@@ -1,7 +1,9 @@
+import java.util.Timer;
 
 public class Bonus {
   //attributs
 	private  int x, y, width, height ,type;
+	public Timer timer = new Timer();
 	
 	public Bonus(int x, int y, int width, int height) {
 		this.x = x;

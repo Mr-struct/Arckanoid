@@ -283,14 +283,28 @@ public class Modele {
 				
 				intScore = intScore + brique.getValue();
 				stringScore = String.valueOf(intScore);
-				synchronized(bonus) {bonus.add(new Bonus(brique.getX()+10,brique.getY(),50,50));}
-				CollisionEffects effect = new CollisionEffects(brique.getX()+30,brique.getY(), "+"+brique.getValue());
+				
+				CollisionEffects effect = new CollisionEffects(brique.getX()+30,brique.getY(), "+" + brique.getValue());
 				synchronized(effects) {effects.add(effect);}
 				effect.timer.schedule(new TimerTask(){
-						public void run() {
-							effect.setY(effect.getY()-1);
+					public void run() {
+						effect.setY(effect.getY()-1);
+						effect.setAge(effect.getAge() + 2);
+						if(effect.getAge() >= 100){
+							synchronized(effects){effects.remove(effect);}
+							this.cancel();
 						}
-					}, 0, 20);
+					}
+				}, 0, 20);
+				
+				Bonus b = new Bonus(brique.getX()+10,brique.getY(),50,50);
+				synchronized(bonus) {bonus.add(b);}
+				b.timer.schedule(new TimerTask(){
+					public void run() {
+						b.setY(b.getY()+1);
+					}
+				}, 0, 10);
+				
 				briques.remove(brique);
 				if(briques.isEmpty()) gagne();
 			}
@@ -390,6 +404,7 @@ public class Modele {
 			if(running){
 				running = false;
 				for(Balle b : balles) b.timer.cancel();
+				for(Bonus b : bonus) b.timer.cancel();
 			}
 		}
 	}

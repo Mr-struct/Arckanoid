@@ -154,8 +154,6 @@ public class ControleurVue {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-			 System.out.println("hello");
 			 
 			 vue.thisPanel.removeAll();
 			 

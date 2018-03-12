@@ -2,7 +2,7 @@ import java.util.Timer;
 
 public class CollisionEffects {
 
-	private int x , y, width, height;
+	private int x , y, age;
 	
 	private String popUp;
 	
@@ -11,8 +11,7 @@ public class CollisionEffects {
 	public CollisionEffects(int x, int y,String popUp) {
 		this.x = x;
 		this.y = y;
-		this.width = 0;
-		this.height = 0;
+		this.setAge(0);
 		this.popUp = popUp;
 	}
 
@@ -22,22 +21,6 @@ public class CollisionEffects {
 
 	public void setX(int x) {
 		this.x = x;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
 	}
 
 	public int getY() {
@@ -54,6 +37,14 @@ public class CollisionEffects {
 
 	public void setPopUp(String popUp) {
 		this.popUp = popUp;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 }
