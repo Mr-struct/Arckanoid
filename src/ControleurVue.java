@@ -209,7 +209,7 @@ public class ControleurVue {
 	}
 	
 	public void levelChange() {
-		modele.levelDifficulty = 11-((modele.sliderLevel.getValue()/10)); 
+		modele.levelDifficulty = 1+(modele.sliderLevel.getValue()/10); 
 		System.out.println(modele.levelDifficulty);
 	}
 	public void soundFxChange() {

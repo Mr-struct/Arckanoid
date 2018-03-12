@@ -40,6 +40,8 @@ public class Modele {
 	protected int intScore = 0;
 	
 	protected int levelDifficulty = 7;
+
+	protected int currentDifficulty;
 	
 	protected String stringScore = "00";
 	
@@ -47,8 +49,6 @@ public class Modele {
 	
 	private Object runningLock = new Object();
 
-	private java.util.Timer tLogique = new java.util.Timer();
-	
 	protected int gameWidth = 1366;
 	
 	protected int gameHeight = 768;
@@ -241,7 +241,6 @@ public class Modele {
 	
 	//appel�e quand balle entre en collision avec brique, calcule les effets de la collision sur la balle et la brique
 	private boolean collisionBrique(Balle balle, Brique brique){
-		
 		boolean diagonale = true;
 		//dessus et dessous
 		if(balle.getdX() >= brique.getX() && balle.getdX() + balle.getWidth() <= brique.getX() + brique.getWidth()){
@@ -272,6 +271,13 @@ public class Modele {
 			if((balle.getvY() > 0 && balle.getdY() < brique.getY()) || (balle.getvY() < 0 && balle.getdY() + balle.getHeight() > brique.getY() + brique.getHeight()))
 				balle.setvY(-balle.getvY());
 		}
+		
+		musicImpacte = (brique.note);
+		
+		impactSound.note_on(musicImpacte);	
+		
+		brique.setNumberOfColision(brique.getNumberOfColision() - 1);
+		
 		synchronized (briques){
 			if(brique.getNumberOfColision() == 0) {
 
@@ -297,18 +303,18 @@ public class Modele {
 		
 		return true;
 	}
-	
-	//met à jour la position de la balle b et teste ses collisions, appelé periodiquement
+
+	//met � jour la position de la balle b et teste ses collisions, appel� periodiquement
 	private void physiqueBalle(Balle b){
 		synchronized(b){
-			if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachÃƒÂ©es Ãƒ  la raquette (celles dont la vÃƒÂ©locitÃƒÂ© est nulle) suivent la raquette
+			if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachÃ©es Ã  la raquette (celles dont la vÃ©locitÃ© est nulle) suivent la raquette
 				b.setX((raquette.getX()) + b.getRaquetteX());
 				b.setY((raquette.getY()) + b.getRaquetteY());
 			}else{ 
-				//les balles ayant une vÃƒÂ©locitÃƒÂ© se dÃƒÂ©placent selon celle-ci
+				//les balles ayant une vÃ©locitÃ© se dÃ©placent selon celle-ci
 				b.setX(b.getdX() + b.getvX());
 				b.setY(b.getdY() + b.getvY());
-				//balle perdue (sortie de l'écran par le bas)
+				//balle perdue (sortie de l'�cran par le bas)
 				if(b.getdY() > gameHeight){
 					synchronized(balles){
 						balles.remove(b);
@@ -318,19 +324,17 @@ public class Modele {
 				}
 				//collision avec les murs
 				if((b.getvX() < 0 && b.getdX() <= minX) || (b.getvX() > 0 && b.getdX() + b.getWidth() >= maxX )){
-					impactSound.note_on(musicImpacte+5);
 					b.setvX(-b.getvX());
 				}
 				//collision avec le plafond
 				if(b.getvY() < 0 && b.getdY() <= 0){
-					impactSound.note_on(musicImpacte+3);
 					b.setvY(-b.getvY());
 				}
 				//collision avec la raquette
 				if(b.getvY() > 0 && b.getdY() + b.getHeight() >= raquette.getY() && b.getdY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getdX() + b.getWidth() > raquette.getX() && b.getdX() < raquette.getX() + raquette.getWidth()){
-						impactSound.note_on(musicImpacte-3);
-						b.setvX(((b.getdX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * b.getvY());
-						b.setvY(-b.getvY());
+					impactSound.note_on(60);
+					b.setvX(((b.getdX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * b.getvY());
+					b.setvY(-b.getvY());
 				}
 				//collision avec les briques
 				Iterator<Brique> i = briques.iterator();
@@ -338,20 +342,14 @@ public class Modele {
 				while(i.hasNext() && !c){
 					Brique brique = i.next();
 					if(b.getdX() + b.getWidth() > brique.getX() && b.getdX() < brique.getX() + brique.getWidth() && b.getdY() + b.getHeight() > brique.getY() && b.getdY() < brique.getY() + brique.getHeight()){
-						
-						musicImpacte = (brique.note);
-						
-						impactSound.note_on(musicImpacte);	
-						
-						brique.setNumberOfColision(brique.getNumberOfColision() - 1);
-						
+						impactSound.note_on(65);
 						c = collisionBrique(b, brique);
 					}
 				}
 			}
 		}
 	}
-	
+
 	//active la logique du jeu
 	public void lancerJeu(){
 		synchronized(runningLock){
@@ -421,7 +419,7 @@ public class Modele {
 	
 					if(b.getvX() == 0 && b.getvY() == 0){
 	
-						b.setvY(-4);
+						b.setvY(-levelDifficulty);
 						b.setvX(((b.getdX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * -b.getvY());
 	
 					}

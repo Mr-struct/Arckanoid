@@ -7,7 +7,7 @@ public class Balle {
 	private int width, height;
 	private double x, y, vX, vY;
 	private int raquetteX, raquetteY; //coordonnées relative à la raquette quand la balle est accrochée
-	protected Boolean hadCollision;
+	protected boolean hadCollision;
 	public Timer timer = new Timer();
 	
 	//constructeur
