@@ -118,13 +118,13 @@ public class PanelGame extends JPanel {
 			for(Balle balle: modele.balles) {
 				//dessine l'ombre de la balle
 				g2d.setColor(new Color(6,6,6,128));
-				g2d.fillOval(balle.getX()+15,balle.getY()+15,balle.getWidth(),balle.getHeight());
+				g2d.fillOval(balle.getIntX()+15,balle.getIntY()+15,balle.getWidth(),balle.getHeight());
 				//dessine la balle
-				GradientPaint gp1 = new GradientPaint(balle.getX() ,balle.getY()-5 ,Color.WHITE ,balle.getX() + balle.getWidth() ,balle.getY()+balle.getHeight() , Color.BLACK);                
+				GradientPaint gp1 = new GradientPaint(balle.getIntX() ,balle.getIntY()-5 ,Color.WHITE ,balle.getIntX() + balle.getWidth() ,balle.getIntY()+balle.getHeight() , Color.BLACK);                
 				g2d.setPaint(gp1);
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 				//g2d.drawImage(imgDefaultBalle, balle.getX(),balle.getY(),balle.getWidth(),balle.getHeight(), this);
-				g2d.fillOval(balle.getX(),balle.getY(),balle.getWidth(),balle.getHeight());
+				g2d.fillOval(balle.getIntX(),balle.getIntY(),balle.getWidth(),balle.getHeight());
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 			}
 		}

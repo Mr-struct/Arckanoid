@@ -4,14 +4,14 @@ public class Balle {
 	
 	//attributs 
 	
-	private int dx, dy, width, height;
+	private int width, height;
 	private double x, y, vX, vY;
 	private int raquetteX, raquetteY; //coordonnées relative à la raquette quand la balle est accrochée
 	protected Boolean hadCollision;
 	public Timer timer = new Timer();
 	
 	//constructeur
-	public Balle(int x, int y , int vX, int vY, int rX, int rY, int w, int h) {
+	public Balle(double x, double y , double vX, double vY, int rX, int rY, int w, int h) {
 		
 		this.x = x;
 		this.y = y;
@@ -25,11 +25,11 @@ public class Balle {
 	}
 	
 	// geter and seter
-	public double getDoubleX() {
+	public double getdX() {
 		return x;
 	}
 
-	public int getX() {
+	public int getIntX() {
 		return (int) Math.round(x);
 	}
 
@@ -37,11 +37,11 @@ public class Balle {
 		this.x = x;
 	}
 
-	public double getDoubleY() {
+	public double getdY() {
 		return y;
 	}
 
-	public int getY() {
+	public int getIntY() {
 		return (int) Math.round(y);
 	}
 

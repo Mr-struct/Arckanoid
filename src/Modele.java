@@ -1,13 +1,6 @@
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.TimerTask;
+import java.io.*;
+import java.util.*;
 import javax.swing.JSlider;
 
 public class Modele {
@@ -70,6 +63,7 @@ public class Modele {
 	
 	private int musicImpacte = 60;
 
+	//initialise le niveau selon les param�tres du fichier fileLevel
 	public Modele(String fileLevel) {
 		/*
 		 * init la raquette
@@ -127,6 +121,7 @@ public class Modele {
 
 	}
 
+	//initialise la premi�re balle. sa position sera calcul�e automatiquement en fonction de la raquette
 	public void initBalle(){
 
 		// la position de la balle est set dans le controleur dans le lancerJeu()
@@ -138,6 +133,8 @@ public class Modele {
 		balles.add(balle3);
 
 	}
+	
+	//initialise le terrain
 	public void intitlevel() throws IOException{
 
 		initBalle();
@@ -241,46 +238,48 @@ public class Modele {
 
 
 
-
-	//appelée quand balle entre en collision avec brique, calcule les effets de la collision sur la balle et la brique
-		private boolean collisionBrique(Balle balle, Brique brique){
+	
+	//appel�e quand balle entre en collision avec brique, calcule les effets de la collision sur la balle et la brique
+	private boolean collisionBrique(Balle balle, Brique brique){
+		
+		boolean diagonale = true;
+		//dessus et dessous
+		if(balle.getdX() >= brique.getX() && balle.getdX() + balle.getWidth() <= brique.getX() + brique.getWidth()){
+			diagonale = false;
+			//dessus
+			if(balle.getvY() > 0 && balle.getdY() + balle.getHeight() < brique.getY() + brique.getHeight())
+				balle.setvY(-balle.getvY());
+			//dessous
+			if(balle.getvY() < 0 && balle.getdY() > brique.getY())
+				balle.setvY(-balle.getvY());
+		}
+		//gauche et droite
+		if(balle.getdY() >= brique.getY() && balle.getdY() + balle.getHeight() <= brique.getY() + brique.getHeight()){
+			diagonale = false;
+			//gauche
+			if(balle.getvX() > 0 && balle.getdY() + balle.getWidth() < brique.getX() + brique.getWidth())
+				balle.setvX(-balle.getvX());
+			//droite
+			if(balle.getvX() < 0 && balle.getdX() > brique.getX())
+				balle.setvX(-balle.getvX());
+		}
+		//diagonales
+		if(diagonale){
 			
-			boolean diagonale = true;
-			//dessus et dessous
-			if(balle.getDoubleX() >= brique.getX() && balle.getDoubleX() + balle.getWidth() <= brique.getX() + brique.getWidth()){
-				diagonale = false;
-				//dessus
-				if(balle.getvY() > 0 && balle.getDoubleY() + balle.getHeight() < brique.getY() + brique.getHeight())
-					balle.setvY(-balle.getvY());
-				//dessous
-				if(balle.getvY() < 0 && balle.getDoubleY() > brique.getY())
-					balle.setvY(-balle.getvY());
-			}
-			//gauche et droite
-			if(balle.getDoubleY() >= brique.getY() && balle.getDoubleY() + balle.getHeight() <= brique.getY() + brique.getHeight()){
-				diagonale = false;
-				//gauche
-				if(balle.getvX() > 0 && balle.getDoubleY() + balle.getWidth() < brique.getX() + brique.getWidth())
-					balle.setvX(-balle.getvX());
-				//droite
-				if(balle.getvX() < 0 && balle.getDoubleX() > brique.getX())
-					balle.setvX(-balle.getvX());
-			}
-			//diagonales
-			if(diagonale){
-				
-				if((balle.getvX() > 0 && balle.getDoubleX() < brique.getX()) || (balle.getvX() < 0 && balle.getDoubleX() + balle.getWidth() > brique.getX() + brique.getWidth()))
-					balle.setvX(-balle.getvX());
-				
-				if((balle.getvY() > 0 && balle.getDoubleY() < brique.getY()) || (balle.getvY() < 0 && balle.getDoubleY() + balle.getHeight() > brique.getY() + brique.getHeight()))
-					balle.setvY(-balle.getvY());
-	}
+			if((balle.getvX() > 0 && balle.getdX() < brique.getX()) || (balle.getvX() < 0 && balle.getdX() + balle.getWidth() > brique.getX() + brique.getWidth()))
+				balle.setvX(-balle.getvX());
+			
+			if((balle.getvY() > 0 && balle.getdY() < brique.getY()) || (balle.getvY() < 0 && balle.getdY() + balle.getHeight() > brique.getY() + brique.getHeight()))
+				balle.setvY(-balle.getvY());
+		}
 		synchronized (briques){
 			if(brique.getNumberOfColision() == 0) {
-				
 
 				intScore = intScore + brique.getValue();
 				//rajout d'un bonus attetion ici metre une proba !!!!!
+				
+				stringScore = String.valueOf(intScore);
+				
 				synchronized(bonus) {bonus.add(new Bonus(brique.getX()+10,brique.getY(),50,50));}
 				
 				synchronized(effects) {effects.add(new CollisionEffects(brique.getX()+30,brique.getY()));}
@@ -289,7 +288,6 @@ public class Modele {
 				
 				
 			}else if(brique.getNumberOfColision() == 1){
-				
 				Brique temps = brique;
 				briques.remove(brique);
 				temps = new Brique(temps.getX(),temps.getY(),temps.getWidth(),temps.getHeight(),5,2,1,65);
@@ -300,132 +298,145 @@ public class Modele {
 		return true;
 	}
 	
-		//met à jour la position de la balle b et teste ses collisions, appelé periodiquement
-		private void physiqueBalle(Balle b){
-			synchronized(b){
-				if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachÃƒÂ©es Ãƒ  la raquette (celles dont la vÃƒÂ©locitÃƒÂ© est nulle) suivent la raquette
-					b.setX((raquette.getX()) + b.getRaquetteX());
-					b.setY((raquette.getY()) + b.getRaquetteY());
-				}else{ 
-					//les balles ayant une vÃƒÂ©locitÃƒÂ© se dÃƒÂ©placent selon celle-ci
-					b.setX(b.getDoubleX() + b.getvX());
-					b.setY(b.getDoubleY() + b.getvY());
-					//balle perdue (sortie de l'écran par le bas)
-					if(b.getDoubleY() > gameHeight){
-						synchronized(balles){
-							balles.remove(b);
-							if(balles.isEmpty()) perdu();
-						}
-						b.timer.cancel();
+	//met à jour la position de la balle b et teste ses collisions, appelé periodiquement
+	private void physiqueBalle(Balle b){
+		synchronized(b){
+			if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachÃƒÂ©es Ãƒ  la raquette (celles dont la vÃƒÂ©locitÃƒÂ© est nulle) suivent la raquette
+				b.setX((raquette.getX()) + b.getRaquetteX());
+				b.setY((raquette.getY()) + b.getRaquetteY());
+			}else{ 
+				//les balles ayant une vÃƒÂ©locitÃƒÂ© se dÃƒÂ©placent selon celle-ci
+				b.setX(b.getdX() + b.getvX());
+				b.setY(b.getdY() + b.getvY());
+				//balle perdue (sortie de l'écran par le bas)
+				if(b.getdY() > gameHeight){
+					synchronized(balles){
+						balles.remove(b);
+						if(balles.isEmpty()) perdu();
 					}
-					//collision avec les murs
-					if((b.getvX() < 0 && b.getDoubleX() <= minX) || (b.getvX() > 0 && b.getDoubleX() + b.getWidth() >= maxX )){
-						impactSound.note_on(musicImpacte+5);
-						b.setvX(-b.getvX());
-					}
-					//collision avec le plafond
-					if(b.getvY() < 0 && b.getDoubleY() <= 0){
-						impactSound.note_on(musicImpacte+3);
-						b.setvY(-b.getvY());
-					}
-					//collision avec la raquette
-					if(b.getvY() > 0 && b.getDoubleY() + b.getHeight() >= raquette.getY() && b.getDoubleY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getDoubleX() + b.getWidth() > raquette.getX() && b.getDoubleX() < raquette.getX() + raquette.getWidth()){
-
+					b.timer.cancel();
+				}
+				//collision avec les murs
+				if((b.getvX() < 0 && b.getdX() <= minX) || (b.getvX() > 0 && b.getdX() + b.getWidth() >= maxX )){
+					impactSound.note_on(musicImpacte+5);
+					b.setvX(-b.getvX());
+				}
+				//collision avec le plafond
+				if(b.getvY() < 0 && b.getdY() <= 0){
+					impactSound.note_on(musicImpacte+3);
+					b.setvY(-b.getvY());
+				}
+				//collision avec la raquette
+				if(b.getvY() > 0 && b.getdY() + b.getHeight() >= raquette.getY() && b.getdY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getdX() + b.getWidth() > raquette.getX() && b.getdX() < raquette.getX() + raquette.getWidth()){
 						impactSound.note_on(musicImpacte-3);
-						b.setvX(((b.getDoubleX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * b.getvY());
+						b.setvX(((b.getdX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * b.getvY());
 						b.setvY(-b.getvY());
-					}
-					//collision avec les briques
-					Iterator<Brique> i = briques.iterator();
-					boolean c = false;
-					while(i.hasNext() && !c){
-						Brique brique = i.next();
-						if(b.getDoubleX() + b.getWidth() > brique.getX() && b.getDoubleX() < brique.getX() + brique.getWidth() && b.getDoubleY() + b.getHeight() > brique.getY() && b.getDoubleY() < brique.getY() + brique.getHeight()){
-							
-							musicImpacte = (brique.note);
-							
-							impactSound.note_on(musicImpacte);	
-							
-							brique.setNumberOfColision(brique.getNumberOfColision() - 1);
-							
-							c = collisionBrique(b, brique);
-						}
+				}
+				//collision avec les briques
+				Iterator<Brique> i = briques.iterator();
+				boolean c = false;
+				while(i.hasNext() && !c){
+					Brique brique = i.next();
+					if(b.getdX() + b.getWidth() > brique.getX() && b.getdX() < brique.getX() + brique.getWidth() && b.getdY() + b.getHeight() > brique.getY() && b.getdY() < brique.getY() + brique.getHeight()){
+						
+						musicImpacte = (brique.note);
+						
+						impactSound.note_on(musicImpacte);	
+						
+						brique.setNumberOfColision(brique.getNumberOfColision() - 1);
+						
+						c = collisionBrique(b, brique);
 					}
 				}
 			}
-	}	
-		
-		//active la logique du jeu
-		public void lancerJeu(){
-			synchronized(runningLock){
-				if(!running){
-					running = true;
-					for(Balle b : balles){
-						b.timer.schedule(new TimerTask(){
-							public void run() {
-								physiqueBalle(b);
-							}
-						}, 0, levelDifficulty);
-					}
-				}
-			}
-	}
-	//renvoie true si la partie est en cours et false si elle est suspendue
-		public boolean isRunning(){
-			return running;
-		}
-		
-		//appelé lorsque le jeu est gagné
-		public void gagne(){
-			System.out.println("Gagne!");
-			suspendreJeu();
-		}
-		
-		//appelé lorsque le jeu est perdu 
-		public void perdu(){
-			System.out.println("Perdu!");
-			suspendreJeu();
-	}
-		
-	//deplace la raquette vers la position x
-	public void deplacerRaquette(int x){
-		int m = raquette.getWidth()/2;
-		if(x - m <= minX){
-			raquette.setX(minX);
-		}else if(x + m >= maxX){
-			raquette.setX(maxX - 2 * m);
-		}else{
-			raquette.setX(x - m);
 		}
 	}
-
-	//Action permettant de lancer les balles attachÃ©es Ã  la raquette (celles dont la vÃ©locitÃ© est nulle) en leur donnant une velocitÃ© initiale
-		public void lancerBalles(){
-
-			//faire en sorte que le premier lancement de la balle suit le pointeur de la souris et attend qu'on clic dessus 
-			
-			if(running){
+	
+	//active la logique du jeu
+	public void lancerJeu(){
+		synchronized(runningLock){
+			if(!running){
+				running = true;
 				for(Balle b : balles){
-		
-					synchronized(b){
-		
-						if(b.getvX() == 0 && b.getvY() == 0){
-		
-							b.setvY(-4);
-							b.setvX(((b.getDoubleX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * -b.getvY());
-		
+					b.timer.schedule(new TimerTask(){
+						public void run() {
+							physiqueBalle(b);
 						}
+					}, 0, 10);
+				}
+			}
+		}
+	}
+
+	//suspend le jeu, le jeu peut reprendre en appelant lancerJeu
+	public void suspendreJeu(){
+		synchronized(runningLock){
+			if(running){
+				running = false;
+				for(Balle b : balles) b.timer.cancel();
+			}
+		}
+	}
+	
+	//renvoie true si la partie est en cours et false si elle est suspendue
+	public boolean isRunning(){
+		return running;
+	}
+	
+	//appel� lorsque le jeu est gagn�
+	public void gagne(){
+		System.out.println("Gagne!");
+		suspendreJeu();
+	}
+	
+	//appel� lorsque le jeu est perdu 
+	public void perdu(){
+		System.out.println("Perdu!");
+		suspendreJeu();
+	}
+
+	//d�place la raquette vers la position x
+	public void deplacerRaquette(int x){
+		if(running){
+			int m = raquette.getWidth()/2;
+			if(x - m <= minX){
+				raquette.setX(minX);
+			}else if(x + m >= maxX){
+				raquette.setX(maxX - 2 * m);
+			}else{
+				raquette.setX(x - m);
+			}
+		}
+	}
+
+	//Action permettant de lancer les balles attachées à la raquette (celles dont la vélocité est nulle) en leur donnant une velocité initiale
+	public void lancerBalles(){
+
+		//faire en sorte que le premier lancement de la balle suit le pointeur de la souris et attend qu'on clic dessus 
+		
+		if(running){
+			for(Balle b : balles){
+	
+				synchronized(b){
+	
+					if(b.getvX() == 0 && b.getvY() == 0){
+	
+						b.setvY(-4);
+						b.setvX(((b.getdX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * -b.getvY());
+	
 					}
 				}
 			}
+		}
 	}
+	
 	public void bonusEffect(Bonus bn) {
 		
 		if(bn.getType() == 0) {// on rajoute 2 balle
 			Balle balleRf = balles.get(0);
 			if(balles.size()<=2) {
-				balles.add(new Balle(balleRf.getX(),balleRf.getY(), 0, 0, balleRf.getRaquetteX(), balleRf.getRaquetteY(),balleRf.getWidth(),balleRf.getHeight()));
-				balles.add(new Balle(balleRf.getX()-20,balleRf.getY(), 0, 0, balleRf.getRaquetteX(), balleRf.getRaquetteY(),balleRf.getWidth(),balleRf.getHeight()));
+				balles.add(new Balle(balleRf.getdX(),balleRf.getdY(), 0, 0, balleRf.getRaquetteX(), balleRf.getRaquetteY(),balleRf.getWidth(),balleRf.getHeight()));
+				balles.add(new Balle(balleRf.getdX()-20,balleRf.getdY(), 0, 0, balleRf.getRaquetteX(), balleRf.getRaquetteY(),balleRf.getWidth(),balleRf.getHeight()));
 
 			}
 		}
@@ -437,11 +448,6 @@ public class Modele {
 			if(raquette.getWidth()>150)
 			raquette.setWidth(raquette.getWidth()-50);
 		}
-	}
-	//suspend le jeu, le jeu peut reprendre en appelant lancerJeu
-	public void suspendreJeu(){
-
-		tLogique.cancel();
 	}
 
 }
