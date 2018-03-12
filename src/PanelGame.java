@@ -201,28 +201,19 @@ public class PanelGame extends JPanel {
 			 * affiche une animation 
 			 */
 			
-			g2d.setStroke(new BasicStroke(2));
+			g2d.setFont(myFont);
+			
 			synchronized(modele.effects) {
-				
+				g2d.setColor(Color.WHITE);
 				for(CollisionEffects effect : modele.effects) {
-					g2d.setColor(Color.WHITE);
 					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-					g2d.drawOval(effect.getX(), effect.getY(), effect.getWidth()+10, effect.getWidth()+10);
-					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
-
-					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-					g2d.drawOval(effect.getX()+15, effect.getY()+15, effect.getWidth()-20, effect.getWidth()-20);
-					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
-
-					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-					g2d.drawOval(effect.getX()+25, effect.getY()+25, effect.getWidth()-40, effect.getWidth()-40);
+					g2d.drawString(effect.getPopUp(), effect.getX(), effect.getY());
 					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 					
-					animatedExplosion(effect,1000);
+					//animatedExplosion(effect,1000);
 				}
 			}
 
-			g2d.setFont(myFont);
 			g2d.setColor(Color.CYAN);
 			g2d.drawString("SCORE : ",modele.gameWidth-170 , 40);
 			g2d.drawString(modele.levelRank,modele.gameWidth-170 , 120);
@@ -246,32 +237,6 @@ public class PanelGame extends JPanel {
 			g2d.setColor(new Color(5,5,5,128));
 			g2d.fillRect(180, 15, 10, 205);//droiteGauche
 			g2d.fillRect(25,210, 155, 10);//droiteBas
-		}
-
-		// doit afficher une annimation quand un objet est détruit 
-		public synchronized void animatedExplosion(CollisionEffects effect,int sleep) {
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					
-					boolean animation = true;
-					while(animation) {
-						
-						effect.setWidth(effect.getWidth()+1);
-						effect.setHeight(effect.getHeight()+1);
-						
-						try {
-							Thread.sleep(sleep);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						modele.effects.remove(effect);
-						animation = false;
-					}
-					
-				}
-			}).start();;
 		}
 
 	}

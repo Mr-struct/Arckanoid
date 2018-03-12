@@ -1,13 +1,19 @@
+import java.util.Timer;
 
 public class CollisionEffects {
 
 	private int x , y, width, height;
 	
-	public CollisionEffects(int x, int y) {
+	private String popUp;
+	
+	protected  Timer timer = new Timer();
+	
+	public CollisionEffects(int x, int y,String popUp) {
 		this.x = x;
 		this.y = y;
 		this.width = 0;
 		this.height = 0;
+		this.popUp = popUp;
 	}
 
 	public int getX() {
@@ -41,4 +47,13 @@ public class CollisionEffects {
 	public void setY(int y) {
 		this.y = y;
 	}
+
+	public String getPopUp() {
+		return popUp;
+	}
+
+	public void setPopUp(String popUp) {
+		this.popUp = popUp;
+	}
+
 }
