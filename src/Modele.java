@@ -69,6 +69,8 @@ public class Modele {
 	private boolean running;
 	
 	private Object runningLock = new Object();
+	
+	Random random = new Random();
 
 	protected int gameWidth = 1366;
 	
@@ -85,6 +87,8 @@ public class Modele {
 	private int musicImpacte = 60;
 	
 	protected Level level;
+	
+	protected int curBonus;
 	
 	protected boolean win;
 	
@@ -149,25 +153,25 @@ public class Modele {
 	public void initBalle(){
 
 		// la position de la balle est set dans le controleur dans le lancerJeu()
-		Balle balle = new Balle (0, 0, 0, 0, (raquette.getWidth()/2)-5, -20, 20, 20); 
+		Balle balle = new Balle (0, 0, 0, 0, (raquette.getWidth()/2), -20, 20, 20);
 		balles.add(balle);
 	}
 	
 	//initialise le terrain
 	public void intitlevel(String filLevel) throws IOException{
+		curBonus = 0;
 		
-		this.win = false;
+		win = false;
 		
-		this.lose = false;
+		lose = false;
+		
 		briques = new ArrayList<Brique>(); 
 		
 		balles = new ArrayList<Balle>();
 		 
 		level = new Level(filLevel);
-		/*
-		 * init la raquette
-		 */
-		this.raquette = new Raquette(500,680,150,30);
+		
+		raquette = new Raquette(500,680,150,30);
 		
 		initBalle();
 		
@@ -212,6 +216,52 @@ public class Modele {
 		}
 	}
 	
+	public void useBonus(Bonus b) {
+		synchronized(bonus){
+			b.timer.cancel();
+			
+			//Multiballes
+			if(b.getType() == 0) {
+				synchronized(balles){
+					if(balles.size() == 1){
+						Balle bi = balles.get(0);
+						Balle b1 = new Balle(bi.getdX(), bi.getdY(), bi.getvX() + 1, bi.getvY(), 0, 0, bi.getWidth(), bi.getHeight());
+						Balle b2 = new Balle(bi.getdX(), bi.getdY(), bi.getvX() - 1, bi.getvY(), 0, 0, bi.getWidth(), bi.getHeight());
+						balles.add(b1);
+						balles.add(b2);
+	
+						b1.timer.schedule(new TimerTask(){
+							public void run() {
+								physiqueBalle(b1);
+							}
+						}, 0, 10);
+	
+						b2.timer.schedule(new TimerTask(){
+							public void run() {
+								physiqueBalle(b2);
+							}
+						}, 0, 10);
+					}
+				}
+			}
+			
+			//raquette agrandie
+			if(b.getType() == 1) {
+				curBonus = 1;
+				raquette.setWidth(raquette.getInitWidth()+50);
+			}
+
+			//raquette rétrécie
+			if(b.getType() == 2) {
+				curBonus = 2;
+				raquette.setWidth(raquette.getInitWidth()-50);
+			}
+			
+			curBonus = b.getType();
+			bonus.remove(b);
+		}
+	}
+	
 	//appelï¿½e quand balle entre en collision avec brique, calcule les effets de la collision sur la balle et la brique
 	private boolean collisionBrique(Balle balle, Brique brique){
 		boolean diagonale = true;
@@ -252,10 +302,10 @@ public class Modele {
 				brique.setNumberOfColision(brique.getNumberOfColision() - 1);
 				if(brique.getType() == 2) brique.setType(5);
 			}else if(briques.contains(brique)){
-				
 				intScore = intScore + brique.getValue();
 				stringScore = String.valueOf(intScore);
 				
+				//affiche les points gagnés
 				AnimatedObject effect = new AnimatedObject(brique.getX()+30,brique.getY(), "+" + brique.getValue());
 				synchronized(effects) {effects.add(effect);}
 				effect.timer.schedule(new TimerTask(){
@@ -269,7 +319,7 @@ public class Modele {
 					}
 				}, 0, 20);
 				
-				
+				//ajouter un effet d'explosion
 				AnimatedObject explosion = new AnimatedObject(brique.getX()+30,brique.getY()+30,10,10);
 				synchronized(explosions) {explosions.add(explosion);}
 				explosion.timer.schedule(new TimerTask(){
@@ -282,40 +332,24 @@ public class Modele {
 					}
 				}, 0, 20);
 				
-				Bonus b = new Bonus(brique.getX()+10,brique.getY(),50,50);
-				synchronized(bonus){bonus.add(b);}
-				b.timer.schedule(new TimerTask(){
-					public void run() {
-						b.setY(b.getY()+1);
-					}
-				}, 0, 10);
-				
+				//ajoute un bonus
+				int btype = random.nextInt(3);
+				if(btype == 0 || btype != curBonus){
+					Bonus b = new Bonus(brique.getX() + 10, brique.getY(), 50, 50, btype);
+					synchronized(bonus){bonus.add(b);}
+					b.timer.schedule(new TimerTask(){
+						public void run() {
+							//déplacement
+							b.setY(b.getY()+1);
+							//collision avec la raquette
+							if(b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth())
+								useBonus(b);
+						}
+					}, 0, 10);
+				}
 				briques.remove(brique);
 				if(briques.isEmpty()) gagne();
 			}
-			
-			/*
-			if(brique.getNumberOfColision() == 0) {
-
-				intScore = intScore + brique.getValue();
-				//rajout d'un bonus attetion ici metre une proba !!!!!
-				
-				stringScore = String.valueOf(intScore);
-				
-				synchronized(bonus) {bonus.add(new Bonus(brique.getX()+10,brique.getY(),50,50));}
-				
-				synchronized(effects) {effects.add(new CollisionEffects(brique.getX()+30,brique.getY()));}
-				
-				briques.remove(brique);
-				
-				
-			}else if(brique.getNumberOfColision() == 1){
-				Brique temps = brique;
-				briques.remove(brique);
-				temps = new Brique(temps.getX(),temps.getY(),temps.getWidth(),temps.getHeight(),5,2,1,65);
-				briques.add(temps);
-			}
-			*/
 		};
 		
 		return true;
@@ -335,11 +369,11 @@ public class Modele {
 				b.setY(b.getdY() + b.getvY());
 				//balle perdue (sortie de l'ï¿½cran par le bas)
 				if(b.getdY() > gameHeight){
+					b.timer.cancel();
 					synchronized(balles){
 						balles.remove(b);
 						if(balles.isEmpty()) perdu();
 					}
-					b.timer.cancel();
 				}
 				//collision avec les murs
 				if((b.getvX() < 0 && b.getdX() <= minX) || (b.getvX() > 0 && b.getdX() + b.getWidth() >= maxX )){
@@ -504,26 +538,6 @@ public class Modele {
 					}
 				}
 			}
-		}
-	}
-	
-	public void bonusEffect(Bonus bn) {
-		
-		if(bn.getType() == 0) {// on rajoute 2 balle
-			Balle balleRf = balles.get(0);
-			if(balles.size()<=2) {
-				balles.add(new Balle(balleRf.getdX(),balleRf.getdY(), 0, 0, balleRf.getRaquetteX(), balleRf.getRaquetteY(),balleRf.getWidth(),balleRf.getHeight()));
-				balles.add(new Balle(balleRf.getdX()-20,balleRf.getdY(), 0, 0, balleRf.getRaquetteX(), balleRf.getRaquetteY(),balleRf.getWidth(),balleRf.getHeight()));
-
-			}
-		}
-		if(bn.getType() == 1) {
-			if(raquette.getWidth()<=150)
-			raquette.setWidth(raquette.getWidth()+50);
-		}
-		if(bn.getType() == 2) {
-			if(raquette.getWidth()>150)
-			raquette.setWidth(raquette.getWidth()-50);
 		}
 	}
 

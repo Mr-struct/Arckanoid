@@ -5,12 +5,12 @@ public class Bonus {
 	private  int x, y, width, height ,type;
 	public Timer timer = new Timer();
 	
-	public Bonus(int x, int y, int width, int height) {
+	public Bonus(int x, int y, int width, int height, int type) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.type =  (int )(Math.random() * 3 );
+		this.type = type;
 	}
 
 	public int getX() {

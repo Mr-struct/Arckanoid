@@ -1,9 +1,10 @@
 public class Raquette {
 
-	private int  x, y, width, height;
+	private int  x, y, width, height, initWidth;
 	public Raquette( int x , int y ,int width , int height){
 		this.x = x;
 		this.y = y;
+		this.initWidth = width;
 		this.width = width;
 		this.height = height;
 	}
@@ -14,6 +15,10 @@ public class Raquette {
 
 	public void setX(int x) {
 		this.x = x;
+	}
+
+	public int getInitWidth() {
+		return initWidth;
 	}
 
 	public int getWidth() {
