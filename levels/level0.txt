@@ -4,7 +4,12 @@ ooBBBBBoo
 oooBBBooo
 ooooBoooo
 ooooooooo
+./levels/level1.txt
+Easy
+: 550
+yes
 level 0
 The WAY
 9
 6
+

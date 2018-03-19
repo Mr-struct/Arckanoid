@@ -4,13 +4,9 @@ SGGGGGGGS
 SRRRRRRRS
 SoVVVVVoS
 SooBBBooS
-BVRBVRBVR
-BSVRBSVRB
-./levels/level0.txt
-Easy
-: 1120
-yes
-level 1
+SSSSSSSSS
+levelsosso
 BETA
 9
-8
+7
+score 120
