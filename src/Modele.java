@@ -1,6 +1,9 @@
 
 import java.io.*;
 import java.util.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 
 public class Modele {
@@ -11,12 +14,16 @@ public class Modele {
 	
 	protected ArrayList<Bonus> bonus = new ArrayList<Bonus>();
 	
-	protected ArrayList <CollisionEffects> effects = new ArrayList<CollisionEffects>();
+	protected ArrayList <AnimatedObject> effects = new ArrayList<AnimatedObject>();
+	
+	protected ArrayList <AnimatedObject> explosions = new ArrayList<AnimatedObject>();
+	
+	protected  AnimatedObject endScreen;
+	
+	protected ArrayList <Level> levels = new ArrayList<Level>();
 	
 	protected Raquette raquette;
 	
-	protected  String fileLevel;
-
 	protected String levelName;
 
 	protected String levelRank;
@@ -35,7 +42,21 @@ public class Modele {
 	
 	protected Button backButton;
 	
-	protected Button exit ;
+	protected Button backlevelSelectionButton;
+	
+	protected Button retry;
+	
+	protected Button exit;
+	
+	protected Button play;
+	
+	protected Button backBnt2;
+	
+	protected DefaultListModel<String> modelOfList = new DefaultListModel<String>();
+	
+	protected JList<String> list = new JList<String>(modelOfList);
+	
+	protected JScrollPane pane ;
 	
 	protected int intScore = 0;
 	
@@ -62,14 +83,15 @@ public class Modele {
 	protected SoundPlay impactSound;
 	
 	private int musicImpacte = 60;
+	
+	protected Level level;
+	
+	protected boolean win;
+	
+	protected boolean lose;
 
-	//initialise le niveau selon les param�tres du fichier fileLevel
-	public Modele(String fileLevel) {
-		/*
-		 * init la raquette
-		 */
-		this.raquette = new Raquette(500,680,150,30);
-		
+	//initialise le niveau selon les param�tres du fichier fileLevel
+	public Modele() {
 		/*
 		 * init le son
 		 */
@@ -85,11 +107,15 @@ public class Modele {
 		
 		exit = new Button("Exit");
 		
-		/*
-		 * init le button de retour
-		 */
+		play = new Button("Play");
+		
+		backBnt2 = new Button("Back");
 		
 		backButton = new Button("Back");
+		
+		backlevelSelectionButton = new Button("Back");
+		
+		retry = new Button("Retray");
 		
 		/*
 		 * init le slider du son principale 
@@ -107,139 +133,86 @@ public class Modele {
 
 		/*
 		 * init le niveau 
-		 * rem : ceci va changer ! 
 		 */
-		this.fileLevel = fileLevel;
-		this.levelBackground = this.fileLevel+".png";
-		
 		try {
-			intitlevel();
+			intitlevel("./levels/level0.txt");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//this.fileLevel = fileLevel;
+		//this.levelBackground = this.fileLevel+".png";
 
 	}
 
-	//initialise la premi�re balle. sa position sera calcul�e automatiquement en fonction de la raquette
+	//initialise la premi�re balle. sa position sera calcul�e automatiquement en fonction de la raquette
 	public void initBalle(){
 
 		// la position de la balle est set dans le controleur dans le lancerJeu()
 		Balle balle = new Balle (0, 0, 0, 0, (raquette.getWidth()/2)-5, -20, 20, 20); 
-		Balle balle2 = new Balle (0, 0, 0, 0, (raquette.getWidth()/2)-40, -20, 20, 20); 
-		Balle balle3 = new Balle (0, 0, 0, 0, (raquette.getWidth()/2)+40, -20, 20, 20); 
 		balles.add(balle);
-		balles.add(balle2);
-		balles.add(balle3);
-
 	}
 	
 	//initialise le terrain
-	public void intitlevel() throws IOException{
-
+	public void intitlevel(String filLevel) throws IOException{
+		
+		this.win = false;
+		
+		this.lose = false;
+		briques = new ArrayList<Brique>(); 
+		
+		balles = new ArrayList<Balle>();
+		 
+		level = new Level(filLevel);
+		/*
+		 * init la raquette
+		 */
+		this.raquette = new Raquette(500,680,150,30);
+		
 		initBalle();
-		String test = readFile(fileLevel);
-		String [] out = null;
-
-		// on recupere les lignes du fichier dans out 
-		for(int i = 0; i < test.length();i++) {
-			out = test.split("\n");
-		}
-		System.out.println("taille de out est de :" +out.length);
-		System.out.println("taille de la fenaitre est de  :" +gameWidth +"X" +gameHeight);
-
-		this.levelRank = out[out.length-4];
-		this.levelName = out[out.length-3];
-		int colums = Integer.parseInt(out[out.length-2]);
-		int lines =  Integer.parseInt(out[out.length-1]);;
-
-
-		char [] [] char2D = new char [colums][lines];
-		char2D = arrayStringTo2DArrayChar(char2D, out, colums, lines);
-
-		for(int i = 0; i < colums; i++) {
-
-			for(int j = 0; j < lines ;j++) {
-
-				// initialise les brique avec juste un random faut changer ça avec une proba 
-
-
+		
+		char [] [] char2D = new char [level.briquesCols][level.briquesRows];
+		
+		char2D = level.arrayStringTo2DArrayChar(level.fileLevelParssed, level.briquesCols, level.briquesRows);
+		System.out.println("Cols : "+ level.briquesCols);
+		System.out.println("ROW : "+ level.briquesRows);
+		for(int i = 0; i < level.briquesCols; i++) {
+		
+			for(int j = 0; j < level.briquesRows ;j++) {
+			
 				// matrice inversser
 				switch(char2D[j][i]) {
 
 				case 'B': // pour les briques bleu
 
-					briques.add(new Brique( (i*(colums-1)*10)+240, (j*lines*7)+50 ,80   ,30    ,0, 1,1,61) );
+					briques.add(new Brique( (i*(level.briquesCols+1)*10)+240, (j*level.briquesRows*7)+50 ,80   ,30    ,0, 1,1,61) );
 					break;
 
 				case 'V': // pour les briques vertes 
 
-					briques.add(new Brique( (i*(colums-1)*10)+240, (j*lines*7)+50 ,80   ,30    ,1, 2,1,63) );
+					briques.add(new Brique( (i*(level.briquesCols+1)*10)+240, (j*level.briquesRows*7)+50 ,80   ,30    ,1, 2,1,63) );
 					break;
 
 				case 'S': //pour les briques en metal
 
-					briques.add(new Brique( (i*(colums-1)*10)+240, (j*lines*7)+50 ,80   ,30    ,2, 3,2,65) );
+					briques.add(new Brique( (i*(level.briquesCols+1)*10)+240, (j*level.briquesRows*7)+50 ,80   ,30    ,2, 3,2,65) );
 					break;
 
 				case 'R': // pour les briques rouge
 
-					briques.add(new Brique( (i*(colums-1)*10)+240, (j*lines*7)+50 ,80   ,30    ,3, 4,1,68) );
+					briques.add(new Brique( (i*(level.briquesCols+1)*10)+240, (j*level.briquesRows*7)+50 ,80   ,30    ,3, 4,1,68) );
 					break;
 
 				case 'G' : // pour les brique or
 
-					briques.add(new Brique( (i*(colums-1)*10)+240, (j*lines*7)+50 ,80   ,30    ,4, 5,1,73) );
+					briques.add(new Brique( (i*(level.briquesCols+1)*10)+240, (j*level.briquesRows*7)+50 ,80   ,30    ,4, 5,1,73) );
 					break;
-
-
 				};
 			}
 		}
 	}
-
-	public String readFile(String filename) throws IOException
-	{
-		String content = null;
-
-		File file = new File(filename); //for ex foo.txt
-
-		FileReader reader = null;
-
-		reader = new FileReader(file);
-
-		char[] chars = new char[(int) file.length()];
-
-		reader.read(chars);
-
-		content = new String(chars);
-
-		reader.close();
-
-		if(reader !=null){
-
-			reader.close();
-		}
-
-		return content;
-	}
-
-	public char [][] arrayStringTo2DArrayChar(char[][]char2D,String [] str,int cols,int lines){
-		//Assumes all lines are the same length
-		char2D = new char[cols][lines];
-
-		for(int i = 0; i < str.length-2; i++)  {
-			String line = str[i];
-			char2D[i] = line.toCharArray();
-		}
-		return char2D;
-
-	}
-
-
-
 	
-	//appel�e quand balle entre en collision avec brique, calcule les effets de la collision sur la balle et la brique
+	//appel�e quand balle entre en collision avec brique, calcule les effets de la collision sur la balle et la brique
 	private boolean collisionBrique(Balle balle, Brique brique){
 		boolean diagonale = true;
 		//dessus et dessous
@@ -272,10 +245,9 @@ public class Modele {
 				balle.setvY(-balle.getvY());
 		}
 		
-		musicImpacte = (brique.note);
-		impactSound.note_on(musicImpacte);
-		
 		synchronized (briques){
+			musicImpacte = (brique.note);
+			impactSound.note_on(musicImpacte);
 			if(brique.getNumberOfColision() > 1){
 				brique.setNumberOfColision(brique.getNumberOfColision() - 1);
 				if(brique.getType() == 2) brique.setType(5);
@@ -284,7 +256,7 @@ public class Modele {
 				intScore = intScore + brique.getValue();
 				stringScore = String.valueOf(intScore);
 				
-				CollisionEffects effect = new CollisionEffects(brique.getX()+30,brique.getY(), "+" + brique.getValue());
+				AnimatedObject effect = new AnimatedObject(brique.getX()+30,brique.getY(), "+" + brique.getValue());
 				synchronized(effects) {effects.add(effect);}
 				effect.timer.schedule(new TimerTask(){
 					public void run() {
@@ -297,8 +269,21 @@ public class Modele {
 					}
 				}, 0, 20);
 				
+				
+				AnimatedObject explosion = new AnimatedObject(brique.getX()+30,brique.getY()+30,10,10);
+				synchronized(explosions) {explosions.add(explosion);}
+				explosion.timer.schedule(new TimerTask(){
+					public void run() {
+						explosion.setAge(explosion.getAge() + 2);
+						if(explosion.getAge() >= 50){
+							synchronized(explosions){explosions.remove(explosion);}
+							this.cancel();
+						}
+					}
+				}, 0, 20);
+				
 				Bonus b = new Bonus(brique.getX()+10,brique.getY(),50,50);
-				synchronized(bonus) {bonus.add(b);}
+				synchronized(bonus){bonus.add(b);}
 				b.timer.schedule(new TimerTask(){
 					public void run() {
 						b.setY(b.getY()+1);
@@ -336,7 +321,9 @@ public class Modele {
 		return true;
 	}
 
-	//met � jour la position de la balle b et teste ses collisions, appel� periodiquement
+	//met � jour la position de la balle b et teste ses collisions, appel� periodiquement/**
+	
+	
 	private void physiqueBalle(Balle b){
 		synchronized(b){
 			if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachÃ©es Ã  la raquette (celles dont la vÃ©locitÃ© est nulle) suivent la raquette
@@ -346,7 +333,7 @@ public class Modele {
 				//les balles ayant une vÃ©locitÃ© se dÃ©placent selon celle-ci
 				b.setX(b.getdX() + b.getvX());
 				b.setY(b.getdY() + b.getvY());
-				//balle perdue (sortie de l'�cran par le bas)
+				//balle perdue (sortie de l'�cran par le bas)
 				if(b.getdY() > gameHeight){
 					synchronized(balles){
 						balles.remove(b);
@@ -356,15 +343,32 @@ public class Modele {
 				}
 				//collision avec les murs
 				if((b.getvX() < 0 && b.getdX() <= minX) || (b.getvX() > 0 && b.getdX() + b.getWidth() >= maxX )){
+					
+					// son lors de la collision avec le mur
+					impactSound.note_on(musicImpacte);
+					impactSound.note_on(musicImpacte-3);
+					////////////////////////////////////////////
+					
 					b.setvX(-b.getvX());
 				}
 				//collision avec le plafond
 				if(b.getvY() < 0 && b.getdY() <= 0){
+					
+					// son lors de la collision avec le plafond
+					impactSound.note_on(musicImpacte);
+					impactSound.note_on(musicImpacte-2);
+					////////////////////////////////////////////
+					
 					b.setvY(-b.getvY());
 				}
 				//collision avec la raquette
 				if(b.getvY() > 0 && b.getdY() + b.getHeight() >= raquette.getY() && b.getdY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getdX() + b.getWidth() > raquette.getX() && b.getdX() < raquette.getX() + raquette.getWidth()){
-					impactSound.note_on(60);
+					
+					// son lors de la collision avec la raquette
+					impactSound.note_on(musicImpacte+2);
+					impactSound.note_on(musicImpacte+5);
+					////////////////////////////////////////////
+					
 					b.setvX(((b.getdX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * b.getvY());
 					b.setvY(-b.getvY());
 				}
@@ -374,7 +378,6 @@ public class Modele {
 				while(i.hasNext() && !c){
 					Brique brique = i.next();
 					if(b.getdX() + b.getWidth() > brique.getX() && b.getdX() < brique.getX() + brique.getWidth() && b.getdY() + b.getHeight() > brique.getY() && b.getdY() < brique.getY() + brique.getHeight()){
-						impactSound.note_on(65);
 						c = collisionBrique(b, brique);
 					}
 				}
@@ -414,14 +417,57 @@ public class Modele {
 		return running;
 	}
 	
-	//appel� lorsque le jeu est gagn�
+	//appel� lorsque le jeu est gagn�
 	public void gagne(){
-		System.out.println("Gagne!");
+		
+		//je met à jour le height score dans le fichier du niveau
+		level.updateLevelHightScore(this.intScore);
+		
+		//je débloc le niveau suivant
+		level.unlockNextLevel();
+		
+		//je met le boolean de gagner à vrai
+		this.win = true;
+		
+		// le timer pour l'animation de fin
+		endScreen = new AnimatedObject(200, this.gameHeight,this.gameWidth-400, this.gameHeight);
+		
+		endScreen.timer.schedule(new TimerTask(){
+			
+			public void run() {
+				
+				endScreen.setY(endScreen.getY() - 5);
+				
+				if(endScreen.getY() < 0){
+					
+					this.cancel();
+				}
+			}
+		}, 0, 1);
+		
 		suspendreJeu();
 	}
 	
-	//appel� lorsque le jeu est perdu 
+	//appel� lorsque le jeu est perdu 
 	public void perdu(){
+		
+		//je met à jour le height score dans le fichier du niveau
+		level.updateLevelHightScore(this.intScore);
+		
+		//je met le boolean lose à vrai pour déclancher l'animation dans la vue
+		this.lose = true;
+		
+		// le timer pour l'animation de fin
+		endScreen = new AnimatedObject(200, this.gameHeight,this.gameWidth-400, this.gameHeight);
+		endScreen.timer.schedule(new TimerTask(){
+			public void run() {
+				endScreen.setY(endScreen.getY() - 5);
+				if(endScreen.getY() < 0){
+					this.cancel();
+				}
+			}
+		}, 0, 1);
+		
 		System.out.println("Perdu!");
 		suspendreJeu();
 	}

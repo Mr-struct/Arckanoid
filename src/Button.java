@@ -25,13 +25,12 @@ public class Button extends JButton implements MouseListener{
 	private float alpha;
 	protected SoundPlay sound;
 	public Button (String str) {
-		
 		this.setName(str);  
 		this.alpha = .5f;
 		this.sound = new SoundPlay();
 		this.sound.setPnogrameChange(34);
 		try {
-			buttonFont = Font.createFont(Font.TRUETYPE_FONT, new File("./Fonts/Streamster.ttf")).deriveFont(25f);
+			buttonFont = Font.createFont(Font.TRUETYPE_FONT, new File("./Fonts/Streamster.ttf")).deriveFont(30f);
 		} catch (FontFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,10 +52,10 @@ public class Button extends JButton implements MouseListener{
 		
 		// dessine les button 
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));// active une transparense alpha calculer 
-		GradientPaint gp1 = new GradientPaint(this.getWidth()/2,0,new Color(255, 0, 195),this.getWidth()/2,this.getHeight()-10,new Color(8, 30, 102));
+		GradientPaint gp1 = new GradientPaint(this.getWidth()/2,0,new Color(255, 0, 128),this.getWidth()/2,this.getHeight()-10,new Color(8, 30, 202));
 		g2d.setPaint(gp1);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.fillRoundRect(2, 2, this.getWidth()-5, this.getHeight()-5,20,25);
+		g2d.fillRoundRect(2, 2, this.getWidth()-5, this.getHeight()-5,20,50);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 		
 		// dessine le text sur les buttons
@@ -64,7 +63,7 @@ public class Button extends JButton implements MouseListener{
 		GradientPaint gp2 = new GradientPaint(this.getWidth()/2,0,new Color(119, 19, 103),this.getWidth()/2,this.getHeight(),new Color(5, 234, 255));
 		g2d.setPaint(gp2);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString(this.name, this.getWidth() / 2 - (this.getWidth()/ 2 /4)-10, (this.getHeight() / 2) +5);
+		g2d.drawString(this.name, this.getWidth() / 2 - (this.getWidth()/ 2 /4)-30, (this.getHeight() / 2) +5);
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 	}
 

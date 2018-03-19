@@ -1,22 +1,17 @@
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class PanelMenu extends JPanel {
@@ -56,6 +51,7 @@ public class PanelMenu extends JPanel {
 		/*
 		 * init les button 
 		 */
+		//modele.newGame.setIcon(new ImageIcon("./Obj/playBnt.png"));
 		 this.add(modele.newGame);
 		 this.add(modele.settings);
 		 this.add(modele.exit);
@@ -71,9 +67,9 @@ public class PanelMenu extends JPanel {
 		//mise en place des buttons
 		x = this.getWidth()/2 -100;
 		y = this.getHeight()/2;
-		this.modele.newGame.setBounds(x,y,200, 50);
-		this.modele.settings.setBounds(x,y+60,200, 50);
-		this.modele.exit.setBounds(x,y+120,200, 50);
+		this.modele.newGame.setBounds(x,y,200, 60);
+		this.modele.settings.setBounds(x,y+70,200, 60);
+		this.modele.exit.setBounds(x,y+140,200, 60);
 		
 		//mise en place des titres
 		//premier titre 

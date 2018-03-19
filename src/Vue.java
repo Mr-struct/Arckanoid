@@ -16,6 +16,7 @@ public class Vue extends JFrame {
 	protected PanelMenu panelMenu;
 	protected PanelSettings panelSettings;
 	protected JPanel blackPanel;
+	protected PanelLevelSelect panelLevelSelect;
 	@SuppressWarnings("unused")
 	protected Modele modele;
 	

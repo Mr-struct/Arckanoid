@@ -1,18 +1,24 @@
 import java.util.Timer;
 
-public class CollisionEffects {
+public class AnimatedObject {
 
-	private int x , y, age;
-	
+	private int x , y, width, height, age ;
 	private String popUp;
 	
 	protected  Timer timer = new Timer();
 	
-	public CollisionEffects(int x, int y,String popUp) {
+	public AnimatedObject(int x, int y,String popUp) {
 		this.x = x;
 		this.y = y;
-		this.setAge(0);
+		this.age = 0;
 		this.popUp = popUp;
+	}
+	public AnimatedObject(int x, int y,int width, int height) {
+		this.x = x;
+		this.y = y;
+		this.age = 0;
+		this.width = width;
+		this.height = height;
 	}
 
 	public int getX() {
@@ -45,6 +51,18 @@ public class CollisionEffects {
 
 	public void setAge(int age) {
 		this.age = age;
+	}
+	public int getWidth() {
+		return width;
+	}
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
+		this.height = height;
 	}
 
 }

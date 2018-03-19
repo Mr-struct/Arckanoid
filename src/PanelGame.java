@@ -50,7 +50,7 @@ public class PanelGame extends JPanel {
 
 		// on charge les image 
 		try {
-			imgBackground = ImageIO.read(new File(modele.levelBackground));
+			imgBackground = ImageIO.read(new File(modele.level.levelBackground));
 
 			imgDefaultRaquette = ImageIO.read(new File("src/Obj/bar3.png"));
 
@@ -71,16 +71,19 @@ public class PanelGame extends JPanel {
 
 			e.printStackTrace();
 		}
-
+		
+		this.add(modele.backlevelSelectionButton);
 	}
 
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
 
 		AffineTransform tx = new AffineTransform();
+		AffineTransform oldTransform = new AffineTransform();
 		tx.scale((float) this.getWidth()/ (float)modele.gameWidth, (float) this.getHeight()/ (float)modele.gameHeight);
 		g2d.setTransform(tx);
-
+		oldTransform = g2d.getTransform();
+		
 		//dessine le fond 
 		g2d.drawImage(imgBackground, 0,0,modele.gameWidth,modele.gameHeight, null);
 
@@ -184,40 +187,63 @@ public class PanelGame extends JPanel {
 			g2d.drawImage(imgDefaultRaquette, modele.raquette.getX(),modele.raquette.getY(),modele.raquette.getWidth(),modele.raquette.getHeight(), null);
 			
 			//de la transparance sur les coter de la fenaitre pour un effet !
-			Color transparentbalck0 = new Color(59, 59, 112, 128);
-			Color transparentblack1 = new Color(159, 59, 240,255);
+			Color transparentColor1 = new Color(59, 59, 112, 128);
+			Color transparentColor2 = new Color(159, 59, 240,255);
 
 			//dégradé1 de couleur
-			GradientPaint gp1 = new GradientPaint(modele.gameWidth-100, 0, transparentbalck0, modele.gameWidth-100, modele.gameHeight, transparentblack1, true);                
+			GradientPaint gp1 = new GradientPaint(modele.gameWidth-100, 0, transparentColor1, modele.gameWidth-100, modele.gameHeight, transparentColor2, true);                
 			g2d.setPaint(gp1);
 			g2d.fillRect((modele.gameWidth-200), 0, 200, modele.gameHeight);
 
 			//dégrade2 de couleur
-			GradientPaint gp2 = new GradientPaint(100, 0, transparentbalck0, 100, modele.gameHeight, transparentblack1, true);                
+			GradientPaint gp2 = new GradientPaint(100, 0, transparentColor1, 100, modele.gameHeight, transparentColor2, true);                
 			g2d.setPaint(gp2);
 			g2d.fillRect(0, 0, 200, modele.gameHeight);
 			
 			/*
-			 * affiche une animation 
+			 * affiche le gain lord d'une colision avec une brique 
 			 */
-			
 			g2d.setFont(myFont);
 			
 			synchronized(modele.effects) {
-				g2d.setColor(Color.WHITE);
-				for(CollisionEffects effect : modele.effects) {
+				
+				for(AnimatedObject effect : modele.effects) {
+					g2d.setColor(new Color(255,255,255,255-effect.getAge()));
 					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 					g2d.drawString(effect.getPopUp(), effect.getX(), effect.getY());
 					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 					
-					//animatedExplosion(effect,1000);
 				}
 			}
+			synchronized(modele.explosions) {
+				for(AnimatedObject explosion : modele.explosions) {
+					g2d.setStroke(new BasicStroke(explosion.getAge()));
+					
+					
+					
+					g2d.setColor(new Color(0, 203, 255,128 - explosion.getAge()));
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+					g2d.drawOval(explosion.getX()-10, explosion.getY()-10, explosion.getWidth()+20, explosion.getHeight()+20);
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+					
+					
+					g2d.setColor(new Color(2, 128, 200, 128- explosion.getAge()));
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+					g2d.drawOval(explosion.getX()-5, explosion.getY()-5, explosion.getWidth()+10, explosion.getHeight()+10);
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+					
+					g2d.setColor(new Color(4,64, 128, 128 - explosion.getAge()));
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+					g2d.drawOval(explosion.getX(), explosion.getY(), explosion.getWidth(), explosion.getHeight());
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 
+				}
+			}
+			g2d.setFont(myFont);
 			g2d.setColor(Color.CYAN);
 			g2d.drawString("SCORE : ",modele.gameWidth-170 , 40);
-			g2d.drawString(modele.levelRank,modele.gameWidth-170 , 120);
-			g2d.drawString(modele.levelName,modele.gameWidth-170 , 160);
+			g2d.drawString(modele.level.levelRank,modele.gameWidth-170 , 120);
+			g2d.drawString(modele.level.levelName,modele.gameWidth-170 , 160);
 			g2d.drawString("Bonus : ",30 , 40);
 			g2d.setColor(new Color(255,120,128));
 			g2d.drawString(modele.stringScore,modele.gameWidth-170 , 80);
@@ -237,6 +263,30 @@ public class PanelGame extends JPanel {
 			g2d.setColor(new Color(5,5,5,128));
 			g2d.fillRect(180, 15, 10, 205);//droiteGauche
 			g2d.fillRect(25,210, 155, 10);//droiteBas
+			
+			if(modele.win) {
+				g2d.setColor(new Color(3,3,3,200));
+				g2d.fillRect(0,0,modele.gameWidth,modele.gameHeight);
+
+				//dégradé1 de couleur
+				GradientPaint gp0 = new GradientPaint(modele.endScreen.getX()-100, 0, transparentColor1, modele.gameWidth-100, modele.gameHeight, transparentColor2, true);                
+				g2d.setPaint(gp0);
+				g2d.fillRect(modele.endScreen.getX(), modele.endScreen.getY(), modele.endScreen.getWidth(), modele.endScreen.getHeight());
+				
+			}
+			
+			if(modele.lose) {
+				// dessin d'un fond  noir avec transparance pour un certain effet
+				g2d.setColor(new Color(3,3,3,200));
+				g2d.fillRect(0,0,modele.gameWidth,modele.gameHeight);
+
+				//dégradé1 de couleur
+				GradientPaint gp0 = new GradientPaint(modele.endScreen.getX()-100, 0, transparentColor1, modele.gameWidth-100, modele.gameHeight, transparentColor2, true);                
+				g2d.setPaint(gp0);
+				g2d.fillRect(modele.endScreen.getX(), modele.endScreen.getY(), modele.endScreen.getWidth(), modele.endScreen.getHeight());
+				g2d.setTransform(oldTransform);
+				modele.backlevelSelectionButton.setBounds(modele.endScreen.getX()+200, modele.endScreen.getY()+500, 200, 60);
+			}
 		}
 
 	}

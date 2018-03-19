@@ -158,6 +158,7 @@ public class PanelSettings extends JPanel{
 	       super.paintThumb(g);
 	    }
 	}
+	
 	    
 
 }
