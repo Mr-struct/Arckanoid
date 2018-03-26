@@ -26,7 +26,7 @@ public class Level {
 	
 	protected String levelDifficulty;
 	
-	private String nextLevel;
+	protected String nextLevel;
 	
 	protected boolean canBePlayed;
 	

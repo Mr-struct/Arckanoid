@@ -18,45 +18,11 @@ public class Modele {
 	
 	protected ArrayList <AnimatedObject> explosions = new ArrayList<AnimatedObject>();
 	
-	protected  AnimatedObject endScreen;
-	
 	protected ArrayList <Level> levels = new ArrayList<Level>();
 	
+	protected  AnimatedObject endScreen;
+	
 	protected Raquette raquette;
-	
-	protected String levelName;
-
-	protected String levelRank;
-
-	protected String levelBackground;
-	
-	protected Button newGame ;
-	
-	protected Button settings ;
-	
-	protected JSlider sliderFxSound;
-	
-	protected JSlider sliderMainSound;
-	
-	protected JSlider sliderLevel;
-	
-	protected Button backButton;
-	
-	protected Button backlevelSelectionButton;
-	
-	protected Button retry;
-	
-	protected Button exit;
-	
-	protected Button play;
-	
-	protected Button backBnt2;
-	
-	protected DefaultListModel<String> modelOfList = new DefaultListModel<String>();
-	
-	protected JList<String> list = new JList<String>(modelOfList);
-	
-	protected JScrollPane pane ;
 	
 	protected int intScore = 0;
 	
@@ -70,7 +36,7 @@ public class Modele {
 	
 	private Object runningLock = new Object();
 	
-	Random random = new Random();
+	private Random random = new Random();
 
 	protected int gameWidth = 1366;
 	
@@ -102,39 +68,8 @@ public class Modele {
 		this.impactSound = new SoundPlay();
 		this.impactSound.setPnogrameChange(39);
 		
-		/*
-		 * init les buttons
-		 */
-		newGame = new Button("New Game");
 		
-		settings = new Button("Settings");
 		
-		exit = new Button("Exit");
-		
-		play = new Button("Play");
-		
-		backBnt2 = new Button("Back");
-		
-		backButton = new Button("Back");
-		
-		backlevelSelectionButton = new Button("Back");
-		
-		retry = new Button("Retray");
-		
-		/*
-		 * init le slider du son principale 
-		 */
-		sliderMainSound = new JSlider(JSlider.HORIZONTAL, 0, 100, 10);
-		
-		/*
-		 * init le slider des bruitage
-		 */
-		sliderFxSound = new JSlider(JSlider.HORIZONTAL, 0, 100, 100);
-		/*
-		 * init le slider du niveux de dificulte
-		 */
-		sliderLevel = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
-
 		/*
 		 * init le niveau 
 		 */
@@ -144,9 +79,6 @@ public class Modele {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//this.fileLevel = fileLevel;
-		//this.levelBackground = this.fileLevel+".png";
-
 	}
 
 	//initialise la premiï¿½re balle. sa position sera calculï¿½e automatiquement en fonction de la raquette
@@ -159,20 +91,29 @@ public class Modele {
 	
 	//initialise le terrain
 	public void intitlevel(String filLevel) throws IOException{
-		curBonus = 0;
+this.win = false;
 		
-		win = false;
-		
-		lose = false;
-		
+		this.lose = false;
 		briques = new ArrayList<Brique>(); 
 		
 		balles = new ArrayList<Balle>();
-		 
+		
+		bonus = new ArrayList<Bonus>();
+		
+		effects = new ArrayList<AnimatedObject>();
+		
+		stringScore = "00";
+		
+		intScore = 0;
+		
 		level = new Level(filLevel);
-		
-		raquette = new Raquette(500,680,150,30);
-		
+		/*
+		 * init la raquette
+		 */
+		this.raquette = new Raquette(500,680,150,30);
+		/*
+		 * init la balle
+		 */
 		initBalle();
 		
 		char [] [] char2D = new char [level.briquesCols][level.briquesRows];
@@ -252,7 +193,7 @@ public class Modele {
 				raquette.setWidth(raquette.getInitWidth() + 50);
 			}
 
-			//raquette rétrécie
+			//raquette rï¿½trï¿½cie
 			if(b.getType() == 2) {
 				raquette.setWidth(raquette.getInitWidth() - 50);
 			}
@@ -307,7 +248,7 @@ public class Modele {
 			intScore = intScore + brique.getValue();
 			stringScore = String.valueOf(intScore);
 			
-			//affiche les points gagnés
+			//affiche les points gagnï¿½s
 			AnimatedObject effect = new AnimatedObject(brique.getX()+30,brique.getY(), "+" + brique.getValue());
 			synchronized(effects) {effects.add(effect);}
 			effect.timer.schedule(new TimerTask(){
@@ -341,7 +282,7 @@ public class Modele {
 				synchronized(bonus){bonus.add(b);}
 				b.timer.schedule(new TimerTask(){
 					public void run() {
-						//déplacement
+						//dï¿½placement
 						b.setY(b.getY()+1);
 						//collision avec la raquette
 						if(b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth())
@@ -478,7 +419,7 @@ public class Modele {
 		
 		endScreen.timer.schedule(new TimerTask(){
 			
-			public void run() {
+			public  void run() {
 				
 				endScreen.setY(endScreen.getY() - 5);
 				
@@ -495,10 +436,10 @@ public class Modele {
 	//appelï¿½ lorsque le jeu est perdu 
 	public void perdu(){
 		
-		//je met Ã  jour le height score dans le fichier du niveau
+		//je met a jour le height score dans le fichier du niveau
 		level.updateLevelHightScore(this.intScore);
 		
-		//je met le boolean lose Ã  vrai pour dÃ©clancher l'animation dans la vue
+		//je met le boolean lose a vrai pour dÃ©clancher l'animation dans la vue
 		this.lose = true;
 		
 		// le timer pour l'animation de fin

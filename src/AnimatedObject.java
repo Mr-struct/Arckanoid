@@ -3,6 +3,7 @@ import java.util.Timer;
 public class AnimatedObject {
 
 	private int x , y, width, height, age ;
+	protected int r,g,b;
 	private String popUp;
 	
 	protected  Timer timer = new Timer();
@@ -19,6 +20,11 @@ public class AnimatedObject {
 		this.age = 0;
 		this.width = width;
 		this.height = height;
+		this.r = (int)Math.random()*255;
+		
+		this.g = (int)Math.random()*255;
+		
+		this.b = (int)Math.random()*255;
 	}
 
 	public int getX() {

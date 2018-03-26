@@ -26,13 +26,16 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 
 @SuppressWarnings("serial")
 public class PanelLevelSelect extends JPanel{
-	private Modele modele;
+	private Vue vue;
+	private Modele modele; 
 	protected Image imgBackground;
 	private Font firstWord;
 	private Font secondWord;
 
-	public PanelLevelSelect(int width,int height,Modele modele){
+	public PanelLevelSelect(int width,int height,Vue vue, Modele modele){
 
+		this.vue = vue;
+		
 		this.modele = modele;
 		
 		this.setSize(width,height);
@@ -55,38 +58,37 @@ public class PanelLevelSelect extends JPanel{
 		}
 					
 		
-		add(modele.play);
-		modele.play.getIgnoreRepaint();
+		add(this.vue.playButton);
 		
-		this.add(modele.backBnt2);
+		this.add(this.vue.backButtonTasks);
 		
-		modele.list.setUI(new myListUI());
+		vue.list.setUI(new myListUI());
 		
-		modele.pane = new JScrollPane(modele.list);
+		vue.pane = new JScrollPane(vue.list);
 		
-		modele.pane.getVerticalScrollBar().setUI(new MyScrollBarUI());
+		vue.pane.getVerticalScrollBar().setUI(new MyScrollBarUI());
 		
-		modele.list.setForeground(Color.BLACK);
+		vue.list.setForeground(Color.BLACK);
 		
-		modele.list.setFont(secondWord);
+		vue.list.setFont(secondWord);
 
 		for (int i = 0; i <20; i++) {
 			
-			modele.modelOfList.addElement("level"+i);
+			vue.modelOfList.addElement("level"+i);
 		}
-		modele.pane.setBorder(new LineBorder(Color.BLACK));
-		add(modele.pane,BorderLayout.CENTER);
+		vue.pane.setBorder(null);
+		add(vue.pane,BorderLayout.CENTER);
 		
 	}
 
 	public void paintComponent(Graphics g) {
 		
 		if (modele.level.canBePlayed){
-			add(modele.play);
-			modele.play.getIgnoreRepaint();
+			add(this.vue.playButton);
+			this.vue.playButton.getIgnoreRepaint();
 		 }		
 		else {
-			remove(modele.play);
+			remove(this.vue.playButton);
 			
 		}
 		
@@ -95,7 +97,7 @@ public class PanelLevelSelect extends JPanel{
 		g2d.drawImage(imgBackground, 0,0,this.getWidth(),this.getHeight(), null);
 		
 		// affichage de la liste 
-		modele.pane.setBounds(200,100,this.getWidth()-400,330);
+		vue.pane.setBounds(200,100,this.getWidth()-400,330);
 		
 		// dessin d'un fond  noir avec transparance pour un certain effet
 		g2d.setColor(new Color(3,3,3,200));
@@ -108,7 +110,7 @@ public class PanelLevelSelect extends JPanel{
 		Color transparentColor2 = new Color(159, 59, 240,255);
 
 		//dégradé1 de couleur
-		GradientPaint gp0 = new GradientPaint(modele.gameWidth-100, 0, transparentColor1, modele.gameWidth-100, modele.gameHeight, transparentColor2, true);                
+		GradientPaint gp0 = new GradientPaint(this.getWidth()-100, 0, transparentColor1,this.getWidth()-100, this.getHeight(), transparentColor2, true);                
 		g2d.setPaint(gp0);
 		g2d.fillRect(100, 0, this.getWidth()-200, this.getHeight());
 		
@@ -130,12 +132,12 @@ public class PanelLevelSelect extends JPanel{
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 		
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString("Difficulty : "+modele.level.levelDifficulty,800, this.getHeight()-250);
+		g2d.drawString("Difficulty : "+modele.level.levelDifficulty,this.getWidth() - 500, this.getHeight()-250);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 		
-		modele.play.setBounds(this.getWidth()/2+50 , this.getHeight()-150,200,60);
+		this.vue.playButton.setBounds(this.getWidth()/2+420 ,  this.getHeight() - 240, 64, 64);
 		
-		modele.backBnt2.setBounds(this.getWidth()/2-300 , this.getHeight()-150,200,60);
+		this.vue.backButtonTasks.setBounds((this.getWidth() / 2 ) - 480 , this.getHeight() - 240,64,64);
 
 
 	}
@@ -200,8 +202,7 @@ public class PanelLevelSelect extends JPanel{
 			g.translate(thumbBounds.x, thumbBounds.y);
 			g.drawRect( 0, 0, thumbBounds.width - 2, thumbBounds.height - 1 );
 			AffineTransform transform = AffineTransform.getScaleInstance((double)thumbBounds.width/imageThumb.getWidth(null),(double)thumbBounds.height/imageThumb.getHeight(null));
-
-
+			
 			((Graphics2D)g).drawImage(imageThumb, transform, null);
 			g.translate( -thumbBounds.x, -thumbBounds.y );
 

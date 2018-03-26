@@ -1,0 +1,17 @@
+ooooooooo
+ooooooooo
+ooooooooo
+ooooooooo
+ooooooooo
+ooooooooo
+ooooBoooo
+ooooooooo
+./levels/level4.txt
+Easy
+: 10
+yes
+level 3
+The WAY
+9
+8
+

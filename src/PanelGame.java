@@ -12,45 +12,56 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class PanelGame extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private Modele modele;
+	private Vue vue;
 
 	private Image imgBackground,imgDefaultRaquette,imgDefaultBalle;
 
 	private  ArrayList<Image> imgBrique = new ArrayList<Image>(0);
 	
 	private ArrayList<Image> imgBonus = new ArrayList<Image>(0);
+	
+	private ImageIcon fier1,fier2,fier3 ,imgConfettis;
 
-	private Font myFont;
+	private Font myFont,firstWord,therdWord;
 	
 	int widthBalle = 10, heightBalle = 10;
 
-	public PanelGame (int width,int height,Modele modele) {
+	public PanelGame (int width,int height,Vue vue) {
 
 		super();
 
-		this.modele = modele;
+		this.vue = vue;
 
 		this.setSize(width,height);
 
 		try {
 			myFont = Font.createFont(Font.TRUETYPE_FONT, new File("./Fonts/SFAlienEncountersSolid.ttf")).deriveFont(20f);
+			
+			firstWord  = Font.createFont(Font.TRUETYPE_FONT, new File("./Fonts/SFAlienEncountersSolid.ttf")).deriveFont(80f);
+
+			therdWord  = Font.createFont(Font.TRUETYPE_FONT, new File("./Fonts/SFAlienEncountersSolid.ttf")).deriveFont(30f);
+
 		} catch (FontFormatException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-
+		
 		// on charge les image 
+		fier1 = new ImageIcon("./Obj/fierWorks1.gif");
+		fier2 = new ImageIcon("./Obj/fierWorks2.gif");
+		fier3 = new ImageIcon("./Obj/fierWorks3.gif");
+		imgConfettis = new ImageIcon("./Obj/test1.gif");
 		try {
-			imgBackground = ImageIO.read(new File(modele.level.levelBackground));
+			imgBackground = ImageIO.read(new File(vue.modele.level.levelBackground));
 
 			imgDefaultRaquette = ImageIO.read(new File("src/Obj/bar3.png"));
 
@@ -71,29 +82,27 @@ public class PanelGame extends JPanel {
 
 			e.printStackTrace();
 		}
-		
-		this.add(modele.backlevelSelectionButton);
 	}
 
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
-
+		
 		AffineTransform tx = new AffineTransform();
 		AffineTransform oldTransform = new AffineTransform();
-		tx.scale((float) this.getWidth()/ (float)modele.gameWidth, (float) this.getHeight()/ (float)modele.gameHeight);
-		g2d.setTransform(tx);
 		oldTransform = g2d.getTransform();
+		tx.scale((float) this.getWidth()/ (float)vue.modele.gameWidth, (float) this.getHeight()/ (float)vue.modele.gameHeight);
+		g2d.setTransform(tx);
 		
 		//dessine le fond 
-		g2d.drawImage(imgBackground, 0,0,modele.gameWidth,modele.gameHeight, null);
+		g2d.drawImage(imgBackground, 0,0,vue.modele.gameWidth,vue.modele.gameHeight, null);
 
 		//couleur mis a jour pour la transparence 
 		g2d.setColor(new Color(6,6,6,128));
 
 		
 		//dessine les bonus
-		synchronized (modele.bonus){
-			for(Bonus bn : modele.bonus) {
+		synchronized (vue.modele.bonus){
+			for(Bonus bn : vue.modele.bonus) {
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
 				g2d.fillRoundRect(bn.getX()+15,bn.getY()+15,bn.getWidth(),bn.getHeight(),15,15);
@@ -117,25 +126,18 @@ public class PanelGame extends JPanel {
 		}
 		
 		//dessine l'ombre de la balle
-		synchronized (modele.balles){
-			for(Balle balle: modele.balles) {
+		synchronized (vue.modele.balles){
+			for(Balle balle: vue.modele.balles) {
 				//dessine l'ombre de la balle
 				g2d.setColor(new Color(6,6,6,128));
 				g2d.fillOval(balle.getIntX()+15,balle.getIntY()+15,balle.getWidth(),balle.getHeight());
-				//dessine la balle
-				GradientPaint gp1 = new GradientPaint(balle.getIntX() ,balle.getIntY()-5 ,Color.WHITE ,balle.getIntX() + balle.getWidth() ,balle.getIntY()+balle.getHeight() , Color.BLACK);                
-				g2d.setPaint(gp1);
-				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-				//g2d.drawImage(imgDefaultBalle, balle.getX(),balle.getY(),balle.getWidth(),balle.getHeight(), this);
-				g2d.fillOval(balle.getIntX(),balle.getIntY(),balle.getWidth(),balle.getHeight());
-				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 			}
 		}
 		
 		g2d.setColor(new Color(6,6,6,128));
 		// dessine les briques en fonction du type
-		synchronized (modele.briques){
-			for(Brique br : modele.briques) {
+		synchronized (vue.modele.briques){
+			for(Brique br : vue.modele.briques) {
 				g2d.fillRect(br.getX()+10,br.getY()+10,br.getWidth(),br.getHeight());
 					switch (br.getType() ){
 						case 0:
@@ -177,37 +179,49 @@ public class PanelGame extends JPanel {
 					};
 				}		
 			}
-			
+		//dessine la balle
+				synchronized (vue.modele.balles){
+					for(Balle balle: vue.modele.balles) {
+						
+						//dessine la balle
+						GradientPaint gp1 = new GradientPaint(balle.getIntX() ,balle.getIntY()-5 ,Color.WHITE ,balle.getIntX() + balle.getWidth() ,balle.getIntY()+balle.getHeight() , Color.BLACK);                
+						g2d.setPaint(gp1);
+						g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+						//g2d.drawImage(imgDefaultBalle, balle.getX(),balle.getY(),balle.getWidth(),balle.getHeight(), this);
+						g2d.fillOval(balle.getIntX(),balle.getIntY(),balle.getWidth(),balle.getHeight());
+						g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+					}
+				}
 		
-			
+			g2d.setColor(new Color(6,6,6,128));
 			//dessine l'ombre de la raquette 
-			g2d.fillRoundRect(modele.raquette.getX()+15, modele.raquette.getY()+15, modele.raquette.getWidth(), modele.raquette.getHeight(),10,10);
+			g2d.fillRoundRect(vue.modele.raquette.getX()+15, vue.modele.raquette.getY()+15, vue.modele.raquette.getWidth(), vue.modele.raquette.getHeight(),10,10);
 
 			// dessine la raquette
-			g2d.drawImage(imgDefaultRaquette, modele.raquette.getX(),modele.raquette.getY(),modele.raquette.getWidth(),modele.raquette.getHeight(), null);
+			g2d.drawImage(imgDefaultRaquette, vue.modele.raquette.getX(),vue.modele.raquette.getY(),vue.modele.raquette.getWidth(),vue.modele.raquette.getHeight(), null);
 			
 			//de la transparance sur les coter de la fenaitre pour un effet !
 			Color transparentColor1 = new Color(59, 59, 112, 128);
 			Color transparentColor2 = new Color(159, 59, 240,255);
 
 			//dégradé1 de couleur
-			GradientPaint gp1 = new GradientPaint(modele.gameWidth-100, 0, transparentColor1, modele.gameWidth-100, modele.gameHeight, transparentColor2, true);                
+			GradientPaint gp1 = new GradientPaint(vue.modele.gameWidth-100, 0, transparentColor1, vue.modele.gameWidth-100, vue.modele.gameHeight, transparentColor2, true);                
 			g2d.setPaint(gp1);
-			g2d.fillRect((modele.gameWidth-200), 0, 200, modele.gameHeight);
+			g2d.fillRect((vue.modele.gameWidth-200), 0, 200, vue.modele.gameHeight);
 
 			//dégrade2 de couleur
-			GradientPaint gp2 = new GradientPaint(100, 0, transparentColor1, 100, modele.gameHeight, transparentColor2, true);                
+			GradientPaint gp2 = new GradientPaint(100, 0, transparentColor1, 100, vue.modele.gameHeight, transparentColor2, true);                
 			g2d.setPaint(gp2);
-			g2d.fillRect(0, 0, 200, modele.gameHeight);
+			g2d.fillRect(0, 0, 200, vue.modele.gameHeight);
 			
 			/*
 			 * affiche le gain lord d'une colision avec une brique 
 			 */
 			g2d.setFont(myFont);
 			
-			synchronized(modele.effects) {
+			synchronized(vue.modele.effects) {
 				
-				for(AnimatedObject effect : modele.effects) {
+				for(AnimatedObject effect : vue.modele.effects) {
 					g2d.setColor(new Color(255,255,255,255-effect.getAge()));
 					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 					g2d.drawString(effect.getPopUp(), effect.getX(), effect.getY());
@@ -215,8 +229,8 @@ public class PanelGame extends JPanel {
 					
 				}
 			}
-			synchronized(modele.explosions) {
-				for(AnimatedObject explosion : modele.explosions) {
+			synchronized(vue.modele.explosions) {
+				for(AnimatedObject explosion : vue.modele.explosions) {
 					g2d.setStroke(new BasicStroke(explosion.getAge()));
 					
 					
@@ -241,51 +255,177 @@ public class PanelGame extends JPanel {
 			}
 			g2d.setFont(myFont);
 			g2d.setColor(Color.CYAN);
-			g2d.drawString("SCORE : ",modele.gameWidth-170 , 40);
-			g2d.drawString(modele.level.levelRank,modele.gameWidth-170 , 120);
-			g2d.drawString(modele.level.levelName,modele.gameWidth-170 , 160);
+			g2d.drawString("SCORE : ",vue.modele.gameWidth-170 , 40);
+			g2d.drawString(vue.modele.level.levelRank,vue.modele.gameWidth-170 , 120);
+			g2d.drawString(vue.modele.level.levelName,vue.modele.gameWidth-170 , 160);
 			g2d.drawString("Bonus : ",30 , 40);
 			g2d.setColor(new Color(255,120,128));
-			g2d.drawString(modele.stringScore,modele.gameWidth-170 , 80);
+			g2d.drawString(vue.modele.stringScore,vue.modele.gameWidth-170 , 80);
 			
-
-			// dessine le cadre à droite 
-			g2d.setStroke(new BasicStroke(1));
-			g2d.setColor(Color.BLACK);
-			g2d.drawRect(modele.gameWidth-180, 10, 160, 200);//gauche	
-			g2d.drawRect(20, 10, 160, 200);//droite
 
 			//dessine les ombres des paneau du bonus et de du score 
 			g2d.setColor(new Color(5,5,5,128));
-			g2d.fillRect(modele.gameWidth-20, 15, 10, 205);//gaucheGauche
-			g2d.fillRect(modele.gameWidth-175,210, 155, 10);//gaucheBAS
+			g2d.setStroke(new BasicStroke(1));
+			g2d.fillRect(vue.modele.gameWidth-20, 15, 10, 205);//gaucheGauche
+			g2d.fillRect(vue.modele.gameWidth-175,210, 155, 10);//gaucheBAS
 
-			g2d.setColor(new Color(5,5,5,128));
 			g2d.fillRect(180, 15, 10, 205);//droiteGauche
 			g2d.fillRect(25,210, 155, 10);//droiteBas
 			
-			if(modele.win) {
-				g2d.setColor(new Color(3,3,3,200));
-				g2d.fillRect(0,0,modele.gameWidth,modele.gameHeight);
-
-				//dégradé1 de couleur
-				GradientPaint gp0 = new GradientPaint(modele.endScreen.getX()-100, 0, transparentColor1, modele.gameWidth-100, modele.gameHeight, transparentColor2, true);                
-				g2d.setPaint(gp0);
-				g2d.fillRect(modele.endScreen.getX(), modele.endScreen.getY(), modele.endScreen.getWidth(), modele.endScreen.getHeight());
-				
-			}
+			// dessine le cadre à droite 
 			
-			if(modele.lose) {
+			g2d.setColor(Color.BLACK);
+			g2d.drawRect(vue.modele.gameWidth-180, 10, 160, 200);//gauche	
+			g2d.drawRect(20, 10, 160, 200);//droite
+
+		
+			
+			if(vue.modele.win) {
+				
+				//dessine le fond transparant noir 
+				g2d.setColor(new Color(3,3,3,200));
+				g2d.fillRect(0,0,vue.modele.gameWidth,vue.modele.gameHeight);
+				
+				//dessine le degrade de couleur
+				GradientPaint gp0 = new GradientPaint(vue.modele.endScreen.getX()-100,
+									0, transparentColor1, 
+									vue.modele.gameWidth-100,
+									vue.modele.gameHeight,
+									transparentColor2, true);                
+				g2d.setPaint(gp0);
+				g2d.fillRect(vue.modele.endScreen.getX(),
+							vue.modele.endScreen.getY(), 
+							vue.modele.endScreen.getWidth(),
+							vue.modele.endScreen.getHeight());
+				
+				//dessine le carer centrale
+				GradientPaint gp5 = new GradientPaint( vue.modele.endScreen.getX() + 100 + (vue.modele.endScreen.getWidth() - 200) / 2  ,
+														vue.modele.endScreen.getY()+100,
+														new Color(255,10,128),
+														vue.modele.endScreen.getX() + 100 + (vue.modele.endScreen.getWidth() - 200) / 2, 
+														vue.modele.endScreen.getY() + 100 + vue.modele.endScreen.getHeight() - 200,
+														new Color(10,100,255), true);                
+				g2d.setPaint(gp5);
+				g2d.setStroke(new BasicStroke(8));
+				g2d.drawRoundRect(
+								vue.modele.endScreen.getX()+100,
+								vue.modele.endScreen.getY()+100,
+								vue.modele.endScreen.getWidth() - 200, vue.modele.endScreen.getHeight() - 200,10,10);
+				//dessine le you win
+				g2d.setFont(firstWord);
+				GradientPaint gp3 = new GradientPaint(vue.modele.endScreen.getX()+350,
+													vue.modele.endScreen.getY()+200,
+													new Color(107, 0, 196), 
+													vue.modele.endScreen.getX() +350,
+													vue.modele.endScreen.getY()+400,
+													new Color(0, 255, 233), true);
+				g2d.setPaint(gp3);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.drawString("YOU WIN",vue.modele.endScreen.getX()+300, vue.modele.endScreen.getY()+300);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+				
+				//dessine le score final
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.drawString(vue.modele.stringScore, vue.modele.endScreen.getX()+400 -(firstWord.getSize()/2), vue.modele.endScreen.getY()+440);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+				
+				//dessine le score
+				g2d.setFont(therdWord);
+				
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.drawString("Your Score :",vue.modele.endScreen.getX()+350, vue.modele.endScreen.getY()+350);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+				
+				//dessine les button
+				g2d.setTransform(oldTransform);
+				this.add(vue.backLevelSelectButton);
+				this.add(vue.nextLevelButton);
+				
+				vue.backLevelSelectButton.setBounds(vue.modele.endScreen.getX()+400, vue.modele.endScreen.getY()+500, 64, 64);
+				vue.nextLevelButton.setBounds(vue.modele.endScreen.getX()+500, vue.modele.endScreen.getY()+500, 64, 64);
+				
+				g2d.drawImage(imgConfettis.getImage(), vue.modele.endScreen.getX(), vue.modele.endScreen.getY(),vue.modele.endScreen.getWidth(), vue.modele.endScreen.getHeight(),imgConfettis.getImageObserver());
+
+				// dessine les feu d'artifis
+				g2d.drawImage(fier1.getImage(), vue.modele.endScreen.getX()-40, vue.modele.endScreen.getY(),300, 300,fier1.getImageObserver());
+				
+				g2d.drawImage(fier2.getImage(), vue.modele.endScreen.getX()-40, vue.modele.endScreen.getY(),350, 350,fier2.getImageObserver());
+				
+				g2d.drawImage(fier1.getImage(), vue.modele.endScreen.getX()+680, vue.modele.endScreen.getY(),300, 300,fier1.getImageObserver());
+				
+				g2d.drawImage(fier2.getImage(), vue.modele.endScreen.getX()+650, vue.modele.endScreen.getY(),350, 350,fier2.getImageObserver());
+				
+				
+				
+				//g2d.drawImage(fier3.getImage(), vue.modele.endScreen.getX()+300, vue.modele.endScreen.getY()+200,300, 300,fier3.getImageObserver());
+			}			
+			if(vue.modele.lose) {
+				
 				// dessin d'un fond  noir avec transparance pour un certain effet
 				g2d.setColor(new Color(3,3,3,200));
-				g2d.fillRect(0,0,modele.gameWidth,modele.gameHeight);
-
+				g2d.fillRect(0,0,vue.modele.gameWidth,vue.modele.gameHeight);
 				//dégradé1 de couleur
-				GradientPaint gp0 = new GradientPaint(modele.endScreen.getX()-100, 0, transparentColor1, modele.gameWidth-100, modele.gameHeight, transparentColor2, true);                
+				GradientPaint gp5 = new GradientPaint(vue.modele.endScreen.getX()-100, 0, transparentColor1, vue.modele.gameWidth-100, vue.modele.gameHeight, transparentColor2, true);                
+				g2d.setPaint(gp5);
+				g2d.fillRect(vue.modele.endScreen.getX(), vue.modele.endScreen.getY(), vue.modele.endScreen.getWidth(), vue.modele.endScreen.getHeight());
+				
+				//dessine le degrade de couleur
+				GradientPaint gp0 = new GradientPaint(vue.modele.endScreen.getX()-100,
+									0, transparentColor1, 
+									vue.modele.gameWidth-100,
+									vue.modele.gameHeight,
+									transparentColor2, true);                
 				g2d.setPaint(gp0);
-				g2d.fillRect(modele.endScreen.getX(), modele.endScreen.getY(), modele.endScreen.getWidth(), modele.endScreen.getHeight());
+				g2d.fillRect(vue.modele.endScreen.getX(),
+							vue.modele.endScreen.getY(), 
+							vue.modele.endScreen.getWidth(),
+							vue.modele.endScreen.getHeight());
+				
+				//dessine le carer centrale
+				GradientPaint gp7 = new GradientPaint( vue.modele.endScreen.getX() + 100 + (vue.modele.endScreen.getWidth() - 200) / 2  ,
+														vue.modele.endScreen.getY()+100,
+														new Color(107, 0, 196),
+														vue.modele.endScreen.getX() + 100 + (vue.modele.endScreen.getWidth() - 200) / 2, 
+														vue.modele.endScreen.getY() + 100 + vue.modele.endScreen.getHeight() - 200,
+														new Color(0, 255, 233), true);                
+				g2d.setPaint(gp7);
+				g2d.setStroke(new BasicStroke(8));
+				g2d.drawRoundRect(
+								vue.modele.endScreen.getX()+100,
+								vue.modele.endScreen.getY()+100,
+								vue.modele.endScreen.getWidth() - 200, vue.modele.endScreen.getHeight() - 200,10,10);
+				//dessine le you win
+				g2d.setFont(firstWord);
+				GradientPaint gp3 = new GradientPaint(vue.modele.endScreen.getX()+350,
+						vue.modele.endScreen.getY()+200,
+						new Color(107, 0, 196), 
+						vue.modele.endScreen.getX() +350,
+						vue.modele.endScreen.getY()+400,
+						new Color(0, 255, 233), true);
+				g2d.setPaint(gp3);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.drawString("YOU LOOSE",vue.modele.endScreen.getX()+250, vue.modele.endScreen.getY()+300);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+				
+				//dessine le score final
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.drawString(vue.modele.stringScore, vue.modele.endScreen.getX()+400 -(firstWord.getSize()/2), vue.modele.endScreen.getY()+440);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+				
+				//dessine your  score
+				g2d.setFont(therdWord);
+				
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.drawString("Your Score :",vue.modele.endScreen.getX()+350, vue.modele.endScreen.getY()+350);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+				
 				g2d.setTransform(oldTransform);
-				modele.backlevelSelectionButton.setBounds(modele.endScreen.getX()+200, modele.endScreen.getY()+500, 200, 60);
+				
+				this.add(vue.backLevelSelectButton);
+				this.add(vue.restartButton);
+				
+				vue.backLevelSelectButton.setBounds(vue.modele.endScreen.getX()+400, vue.modele.endScreen.getY()+500, 64, 64);
+				vue.restartButton.setBounds(vue.modele.endScreen.getX()+500, vue.modele.endScreen.getY()+500, 64, 64);
 			}
 		}
 
