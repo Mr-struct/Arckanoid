@@ -82,6 +82,17 @@ public class PanelGame extends JPanel {
 
 			e.printStackTrace();
 		}
+
+		this.add(vue.backLevelSelectButton);
+		this.add(vue.restartButton);
+		this.add(vue.backLevelSelectButton);
+		this.add(vue.nextLevelButton);
+		
+		vue.backLevelSelectButton.setBounds(-10,-10,-10,-10);
+		vue.restartButton.setBounds(-10,-10,-10,-10);
+		
+		vue.backLevelSelectButton.setBounds(-10,-10,-10,-10);
+		vue.nextLevelButton.setBounds(-10,-10,-10,-10);
 	}
 
 	public void paintComponent(Graphics g) {
@@ -338,8 +349,6 @@ public class PanelGame extends JPanel {
 				
 				//dessine les button
 				g2d.setTransform(oldTransform);
-				this.add(vue.backLevelSelectButton);
-				this.add(vue.nextLevelButton);
 				
 				vue.backLevelSelectButton.setBounds(vue.modele.endScreen.getX()+400, vue.modele.endScreen.getY()+500, 64, 64);
 				vue.nextLevelButton.setBounds(vue.modele.endScreen.getX()+500, vue.modele.endScreen.getY()+500, 64, 64);
@@ -420,9 +429,6 @@ public class PanelGame extends JPanel {
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 				
 				g2d.setTransform(oldTransform);
-				
-				this.add(vue.backLevelSelectButton);
-				this.add(vue.restartButton);
 				
 				vue.backLevelSelectButton.setBounds(vue.modele.endScreen.getX()+400, vue.modele.endScreen.getY()+500, 64, 64);
 				vue.restartButton.setBounds(vue.modele.endScreen.getX()+500, vue.modele.endScreen.getY()+500, 64, 64);
