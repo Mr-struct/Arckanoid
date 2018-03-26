@@ -219,6 +219,8 @@ public class Modele {
 	public void useBonus(Bonus b) {
 		synchronized(bonus){
 			b.timer.cancel();
+			lancerBalles();
+			raquette.setWidth(raquette.getInitWidth());
 			
 			//Multiballes
 			if(b.getType() == 0) {
@@ -247,14 +249,15 @@ public class Modele {
 			
 			//raquette agrandie
 			if(b.getType() == 1) {
-				curBonus = 1;
-				raquette.setWidth(raquette.getInitWidth()+50);
+				raquette.setWidth(raquette.getInitWidth() + 50);
 			}
 
 			//raquette rétrécie
 			if(b.getType() == 2) {
-				curBonus = 2;
-				raquette.setWidth(raquette.getInitWidth()-50);
+				raquette.setWidth(raquette.getInitWidth() - 50);
+			}
+			
+			if(b.getType() == 3) {
 			}
 			
 			curBonus = b.getType();
@@ -295,61 +298,60 @@ public class Modele {
 				balle.setvY(-balle.getvY());
 		}
 		
-		synchronized (briques){
-			musicImpacte = (brique.note);
-			impactSound.note_on(musicImpacte);
-			if(brique.getNumberOfColision() > 1){
-				brique.setNumberOfColision(brique.getNumberOfColision() - 1);
-				if(brique.getType() == 2) brique.setType(5);
-			}else if(briques.contains(brique)){
-				intScore = intScore + brique.getValue();
-				stringScore = String.valueOf(intScore);
-				
-				//affiche les points gagnés
-				AnimatedObject effect = new AnimatedObject(brique.getX()+30,brique.getY(), "+" + brique.getValue());
-				synchronized(effects) {effects.add(effect);}
-				effect.timer.schedule(new TimerTask(){
-					public void run() {
-						effect.setY(effect.getY()-1);
-						effect.setAge(effect.getAge() + 2);
-						if(effect.getAge() >= 100){
-							synchronized(effects){effects.remove(effect);}
-							this.cancel();
-						}
+		musicImpacte = (brique.note);
+		impactSound.note_on(musicImpacte);
+		if(brique.getNumberOfColision() > 1){
+			brique.setNumberOfColision(brique.getNumberOfColision() - 1);
+			if(brique.getType() == 2) brique.setType(5);
+		}else if(briques.contains(brique)){
+			intScore = intScore + brique.getValue();
+			stringScore = String.valueOf(intScore);
+			
+			//affiche les points gagnés
+			AnimatedObject effect = new AnimatedObject(brique.getX()+30,brique.getY(), "+" + brique.getValue());
+			synchronized(effects) {effects.add(effect);}
+			effect.timer.schedule(new TimerTask(){
+				public void run() {
+					effect.setY(effect.getY()-1);
+					effect.setAge(effect.getAge() + 2);
+					if(effect.getAge() >= 100){
+						synchronized(effects){effects.remove(effect);}
+						this.cancel();
 					}
-				}, 0, 20);
-				
-				//ajouter un effet d'explosion
-				AnimatedObject explosion = new AnimatedObject(brique.getX()+30,brique.getY()+30,10,10);
-				synchronized(explosions) {explosions.add(explosion);}
-				explosion.timer.schedule(new TimerTask(){
-					public void run() {
-						explosion.setAge(explosion.getAge() + 2);
-						if(explosion.getAge() >= 50){
-							synchronized(explosions){explosions.remove(explosion);}
-							this.cancel();
-						}
-					}
-				}, 0, 20);
-				
-				//ajoute un bonus
-				int btype = random.nextInt(3);
-				if(btype == 0 || btype != curBonus){
-					Bonus b = new Bonus(brique.getX() + 10, brique.getY(), 50, 50, btype);
-					synchronized(bonus){bonus.add(b);}
-					b.timer.schedule(new TimerTask(){
-						public void run() {
-							//déplacement
-							b.setY(b.getY()+1);
-							//collision avec la raquette
-							if(b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth())
-								useBonus(b);
-						}
-					}, 0, 10);
 				}
-				briques.remove(brique);
-				if(briques.isEmpty()) gagne();
+			}, 0, 20);
+			
+			//ajouter un effet d'explosion
+			AnimatedObject explosion = new AnimatedObject(brique.getX()+30,brique.getY()+30,10,10);
+			synchronized(explosions) {explosions.add(explosion);}
+			explosion.timer.schedule(new TimerTask(){
+				public void run() {
+					explosion.setAge(explosion.getAge() + 2);
+					if(explosion.getAge() >= 50){
+						synchronized(explosions){explosions.remove(explosion);}
+						this.cancel();
+					}
+				}
+			}, 0, 20);
+			
+			//ajoute un bonus
+			int btype = random.nextInt(4);
+			if((btype == 0 && balles.size() == 1) || (btype != 0 && btype != curBonus)){
+				Bonus b = new Bonus(brique.getX() + 10, brique.getY(), 50, 50, btype);
+				synchronized(bonus){bonus.add(b);}
+				b.timer.schedule(new TimerTask(){
+					public void run() {
+						//déplacement
+						b.setY(b.getY()+1);
+						//collision avec la raquette
+						if(b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth())
+							useBonus(b);
+					}
+				}, 0, 10);
 			}
+			briques.remove(brique);
+			if(briques.isEmpty()) gagne();
+			
 		};
 		
 		return true;
@@ -398,21 +400,29 @@ public class Modele {
 				//collision avec la raquette
 				if(b.getvY() > 0 && b.getdY() + b.getHeight() >= raquette.getY() && b.getdY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getdX() + b.getWidth() > raquette.getX() && b.getdX() < raquette.getX() + raquette.getWidth()){
 					
-					// son lors de la collision avec la raquette
+					// son
 					impactSound.note_on(musicImpacte+2);
 					impactSound.note_on(musicImpacte+5);
-					////////////////////////////////////////////
 					
-					b.setvX(((b.getdX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * b.getvY());
-					b.setvY(-b.getvY());
+					if(curBonus == 3){
+						b.setvX(0);
+						b.setvY(0);
+						b.setRaquetteX(b.getIntX() - raquette.getX());
+						b.setRaquetteY(b.getIntY() - raquette.getY());
+					}else{
+						b.setvX(((b.getdX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * b.getvY());
+						b.setvY(-b.getvY());
+					}
 				}
 				//collision avec les briques
-				Iterator<Brique> i = briques.iterator();
-				boolean c = false;
-				while(i.hasNext() && !c){
-					Brique brique = i.next();
-					if(b.getdX() + b.getWidth() > brique.getX() && b.getdX() < brique.getX() + brique.getWidth() && b.getdY() + b.getHeight() > brique.getY() && b.getdY() < brique.getY() + brique.getHeight()){
-						c = collisionBrique(b, brique);
+				synchronized (briques){
+					Iterator<Brique> i = briques.iterator();
+					boolean c = false;
+					while(i.hasNext() && !c){
+						Brique brique = i.next();
+						if(b.getdX() + b.getWidth() > brique.getX() && b.getdX() < brique.getX() + brique.getWidth() && b.getdY() + b.getHeight() > brique.getY() && b.getdY() < brique.getY() + brique.getHeight()){
+							c = collisionBrique(b, brique);
+						}
 					}
 				}
 			}
