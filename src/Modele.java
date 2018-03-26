@@ -1,10 +1,6 @@
 
 import java.io.*;
 import java.util.*;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
 
 public class Modele {
 
@@ -26,7 +22,7 @@ public class Modele {
 	
 	protected int intScore = 0;
 	
-	protected int levelDifficulty = 7;
+	protected int levelDifficulty = 5;
 
 	protected int currentDifficulty;
 	
@@ -105,6 +101,10 @@ this.win = false;
 		stringScore = "00";
 		
 		intScore = 0;
+		
+		currentDifficulty = levelDifficulty;
+		
+		curBonus = -1;
 		
 		level = new Level(filLevel);
 		/*
@@ -351,8 +351,14 @@ this.win = false;
 						b.setRaquetteX(b.getIntX() - raquette.getX());
 						b.setRaquetteY(b.getIntY() - raquette.getY());
 					}else{
+						/*
 						b.setvX(((b.getdX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * b.getvY());
 						b.setvY(-b.getvY());
+						*/
+						double angle = ((b.getdX() + b.getWidth() - raquette.getX()) * Math.toRadians(140) / raquette.getWidth()) + Math.toRadians(20);
+						if(angle > Math.toRadians(160)) angle = Math.toRadians(160);
+						b.setvX(-Math.cos(angle) * currentDifficulty);
+						b.setvY(-Math.sin(angle) * currentDifficulty);
 					}
 				}
 				//collision avec les briques
@@ -482,10 +488,14 @@ this.win = false;
 				synchronized(b){
 	
 					if(b.getvX() == 0 && b.getvY() == 0){
-	
+						/*
 						b.setvY(-levelDifficulty);
 						b.setvX(((b.getdX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * -b.getvY());
-	
+						*/
+						double angle = ((b.getdX() + b.getWidth() - raquette.getX()) * Math.toRadians(140) / raquette.getWidth()) + Math.toRadians(20);
+						if(angle > Math.toRadians(160)) angle = Math.toRadians(160);
+						b.setvX(-Math.cos(angle) * currentDifficulty);
+						b.setvY(-Math.sin(angle) * currentDifficulty);
 					}
 				}
 			}
