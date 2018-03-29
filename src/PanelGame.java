@@ -35,9 +35,9 @@ public class PanelGame extends JPanel {
 	int widthBalle = 10, heightBalle = 10;
 
 	public PanelGame (int width,int height,Vue vue) {
-
+	
 		super();
-
+		
 		this.vue = vue;
 
 		this.setSize(width,height);
@@ -82,21 +82,18 @@ public class PanelGame extends JPanel {
 
 			e.printStackTrace();
 		}
-
-		this.add(vue.backLevelSelectButton);
-		this.add(vue.restartButton);
 		this.add(vue.backLevelSelectButton);
 		this.add(vue.nextLevelButton);
-		
-		vue.backLevelSelectButton.setBounds(-10,-10,-10,-10);
-		vue.restartButton.setBounds(-10,-10,-10,-10);
-		
-		vue.backLevelSelectButton.setBounds(-10,-10,-10,-10);
-		vue.nextLevelButton.setBounds(-10,-10,-10,-10);
+		this.add(vue.restartButton);
 	}
 
 	public void paintComponent(Graphics g) {
+		
 		Graphics2D g2d = (Graphics2D)g;
+		vue.backLevelSelectButton.setBounds(-this.getWidth(), -this.getHeight(), 0, 0);
+		vue.restartButton.setBounds(-this.getWidth(),-this.getHeight(), 0, 0);
+		vue.backLevelSelectButton.setBounds(-this.getWidth(), -this.getHeight(), 0, 0);
+		vue.nextLevelButton.setBounds(-this.getWidth(),-this.getHeight(), 0, 0);
 		
 		AffineTransform tx = new AffineTransform();
 		AffineTransform oldTransform = new AffineTransform();
@@ -140,8 +137,11 @@ public class PanelGame extends JPanel {
 		synchronized (vue.modele.balles){
 			for(Balle balle: vue.modele.balles) {
 				//dessine l'ombre de la balle
-				g2d.setColor(new Color(6,6,6,128));
-				g2d.fillOval(balle.getIntX()+15,balle.getIntY()+15,balle.getWidth(),balle.getHeight());
+				g2d.setColor(new Color(6, 6, 6,128));
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.fillOval(balle.getIntX()+10,balle.getIntY()+10,balle.getWidth(),balle.getHeight());
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+
 			}
 		}
 		
@@ -284,7 +284,6 @@ public class PanelGame extends JPanel {
 			g2d.fillRect(25,210, 155, 10);//droiteBas
 			
 			// dessine le cadre à droite 
-			
 			g2d.setColor(Color.BLACK);
 			g2d.drawRect(vue.modele.gameWidth-180, 10, 160, 200);//gauche	
 			g2d.drawRect(20, 10, 160, 200);//droite
@@ -346,13 +345,8 @@ public class PanelGame extends JPanel {
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 				g2d.drawString("Your Score :",vue.modele.endScreen.getX()+350, vue.modele.endScreen.getY()+350);
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
-				
-				//dessine les button
-				g2d.setTransform(oldTransform);
-				
-				vue.backLevelSelectButton.setBounds(vue.modele.endScreen.getX()+400, vue.modele.endScreen.getY()+500, 64, 64);
-				vue.nextLevelButton.setBounds(vue.modele.endScreen.getX()+500, vue.modele.endScreen.getY()+500, 64, 64);
-				
+	
+				//dessine les conffetis
 				g2d.drawImage(imgConfettis.getImage(), vue.modele.endScreen.getX(), vue.modele.endScreen.getY(),vue.modele.endScreen.getWidth(), vue.modele.endScreen.getHeight(),imgConfettis.getImageObserver());
 
 				// dessine les feu d'artifis
@@ -363,11 +357,21 @@ public class PanelGame extends JPanel {
 				g2d.drawImage(fier1.getImage(), vue.modele.endScreen.getX()+680, vue.modele.endScreen.getY(),300, 300,fier1.getImageObserver());
 				
 				g2d.drawImage(fier2.getImage(), vue.modele.endScreen.getX()+650, vue.modele.endScreen.getY(),350, 350,fier2.getImageObserver());
-				
-				
-				
+			
 				//g2d.drawImage(fier3.getImage(), vue.modele.endScreen.getX()+300, vue.modele.endScreen.getY()+200,300, 300,fier3.getImageObserver());
+				/*if( vue.backLevelSelectButton.getParent() == null && vue.nextLevelButton.getParent() == null ) {
+					this.add(vue.nextLevelButton);
+					this.add(vue.backLevelSelectButton);
+				}*/
+				//dessine les button
+				g2d.setTransform(oldTransform);
+				int x = this.getWidth()/2;
+				int y = vue.modele.endScreen.getY()+this.getHeight()/2 + this.getHeight()/8;;
+				vue.backLevelSelectButton.setBounds(x-this.getWidth()/8 - 64, y, 64, 64);
+				vue.nextLevelButton.setBounds(x+this.getWidth()/8,y, 64, 64);
+	
 			}			
+			else
 			if(vue.modele.lose) {
 				
 				// dessin d'un fond  noir avec transparance pour un certain effet
@@ -428,11 +432,18 @@ public class PanelGame extends JPanel {
 				g2d.drawString("Your Score :",vue.modele.endScreen.getX()+350, vue.modele.endScreen.getY()+350);
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 				
+				// on dessine les button
+				/*if( vue.backLevelSelectButton.getParent() == null && vue.restartButton.getParent() == null ) {
+					this.add(vue.restartButton);
+					this.add(vue.backLevelSelectButton);
+				}*/
 				g2d.setTransform(oldTransform);
-				
-				vue.backLevelSelectButton.setBounds(vue.modele.endScreen.getX()+400, vue.modele.endScreen.getY()+500, 64, 64);
-				vue.restartButton.setBounds(vue.modele.endScreen.getX()+500, vue.modele.endScreen.getY()+500, 64, 64);
+				int x = this.getWidth()/2;
+				int y = vue.modele.endScreen.getY()+this.getHeight()/2 + this.getHeight()/8;
+				vue.backLevelSelectButton.setBounds(x-this.getWidth()/8 - 64, y, 64, 64);
+				vue.restartButton.setBounds(x+this.getWidth()/8,y, 64, 64);
 			}
+
 		}
 
 	}

@@ -1,0 +1,17 @@
+RGRGRGRGR
+VBVBVBVBV
+BSBSBSBSB
+oGGGGGGGo
+ooRRRRRoo
+oooVVVooo
+ooooBoooo
+ooooooooo
+./levels/level1.txt
+Easy
+: 1330
+yes
+level 0
+The WAY
+9
+8
+

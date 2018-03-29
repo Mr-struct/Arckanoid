@@ -6,11 +6,11 @@ ooRRRRRoo
 oooVVVooo
 ooooBoooo
 ooooooooo
-./levels/level3.txt
-Normal
-: 0
-no
-level 2
+./levels/level1.txt
+Easy
+: 1330
+yes
+level 0
 The WAY
 9
 8

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
@@ -28,9 +29,10 @@ public class ControleurVue {
 
 		//gere le clic sur le boutton nouveau jeux
 		this.vue.tasksButton.addMouseListener(new MouseListener() {public void mouseClicked(MouseEvent e) {
+				
 				vue.thisPanel.removeAll();
 
-				vue.panelLevelSelect = new PanelLevelSelect(vue.getWidth(),vue.getHeight(),vue ,modele);
+				vue.panelLevelSelect = new PanelLevelSelect(vue);
 
 				vue.thisPanel.add(vue.panelLevelSelect,BorderLayout.CENTER);
 
@@ -298,6 +300,7 @@ public class ControleurVue {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
 				vue.thisPanel.removeAll();
 
 				vue.panelMenu = new PanelMenu(vue.getWidth(),vue.getHeight(),vue);
@@ -403,9 +406,10 @@ public class ControleurVue {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
 				vue.thisPanel.removeAll();
-
-				vue.panelLevelSelect = new PanelLevelSelect(vue.getWidth(),vue.getHeight(),vue ,modele);
+				
+				vue.panelLevelSelect = new PanelLevelSelect(vue);
 
 				vue.thisPanel.add(vue.panelLevelSelect,BorderLayout.CENTER);
 

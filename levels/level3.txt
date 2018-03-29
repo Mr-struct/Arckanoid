@@ -1,16 +1,16 @@
-ooooooooo
-ooooooooo
-ooooooooo
-ooooooooo
-ooooooooo
-ooooooooo
+RGRGRGRGR
+VBVBVBVBV
+BSBSBSBSB
+oGGGGGGGo
+ooRRRRRoo
+oooVVVooo
 ooooBoooo
 ooooooooo
-./levels/level4.txt
+./levels/level1.txt
 Easy
-: 10
+: 1330
 yes
-level 3
+level 0
 The WAY
 9
 8

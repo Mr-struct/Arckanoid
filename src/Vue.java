@@ -46,7 +46,7 @@ public class Vue extends JFrame {
 	protected JSlider sliderMainSound;
 	protected JSlider sliderLevel;
 	protected Timer timerView = new Timer();
-	
+	private int numberOfLevels = 11;
 	@SuppressWarnings("unused")
 	protected Modele modele;
 	
@@ -58,6 +58,14 @@ public class Vue extends JFrame {
 		
 		this.setLayout(new BorderLayout());
 		
+		modelOfList = new DefaultListModel<String>();
+		
+		list = new JList<String>(modelOfList);
+		for (int i = 0; i <numberOfLevels; i++) {
+			
+			modelOfList.addElement("level"+i);
+		}
+
 		this.setSize(modele.gameWidth,modele.gameHeight);
 		/*
 		 * initialise tout les boutons
@@ -144,10 +152,9 @@ public class Vue extends JFrame {
 		timerView.schedule(new TimerTask(){
 
 			public void run(){
-
+				
 				panelMenu.repaint();
-
-			}
+			}	
 
 		}, 0, 20);
 
