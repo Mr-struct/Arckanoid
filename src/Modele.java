@@ -28,6 +28,8 @@ public class Modele {
 	
 	protected String stringScore = "00";
 	
+	protected int vies = 3;
+	
 	private boolean running;
 	
 	private Object runningLock = new Object();
@@ -101,6 +103,8 @@ this.win = false;
 		stringScore = "00";
 		
 		intScore = 0;
+		
+		vies = 3;
 		
 		currentDifficulty = levelDifficulty;
 		
@@ -313,9 +317,36 @@ this.win = false;
 				//balle perdue (sortie de l'�cran par le bas)
 				if(b.getdY() > gameHeight){
 					b.timer.cancel();
+
+					//ajouter un effet d'explosion
+					AnimatedObject explosion = new AnimatedObject(b.getIntX() + 10, gameHeight - 25,10,10);
+					synchronized(explosions) {explosions.add(explosion);}
+					explosion.timer.schedule(new TimerTask(){
+						public void run() {
+							explosion.setAge(explosion.getAge() + 2);
+							if(explosion.getAge() >= 50){
+								synchronized(explosions){explosions.remove(explosion);}
+								this.cancel();
+							}
+						}
+					}, 0, 20);
+					
 					synchronized(balles){
 						balles.remove(b);
-						if(balles.isEmpty()) perdu();
+						if(balles.isEmpty()){
+							vies --;
+							if(vies <= 0)
+								perdu();
+							else{
+								Balle nb = new Balle (0, 0, 0, 0, (raquette.getWidth()/2), -20, 20, 20);
+								balles.add(nb);
+								nb.timer.schedule(new TimerTask(){
+									public void run() {
+										physiqueBalle(nb);
+									}
+								}, 0, 10);
+							}
+						}
 					}
 				}
 				//collision avec les murs
@@ -324,7 +355,6 @@ this.win = false;
 					// son lors de la collision avec le mur
 					impactSound.note_on(musicImpacte);
 					impactSound.note_on(musicImpacte-3);
-					////////////////////////////////////////////
 					
 					b.setvX(-b.getvX());
 				}
@@ -334,7 +364,6 @@ this.win = false;
 					// son lors de la collision avec le plafond
 					impactSound.note_on(musicImpacte);
 					impactSound.note_on(musicImpacte-2);
-					////////////////////////////////////////////
 					
 					b.setvY(-b.getvY());
 				}
@@ -351,10 +380,6 @@ this.win = false;
 						b.setRaquetteX(b.getIntX() - raquette.getX());
 						b.setRaquetteY(b.getIntY() - raquette.getY());
 					}else{
-						/*
-						b.setvX(((b.getdX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * b.getvY());
-						b.setvY(-b.getvY());
-						*/
 						double angle = ((b.getdX() + b.getWidth() - raquette.getX()) * Math.toRadians(140) / raquette.getWidth()) + Math.toRadians(20);
 						if(angle > Math.toRadians(160)) angle = Math.toRadians(160);
 						b.setvX(-Math.cos(angle) * currentDifficulty);
@@ -488,10 +513,6 @@ this.win = false;
 				synchronized(b){
 	
 					if(b.getvX() == 0 && b.getvY() == 0){
-						/*
-						b.setvY(-levelDifficulty);
-						b.setvX(((b.getdX() + b.getWidth() - raquette.getX() - (raquette.getWidth() / 2)) / (raquette.getWidth() / 2)) * -b.getvY());
-						*/
 						double angle = ((b.getdX() + b.getWidth() - raquette.getX()) * Math.toRadians(140) / raquette.getWidth()) + Math.toRadians(20);
 						if(angle > Math.toRadians(160)) angle = Math.toRadians(160);
 						b.setvX(-Math.cos(angle) * currentDifficulty);
