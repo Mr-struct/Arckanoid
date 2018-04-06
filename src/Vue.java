@@ -77,7 +77,7 @@ public class Vue extends JFrame implements MouseListener {
 			Image tasksDefaultImg = ImageIO.read(new File("./Obj/buttonsImages/play.png"));
 			Image tasksEntredImg = ImageIO.read(new File("./Obj/buttonsImages/playEntred.png"));
 			Image tasksSelectdImg = ImageIO.read(new File("./Obj/buttonsImages/playSelected.png"));
-			Image blockedPlayImg =  ImageIO.read(new File("./Obj/buttonsImages/Blockedplay.png"));
+			//Image blockedPlayImg =  ImageIO.read(new File("./Obj/buttonsImages/Blockedplay.png"));
 			tasksButton = new ButtonImage(new ImageIcon(tasksDefaultImg),new ImageIcon(tasksEntredImg),new ImageIcon(tasksSelectdImg),soundBT);
 			
 			//initialise le bouton settings du menu avec les bonnes images
