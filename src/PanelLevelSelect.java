@@ -88,7 +88,7 @@ public class PanelLevelSelect extends JPanel{
 		AffineTransform oldTransform = new AffineTransform();
 		oldTransform = g2d.getTransform();
 		tx.scale((float) this.getWidth()/ (float)this.getWidth(), (float) this.getHeight()/ (float)this.getHeight());
-		 * je desactive le scale car sous windows il y'a des saut d'image que je n'arive pas à resoudre 
+		 * je desactive le scale car sous windows il y'a des saut d'image que je n'arive pas ï¿½ resoudre 
 		 * du coup on calcule tout en focntion de la taille de l'ecran
 		 * g2d.setTransform(tx);
 		 */
@@ -98,19 +98,19 @@ public class PanelLevelSelect extends JPanel{
 		g2d.drawImage(imgBackground1.getImage(),0,0,this.getWidth(),this.getWidth(), null);
 		
 		// dessin d'un fond  noir avec transparance pour un certain effet
-		g2d.setColor(new Color(3,3,3,200));
-		g2d.fillRect(0,0,this.getWidth(),this.getWidth());
+		//g2d.setColor(new Color(3,3,3,200));
+		//g2d.fillRect(0,0,this.getWidth(),this.getWidth());
 		
 		
 
 		//de la transparance sur les coter de la fenaitre pour un effet !
-		Color transparentColor1 = new Color(59, 59, 112, 128);
-		Color transparentColor2 = new Color(159, 59, 240,255);
+		Color transparentColor1 = new Color(0, 0, 0, 80);
+		Color transparentColor2 = new Color(0, 0, 0,200);
 
-		//dégradé1 de couleur
-		GradientPaint gp0 = new GradientPaint(this.getWidth()-100, 0, transparentColor1,this.getWidth()-100, this.getHeight(), transparentColor2, true);                
+		//dï¿½gradï¿½1 de couleur
+		GradientPaint gp0 = new GradientPaint(100, 0, transparentColor1, 100 + (this.getWidth()-200) /2, this.getHeight(), transparentColor2, true);                
 		g2d.setPaint(gp0);
-		//g2d.fillRect(100, 0, this.getWidth()-200, this.getWidth());
+		g2d.fillRect(100, 0, this.getWidth()-200, this.getWidth());
 		
 		// dessine le nom du niveau selectioner
 		g2d.setFont(firstWord);
@@ -118,23 +118,7 @@ public class PanelLevelSelect extends JPanel{
 		GradientPaint gp1 = new GradientPaint(this.getWidth()/2-200,60,new Color(8, 30, 102),this.getWidth()/2-100,0,new Color(190, 8, 214));
 	    g2d.setPaint(gp1);
 	   
-	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString(modele.level.levelName,this.getWidth()/2-100, 60);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
-		
-		g2d.setFont(secondWord);
-		g2d.setColor(Color.CYAN);
-		 
-	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString("Hight Score " + modele.level.levelHightScore,200, this.getHeight()-250);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
-		
-	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString("Difficulty : "+modele.level.levelDifficulty,this.getWidth() - 500 - secondWord.getSize(), this.getHeight()-250);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
-		
-		//dessine les buttons
-		int x = this.getWidth() / 2 ;
+	    int x = this.getWidth() / 2 ;
 		
 		int y = (this.getHeight() / 2 + this.getWidth() / 7);
 		
@@ -143,17 +127,33 @@ public class PanelLevelSelect extends JPanel{
 			y = (this.getHeight() / 2 + this.getWidth() / 3);
 		}
 		
-		//condition pour activé le boutoun play 
+	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.drawString(modele.level.levelName,this.getWidth()/2-100, 120);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+		
+		g2d.setFont(secondWord);
+		g2d.setColor(Color.CYAN);
+		 
+	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.drawString("Hight Score " + modele.level.levelHightScore,200, y-70);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+		
+	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.drawString("Difficulty : "+modele.level.levelDifficulty,this.getWidth() - 500 - secondWord.getSize(), y-70);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+		
+		//dessine les buttons
+		//condition pour activï¿½ le boutoun play 
 		if (modele.level.canBePlayed){
-			this.vue.playButton.setBounds(x+this.getWidth()/4 ,  y, 64, 64);
+			this.vue.playButton.setBounds(x+this.getWidth()/4 ,  y-30, 64, 64);
 		//	this.vue.playButton.setEnabled(true);
 		
 		}
 		
-		this.vue.backButtonTasks.setBounds(x-this.getWidth()/4 - 64, y, 64, 64);
+		this.vue.backButtonTasks.setBounds(x-this.getWidth()/4 - 64, y-30, 64, 64);
 		
 		// affichage de la liste 
-		vue.pane.setBounds(200,100,this.getWidth()-400,330);
+		vue.pane.setBounds(200,200,this.getWidth()-400,330);
 
 	}
 

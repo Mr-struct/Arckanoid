@@ -108,22 +108,12 @@ public class PanelSettings extends JPanel{
 		g2d.drawImage(picBackGround.getImage(), 0, 0,vue.modele.gameWidth, vue.modele.gameHeight,null);
 		//de la transparance sur les coter de la fenaitre pour un effet !
 		Color transparentColor1 = new Color(0, 0, 0, 128);
-		Color transparentColor2 = new Color(0, 0, 0,255);
+		Color transparentColor2 = new Color(0, 0, 0,200);
 
 		//dégradé1 de couleur
-		GradientPaint gp0 = new GradientPaint(vue.modele.gameWidth-100, 0, transparentColor1,vue.modele.gameWidth - 100, vue.modele.gameHeight, transparentColor2, true);                
+		GradientPaint gp0 = new GradientPaint(100, 0, transparentColor1, 100 + (vue.modele.gameWidth -200)/2, vue.modele.gameHeight, transparentColor2, true);                
 		g2d.setPaint(gp0);
 		g2d.fillRect(100, 0, vue.modele.gameWidth - 200, vue.modele.gameHeight);
-		
-		g2d.setTransform(oldTransform);
-		// dessine les sliders
-		//vue.sliderMainSound.paintImmediately(this.getWidth()/2-this.getHeight()/4, this.getHeight()/2-220, this.getWidth()/2, 50);
-		//	vue.sliderMainSound.setBounds(this.getWidth()/2-200, this.getHeight()/2- this.getHeight()/4, this.getWidth()/2, 50);
-		vue.sliderFxSound.setBounds(this.getWidth()/2-200, this.getHeight()/2-this.getHeight()/3,  this.getWidth()/2, 50);
-		//dessine le slider pour le niveau de dificulté 
-		vue.sliderLevel.setBounds(this.getWidth()/2-200, this.getHeight()/2-this.getHeight()/6  ,  this.getWidth()/2, 50);
-		// dessine le bouton
-		this.vue.backButtonSetting.setBounds(this.getWidth()/2-this.getWidth()/4 , this.getHeight()-this.getHeight()/3,64,64);
 		
 		g2d.setTransform(tx);
 		//dessines les labeles
@@ -162,7 +152,16 @@ public class PanelSettings extends JPanel{
 			g2d.drawString("God Mode " + (vue.modele.levelDifficulty*10-10)+"%", vue.modele.gameWidth / 2, vue.modele.gameHeight / 2 + 40 );
 		}
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
-
+		
+		g2d.setTransform(oldTransform);
+		// dessine les sliders
+		//vue.sliderMainSound.paintImmediately(this.getWidth()/2-this.getHeight()/4, this.getHeight()/2-220, this.getWidth()/2, 50);
+		//	vue.sliderMainSound.setBounds(this.getWidth()/2-200, this.getHeight()/2- this.getHeight()/4, this.getWidth()/2, 50);
+		vue.sliderFxSound.setBounds(this.getWidth()/2-200, this.getHeight()/2-this.getHeight()/3,  this.getWidth()/2, 50);
+		//dessine le slider pour le niveau de dificulté 
+		vue.sliderLevel.setBounds(this.getWidth()/2-200, this.getHeight()/2-this.getHeight()/6  ,  this.getWidth()/2, 50);
+		// dessine le bouton
+		this.vue.backButtonSetting.setBounds(this.getWidth()/2-this.getWidth()/4 , this.getHeight()-this.getHeight()/3,64,64);
 	}
 
 	// class interne qui redefinie le slider
