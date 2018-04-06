@@ -269,7 +269,7 @@ public class PanelGame extends JPanel{
 			for(AnimatedObject o : vue.modele.lostBallsAnimation) {	
 				g2d.setStroke(new BasicStroke(o.getAge()));
 				g2d.setColor(new Color(255,0,0,130-o.getAge()));
-				g2d.drawRect(o.getAge(), o.getY(), o.getWidth(), o.getHeight());
+				g2d.drawRect(0, o.getY(), vue.modele.gameWidth, o.getHeight());
 			}
 		}
 		//dessine l'eclaire si la raquette est magnetique
@@ -344,7 +344,7 @@ public class PanelGame extends JPanel{
 		g2d.fillRoundRect(180, 15, 10, vue.modele.gameHeight/2-vue.modele.gameHeight/20  + 79,5,5);//Gauche Gauche
 		g2d.fillRoundRect(25,vue.modele.gameHeight/2-vue.modele.gameHeight/20  + 84, 155, 10,5,5);//gauche Bas
 
-		// dessine le cadre a  droite 
+		// dessine le cadre aï¿½ droite 
 		GradientPaint gpCardre1 = new GradientPaint(vue.modele.gameWidth-180 + 160/2, 10, transparentColor1,vue.modele.gameWidth-180 + 160/2, vue.modele.gameHeight/2-vue.modele.gameHeight/20  + 74, transparentColor2, true);                
 		g2d.setPaint(gpCardre1);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
