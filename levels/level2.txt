@@ -6,7 +6,7 @@ ooRRRRRoo
 oooVVVooo
 ooooBoooo
 ooooooooo
-./levels/level1.txt
+level3.txt
 Easy
 : 1330
 yes

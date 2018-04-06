@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,10 +28,10 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 public class PanelLevelSelect extends JPanel{
 	private Vue vue;
 	private Modele modele; 
-	protected Image imgBackground;
+	//protected Image imgBackground;
 	private Font firstWord;
 	private Font secondWord;
-
+	protected ImageIcon imgBackground1;
 	public PanelLevelSelect(Vue vue){
 
 		this.vue = vue;
@@ -39,13 +40,9 @@ public class PanelLevelSelect extends JPanel{
 		
 		this.setSize(vue.getWidth(),vue.getHeight());
 
-		try {
-			imgBackground = ImageIO.read(new File("./levels/level0.txt.png"));
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
+			//imgBackground = ImageIO.read(new File("./levels/level0.txt.png"));
+			imgBackground1 = new ImageIcon("./levels/level0.txt.gif");
+		
 		
 		try {
 			firstWord  = Font.createFont(Font.TRUETYPE_FONT, new File("./Fonts/Streamster.ttf")).deriveFont(50f);
@@ -86,18 +83,23 @@ public class PanelLevelSelect extends JPanel{
 		this.vue.playButton.setBounds(-this.getWidth() , -this.getHeight(), 0, 0);
 		
 		Graphics2D g2d = (Graphics2D)g;
+		/*
 		AffineTransform tx = new AffineTransform();
 		AffineTransform oldTransform = new AffineTransform();
 		oldTransform = g2d.getTransform();
-		tx.scale((float) this.getWidth()/ (float)vue.modele.gameWidth, (float) this.getHeight()/ (float)vue.modele.gameHeight);
-		g2d.setTransform(tx);
+		tx.scale((float) this.getWidth()/ (float)this.getWidth(), (float) this.getHeight()/ (float)this.getHeight());
+		 * je desactive le scale car sous windows il y'a des saut d'image que je n'arive pas à resoudre 
+		 * du coup on calcule tout en focntion de la taille de l'ecran
+		 * g2d.setTransform(tx);
+		 */
 		
-		//dessine le fond en fonction du niveau selectione sino par defaut image du menu
-		g2d.drawImage(imgBackground, 0,0,vue.modele.gameWidth,vue.modele.gameWidth, null);
+		//dessine le fond en fonction du niveau selectione
+		//g2d.drawImage(imgBackground, 0,0,this.getWidth(),this.getWidth(), null);
+		g2d.drawImage(imgBackground1.getImage(),0,0,this.getWidth(),this.getWidth(), null);
 		
 		// dessin d'un fond  noir avec transparance pour un certain effet
 		g2d.setColor(new Color(3,3,3,200));
-		g2d.fillRect(0,0,vue.modele.gameWidth,vue.modele.gameWidth);
+		g2d.fillRect(0,0,this.getWidth(),this.getWidth());
 		
 		
 
@@ -105,43 +107,48 @@ public class PanelLevelSelect extends JPanel{
 		Color transparentColor1 = new Color(59, 59, 112, 128);
 		Color transparentColor2 = new Color(159, 59, 240,255);
 
-		//dÃ©gradÃ©1 de couleur
-		GradientPaint gp0 = new GradientPaint(vue.modele.gameWidth-100, 0, transparentColor1,vue.modele.gameWidth-100, vue.modele.gameHeight, transparentColor2, true);                
+		//dégradé1 de couleur
+		GradientPaint gp0 = new GradientPaint(this.getWidth()-100, 0, transparentColor1,this.getWidth()-100, this.getHeight(), transparentColor2, true);                
 		g2d.setPaint(gp0);
-		g2d.fillRect(100, 0, vue.modele.gameWidth-200, vue.modele.gameWidth);
+		//g2d.fillRect(100, 0, this.getWidth()-200, this.getWidth());
 		
 		// dessine le nom du niveau selectioner
 		g2d.setFont(firstWord);
 		
-		GradientPaint gp1 = new GradientPaint(vue.modele.gameWidth/2-200,60,new Color(8, 30, 102),vue.modele.gameWidth/2-100,0,new Color(190, 8, 214));
+		GradientPaint gp1 = new GradientPaint(this.getWidth()/2-200,60,new Color(8, 30, 102),this.getWidth()/2-100,0,new Color(190, 8, 214));
 	    g2d.setPaint(gp1);
 	   
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString(modele.level.levelName,vue.modele.gameWidth/2-100, 60);
+		g2d.drawString(modele.level.levelName,this.getWidth()/2-100, 60);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 		
 		g2d.setFont(secondWord);
-		g2d.setColor(Color.BLACK);
+		g2d.setColor(Color.CYAN);
 		 
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString("Hight Score " + modele.level.levelHightScore,200, vue.modele.gameHeight-250);
+		g2d.drawString("Hight Score " + modele.level.levelHightScore,200, this.getHeight()-250);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 		
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString("Difficulty : "+modele.level.levelDifficulty,vue.modele.gameWidth - 500 - secondWord.getSize(), vue.modele.gameHeight-250);
+		g2d.drawString("Difficulty : "+modele.level.levelDifficulty,this.getWidth() - 500 - secondWord.getSize(), this.getHeight()-250);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 		
 		//dessine les buttons
-		g2d.setTransform(oldTransform);
 		int x = this.getWidth() / 2 ;
 		
 		int y = (this.getHeight() / 2 + this.getWidth() / 7);
 		
-		if (modele.level.canBePlayed){
-			
-			this.vue.playButton.setBounds(x+this.getWidth()/4 ,  y, 64, 64);
+		//condition si Width < height pour bien placer les boutons en fonction de taille de la fenaitre
+		if(this.getWidth()<this.getHeight()) {
+			y = (this.getHeight() / 2 + this.getWidth() / 3);
 		}
 		
+		//condition pour activé le boutoun play 
+		if (modele.level.canBePlayed){
+			this.vue.playButton.setBounds(x+this.getWidth()/4 ,  y, 64, 64);
+		//	this.vue.playButton.setEnabled(true);
+		
+		}
 		
 		this.vue.backButtonTasks.setBounds(x-this.getWidth()/4 - 64, y, 64, 64);
 		

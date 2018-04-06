@@ -44,13 +44,8 @@ public class PanelMenu extends JPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		picBackground = new ImageIcon("./Obj/palm.gif");
-		try {
-			imgBackground = ImageIO.read(new File("./Obj/Menu.jpg"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		picBackground = new ImageIcon("./Obj/menu.gif");
+		
 
 		/* juste des tests pour le grid bag layout pour un jour !!!!
 		//this.vue.tasksButton.setAlignmentX(Component.CENTER_ALIGNMENT); 
@@ -76,41 +71,45 @@ public class PanelMenu extends JPanel {
 
 		Graphics2D g2d = (Graphics2D)g;
 		AffineTransform old = g2d.getTransform();
-		AffineTransform tfm = new AffineTransform();
-
-		//dessine le fond 	
-		g2d.drawImage(picBackground.getImage(), 0, 0,this.getWidth(), this.getHeight(),picBackground.getImageObserver());
-
-		//mise en place des buttons
-		x = this.getWidth()/2 - 200;
-		y = (this.getHeight()/2)+50;
-		this.vue.tasksButton.setBounds(x,y,64,64);
-		this.vue.settingsButton.setBounds(x+200,y,64, 64);
-		this.vue.exitButton.setBounds(x+400,y,64, 64);
+		AffineTransform tx = new AffineTransform();
+		tx.scale((float) this.getWidth()/ (float)vue.modele.gameWidth, (float) this.getHeight()/ (float)vue.modele.gameHeight);
+		g2d.setTransform(tx);
+		//dessine le fond 
+		g2d.drawImage(picBackground.getImage(), 0, 0,vue.modele.gameWidth, vue.modele.gameHeight,picBackground.getImageObserver());
+		g2d.setColor(new Color(0,0,0,128));
+		g2d.fillRect(0, 0,vue.modele.gameWidth, vue.modele.gameHeight);
 
 		//mise en place des titres
 		//premier titre 
 		g2d.setFont(firstWord);
 		g2d.setColor(Color.magenta);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString("New",this.getWidth()/2-50, 100);
+		g2d.drawString("New",vue.modele.gameWidth/2-50, 100);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 
 		//second Titre
 		g2d.setFont(secondWord);
-		GradientPaint gp2 = new GradientPaint(this.getWidth()/2-380,250,new Color(8, 30, 102),this.getWidth()/2-380,150,new Color(190, 8, 214));
+		GradientPaint gp2 = new GradientPaint(vue.modele.gameWidth/2-380,250,new Color(8, 30, 102),vue.modele.gameWidth/2-380,150,new Color(190, 8, 214));
 		g2d.setPaint(gp2);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString("ARCANOID",this.getWidth()/2-380, 250);
+		g2d.drawString("ARCANOID",vue.modele.gameWidth/2-380, 250);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 
 		//troisiemme titre
 		g2d.setFont(therdWord);
-		GradientPaint gp3 = new GradientPaint(this.getWidth()/2-140,340,new Color(35, 35, 35),this.getWidth()/2-140 ,280,new Color(244, 245, 247));
+		GradientPaint gp3 = new GradientPaint(vue.modele.gameWidth/2-140,340,new Color(35, 35, 35),vue.modele.gameWidth/2-140 ,280,new Color(244, 245, 247));
 		g2d.setPaint(gp3);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString("UPSUD",this.getWidth()/2-140, 340);
+		g2d.drawString("UPSUD",vue.modele.gameWidth/2-140, 340);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+		
+		g2d.setTransform(old);
+		//mise en place des buttons
+				x = this.getWidth()/2 - 200;
+				y = (this.getHeight()/2)+50;
+				this.vue.tasksButton.setBounds(x,y,64,64);
+				this.vue.settingsButton.setBounds(x+200,y,64, 64);
+				this.vue.exitButton.setBounds(x+400,y,64, 64);
 		
 	}
 }

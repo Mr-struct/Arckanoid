@@ -7,6 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
@@ -22,68 +23,58 @@ public class ControleurVue {
 	private Timer timerPanelMenu = new Timer();
 	private Timer timerPanelSettings = new Timer();
 	private Timer timerPanelGame = new Timer();
+	private int currenteVolume;
 	// constructeur 
 	public ControleurVue(Modele modele, Vue vue) {
 		this.modele = modele;
 		this.vue = vue;
+		this.currenteVolume = this.vue.soundBT.volume;
 
 		//gere le clic sur le boutton nouveau jeux
-		this.vue.tasksButton.addMouseListener(new MouseListener() {public void mouseClicked(MouseEvent e) {
-				
-				vue.thisPanel.removeAll();
+		this.vue.tasksButton.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {vue.thisPanel.removeAll();
 
-				vue.panelLevelSelect = new PanelLevelSelect(vue);
+			vue.panelLevelSelect = new PanelLevelSelect(vue);
 
-				vue.thisPanel.add(vue.panelLevelSelect,BorderLayout.CENTER);
+			vue.thisPanel.add(vue.panelLevelSelect,BorderLayout.CENTER);
 
-				timerPanelLevelSelect = new Timer();
-				
-				timerPanelMenu.cancel();
-				
-				timerPanelSettings.cancel();
-				
-				timerPanelGame.cancel();
-				
-				vue.timerView.cancel();
-				
-				timerPanelLevelSelect.schedule(new TimerTask(){
+			timerPanelLevelSelect = new Timer();
+			
+			timerPanelMenu.cancel();
+			
+			timerPanelSettings.cancel();
+			
+			timerPanelGame.cancel();
+			
+			vue.timerView.cancel();
+			
+			timerPanelLevelSelect.schedule(new TimerTask(){
 
-					public void run(){
-						
-						vue.pane.revalidate();
-						
-						vue.pane.repaint();
-						
-						vue.panelLevelSelect.repaint();
-					}
+				public void run(){
+					
+					vue.pane.revalidate();
+					
+					vue.pane.repaint();
+					
+					vue.panelLevelSelect.repaint();
+				}
 
-				}, 0, 20);
-			}
+			}, 0, 20);
 
-
+		}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
 
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mouseExited(MouseEvent e) {}
 
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mousePressed(MouseEvent e) {}
 
 			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}	
+			public void mouseReleased(MouseEvent e) {}	
 		});
 
 
@@ -102,34 +93,16 @@ public class ControleurVue {
 			}
 
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
-				vue.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				
-				vue.dispose();
-				
-				System.exit(0);
-				 
-
-			}
+			public void mouseClicked(MouseEvent arg0) {	}
 
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mouseEntered(MouseEvent e) {}
 
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mouseExited(MouseEvent e) {}
 
 			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mouseReleased(MouseEvent e) {}
 		} );
 
 		//gere le clic sur le button settings
@@ -137,7 +110,6 @@ public class ControleurVue {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
 				vue.thisPanel.removeAll();
 				
 				vue.panelSettings = new PanelSettings(vue.getWidth(),vue.getHeight(),vue);
@@ -171,27 +143,16 @@ public class ControleurVue {
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mouseEntered(MouseEvent e) {}
 
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mouseExited(MouseEvent e) {}
 
 			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mousePressed(MouseEvent e) {}
 
 			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}	
+			public void mouseReleased(MouseEvent e) {}	
 		});
 
 		//gere le clic sur le button back du menu settings
@@ -200,107 +161,6 @@ public class ControleurVue {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				vue.thisPanel.removeAll();
-
-				vue.panelMenu = new PanelMenu(vue.getWidth(),vue.getHeight(),vue);
-
-				vue.thisPanel.add(vue.panelMenu,BorderLayout.CENTER);
-				
-				timerPanelLevelSelect.cancel();
-				
-				timerPanelGame.cancel();
-				
-				timerPanelSettings.cancel();
-				
-				vue.timerView.cancel();
-				
-				timerPanelMenu = new Timer();
-				
-				timerPanelMenu.schedule(new TimerTask(){
-
-					public void run(){
-
-						vue.panelMenu.repaint();
-
-					}
-
-				}, 0, 20);
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		vue.sliderFxSound.addChangeListener(e->soundFxChange());
-
-		vue.sliderLevel.addChangeListener( e-> levelChange());
-		
-		vue.list.addListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				JList list = (JList) e.getSource();
-
-				int selections[] = list.getSelectedIndices();
-
-				Object selectionValues[] = list.getSelectedValues();
-				
-				String selectionString = (String)list.getSelectedValue();
-				
-				String []levelGeted = selectionString.split("[|]");
-				
-				System.out.println(levelGeted[0]);
-				
-				try {
-					modele.intitlevel("./levels/"+levelGeted[0]+".txt");
-					
-				} catch (IOException e2) {
-					
-					// TODO Auto-generated catch block
-					
-					e2.printStackTrace();
-					
-				}
-				
-				try {
-					
-					vue.panelLevelSelect.imgBackground = ImageIO.read(new File("./levels/"+levelGeted[0]+".txt.png"));
-					
-				} catch (IOException e1) {
-					
-					// TODO Auto-generated catch block
-					
-					e1.printStackTrace();
-				}		
-			}
-		});
-		vue.backButtonTasks.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
 				vue.thisPanel.removeAll();
 
 				vue.panelMenu = new PanelMenu(vue.getWidth(),vue.getHeight(),vue);
@@ -339,6 +199,84 @@ public class ControleurVue {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {}
+		});
+
+		vue.sliderFxSound.addChangeListener(e->soundFxChange());
+
+		vue.sliderLevel.addChangeListener( e-> levelChange());
+		
+		vue.list.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				JList list = (JList) e.getSource();
+
+				int selections[] = list.getSelectedIndices();
+
+				Object selectionValues[] = list.getSelectedValues();
+				
+				String selectionString = (String)list.getSelectedValue();
+				
+				String []levelGeted = selectionString.split("[|]");
+				
+				System.out.println(levelGeted[0]);
+				
+				try {
+					modele.intitlevel("./levels/"+levelGeted[0]+".txt");
+					
+				} catch (IOException e2) {
+					
+					// TODO Auto-generated catch block
+					
+					e2.printStackTrace();
+					
+				}
+				vue.panelLevelSelect.imgBackground1 = new ImageIcon("./levels/"+levelGeted[0]+".txt.gif");	
+				
+			}
+		});
+		vue.backButtonTasks.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				vue.thisPanel.removeAll();
+
+				vue.panelMenu = new PanelMenu(vue.getWidth(),vue.getHeight(),vue);
+
+				vue.thisPanel.add(vue.panelMenu,BorderLayout.CENTER);
+				
+				timerPanelLevelSelect.cancel();
+				
+				timerPanelGame.cancel();
+				
+				timerPanelSettings.cancel();
+				
+				vue.timerView.cancel();
+				
+				timerPanelMenu = new Timer();
+				
+				timerPanelMenu.schedule(new TimerTask(){
+
+					public void run(){
+
+						vue.panelMenu.repaint();
+
+					}
+
+				}, 0, 20);
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+
+			@Override
+			public void mouseExited(MouseEvent e) {}
+
+			@Override
+			public void mousePressed(MouseEvent e) {}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {}
 			
 		});
 		
@@ -346,17 +284,10 @@ public class ControleurVue {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+
 				vue.thisPanel.removeAll();
 				
-				vue.panelGame = new PanelGame(vue.getWidth(),vue.getHeight(),vue);
-				
-				ControleurJeu controleurJeu = new ControleurJeu(modele, vue.panelGame);
-				
-				
-				vue.panelGame.addMouseListener(controleurJeu);
-				
-				vue.panelGame.addMouseMotionListener(controleurJeu);
+				vue.panelGame = new PanelGame(vue.getWidth(),vue.getHeight(),vue);	
 							
 				vue.thisPanel.add(vue.panelGame,BorderLayout.CENTER);
 				
@@ -438,50 +369,29 @@ public class ControleurVue {
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseEntered(MouseEvent e) {}
 
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseExited(MouseEvent e) {}
 
 			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mousePressed(MouseEvent e) {}
 
 			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseReleased(MouseEvent e) {}
 			
 		});
 		vue.restartButton.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
 				vue.thisPanel.removeAll();
 				
 				vue.thisPanel.repaint();
 				
 				vue.panelGame = new PanelGame(vue.getWidth(),vue.getHeight(),vue);
-				
-				ControleurJeu controleurJeu = new ControleurJeu(modele, vue.panelGame);
-				
-				
-				vue.panelGame.addMouseListener(controleurJeu);
-				
-				vue.panelGame.addMouseMotionListener(controleurJeu);
 								
-				vue.thisPanel.add(vue.panelGame,BorderLayout.CENTER);
-				
+				vue.thisPanel.add(vue.panelGame,BorderLayout.CENTER);	
 				
 				timerPanelLevelSelect.cancel();
 				
@@ -510,32 +420,19 @@ public class ControleurVue {
 						vue.panelGame.repaint();
 					}
 				}, 0, 20);
-			
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseEntered(MouseEvent e) {}
 
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseExited(MouseEvent e) {}
 
 			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mousePressed(MouseEvent e) {}
 
 			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseReleased(MouseEvent e) {}
 			
 		});
 		vue.nextLevelButton.addMouseListener(new MouseListener() {
@@ -543,19 +440,19 @@ public class ControleurVue {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				try {
+					modele.intitlevel(modele.level.nextLevel);
+					System.out.println(modele.level.nextLevel);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				vue.thisPanel.removeAll();
 				
 				vue.thisPanel.repaint();
 				
 				vue.panelGame = new PanelGame(vue.getWidth(),vue.getHeight(),vue);
-				
-				ControleurJeu controleurJeu = new ControleurJeu(modele, vue.panelGame);
-				
-				
-				vue.panelGame.addMouseListener(controleurJeu);
-				
-				vue.panelGame.addMouseMotionListener(controleurJeu);
-								
+
 				vue.thisPanel.add(vue.panelGame,BorderLayout.CENTER);
 				
 				
@@ -571,12 +468,6 @@ public class ControleurVue {
 				
 				timerPanelGame = new Timer();
 				
-				try {
-					modele.intitlevel(modele.level.nextLevel);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 				vue.modele.lancerJeu();
 				
 				timerPanelGame.schedule(new TimerTask(){
@@ -586,7 +477,48 @@ public class ControleurVue {
 						vue.panelGame.repaint();
 					}
 				}, 0, 20);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+
+			@Override
+			public void mouseExited(MouseEvent e) {}
+
+			@Override
+			public void mousePressed(MouseEvent e) {}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			
+		});
+		vue.pauseButton.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				if(modele.isRunning()) {
+					modele.suspendreJeu();
+				}
 				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+			
+		});
+		vue.crossButton.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
 			}
 
 			@Override
@@ -603,8 +535,13 @@ public class ControleurVue {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
+				if(!modele.isRunning()) {
+					for(Balle b : vue.modele.balles) b.timer =new Timer();
+					for(Bonus bn : vue.modele.bonus) bn.timer = new Timer(); // ne fonctione pas vraiment faut que stephane fasse attendre au lieu de l'arreter
+					modele.lancerBalles();
+					modele.lancerJeu();
+					
+				}
 			}
 
 			@Override
@@ -612,6 +549,35 @@ public class ControleurVue {
 				// TODO Auto-generated method stub
 				
 			}
+			
+		});
+		
+		vue.soundButton.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				if(vue.soundBT.volume > 0) {
+					vue.soundButton.setEnabled(false);;
+					modele.impactSound.volume = 0;
+					vue.soundBT.volume = 0;
+				}else {
+					vue.soundButton.setEnabled(true);;
+					modele.impactSound.volume = currenteVolume;
+					vue.soundBT.volume = currenteVolume;
+				}
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
 			
 		});
 	}
@@ -622,11 +588,9 @@ public class ControleurVue {
 	}
 	public void soundFxChange() {
 		modele.impactSound.volume = vue.sliderFxSound.getValue();
-		//modele.backButton.sound.volume = modele.sliderFxSound.getValue();
-		//modele.newGame.sound.volume = modele.sliderFxSound.getValue();
-		//modele.settings.sound.volume = modele.sliderFxSound.getValue();
-		//modele.exit.sound.volume = modele.sliderFxSound.getValue();
-		modele.impactSound.note_on(80);
+		vue.soundBT.volume = vue.sliderFxSound.getValue();
+		currenteVolume = vue.sliderFxSound.getValue();
+		vue.soundBT.note_on(60);
 	}
 
 }

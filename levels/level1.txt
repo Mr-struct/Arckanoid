@@ -6,9 +6,9 @@ SoVVVVVoS
 SooBBBooS
 BVRBVRBVR
 BSVRBSVRB
-./levels/level0.txt
+level2.txt
 Easy
-: 1550
+: 1670
 yes
 level 1
 BETA

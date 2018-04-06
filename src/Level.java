@@ -36,7 +36,7 @@ public class Level {
 		
 		this.fileLevel = fileLevel;
 		
-		this.levelBackground = this.fileLevel+".png";
+		this.levelBackground = this.fileLevel+".gif";
 		
 		this.readyForPlay = false;
 
@@ -48,7 +48,11 @@ public class Level {
 			for(int i = 0; i < test.length();i++) {
 				fileLevelParssed = test.split("\n");
 			}
-			this.nextLevel = fileLevelParssed[fileLevelParssed.length-8];
+			String path = "./levels/";
+			if(System.getProperty("os.name").equals("Windows 10")) {
+				path = ".\\levels\\";
+			}
+			this.nextLevel = path+fileLevelParssed[fileLevelParssed.length-8];
 			
 			this.levelDifficulty = fileLevelParssed[fileLevelParssed.length-7];
 			
@@ -153,7 +157,7 @@ public class Level {
 	    String line;
 	    String input = "";	     
 	    while ((line = file.readLine()) != null)
-	    	   input += line + System.lineSeparator();
+	    	   input += line + "\n";
 
 	    input = input.replace(toUpdate, updated);
 

@@ -42,22 +42,15 @@ public class PanelSettings extends JPanel{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
-		//init les image 
-		try {
-			this.imgBackground = ImageIO.read(new File("./Obj/Menu.jpg"));
-			this.picBackGround =  new ImageIcon("./Obj/param.gif");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.picBackGround =  new ImageIcon("./Obj/param.gif");
 		/*
 		 * init le button de retour
 		 */
 		this.add(this.vue.backButtonSetting);
-		/*
-		 * init le slider du son principale 
-		 */
+		
+		//init le slider du son principale 
+		 
+		
 
 		vue.sliderMainSound.setUI(new Slider(vue.sliderMainSound));
 		vue.sliderMainSound.setMinorTickSpacing(5);
@@ -67,8 +60,10 @@ public class PanelSettings extends JPanel{
 		vue.sliderMainSound.setLabelTable(vue.sliderMainSound.createStandardLabels(10));
 		vue.sliderMainSound.setBackground(new Color(255,255,255,0));
 		vue.sliderMainSound.setForeground(new Color(255,255,255));
-		this.add(vue.sliderMainSound);
-
+		
+		//this.add(vue.sliderMainSound);
+		 
+		
 		/*
 		 * init le slider des bruitage
 		 */
@@ -84,7 +79,7 @@ public class PanelSettings extends JPanel{
 		this.add(vue.sliderFxSound);
 
 
-		//init le slider du niveau de dificultée
+		//init le slider du niveau de dificulte
 
 		vue.sliderLevel.setUI(new Slider(vue.sliderLevel));
 		vue.sliderLevel.setMinorTickSpacing(5);
@@ -105,69 +100,69 @@ public class PanelSettings extends JPanel{
 		AffineTransform oldTransform = new AffineTransform();
 		oldTransform = g2d.getTransform();
 		tx.scale((float) this.getWidth()/ (float)vue.modele.gameWidth, (float) this.getHeight()/ (float)vue.modele.gameHeight);
+
+		
+		
 		g2d.setTransform(tx);
 		//dessine le fond 
 		g2d.drawImage(picBackGround.getImage(), 0, 0,vue.modele.gameWidth, vue.modele.gameHeight,null);
 		//de la transparance sur les coter de la fenaitre pour un effet !
-		Color transparentColor1 = new Color(59, 59, 112, 128);
-		Color transparentColor2 = new Color(159, 59, 240,255);
+		Color transparentColor1 = new Color(0, 0, 0, 128);
+		Color transparentColor2 = new Color(0, 0, 0,255);
 
 		//dégradé1 de couleur
 		GradientPaint gp0 = new GradientPaint(vue.modele.gameWidth-100, 0, transparentColor1,vue.modele.gameWidth - 100, vue.modele.gameHeight, transparentColor2, true);                
 		g2d.setPaint(gp0);
 		g2d.fillRect(100, 0, vue.modele.gameWidth - 200, vue.modele.gameHeight);
 		
-		//g2d.setTransform(tx);
+		g2d.setTransform(oldTransform);
+		// dessine les sliders
+		//vue.sliderMainSound.paintImmediately(this.getWidth()/2-this.getHeight()/4, this.getHeight()/2-220, this.getWidth()/2, 50);
+		//	vue.sliderMainSound.setBounds(this.getWidth()/2-200, this.getHeight()/2- this.getHeight()/4, this.getWidth()/2, 50);
+		vue.sliderFxSound.setBounds(this.getWidth()/2-200, this.getHeight()/2-this.getHeight()/3,  this.getWidth()/2, 50);
+		//dessine le slider pour le niveau de dificulté 
+		vue.sliderLevel.setBounds(this.getWidth()/2-200, this.getHeight()/2-this.getHeight()/6  ,  this.getWidth()/2, 50);
+		// dessine le bouton
+		this.vue.backButtonSetting.setBounds(this.getWidth()/2-this.getWidth()/4 , this.getHeight()-this.getHeight()/3,64,64);
+		
+		g2d.setTransform(tx);
 		//dessines les labeles
 		
 		g2d.setColor(new Color(5, 234, 255));
 		g2d.setFont(firstWord);
-		
+
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString("Music : ", vue.modele.gameWidth / 2 - 400, vue.modele.gameHeight / 2 - 200);
+		g2d.drawString("Fx Sound : ", vue.modele.gameWidth / 2 - 400, vue.modele.gameHeight / 2 - 230);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString("Fx Sound : ", vue.modele.gameWidth / 2 - 400, vue.modele.gameHeight / 2 - 120);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
-
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.drawString("Difficulty : ", vue.modele.gameWidth / 2 - 400, vue.modele.gameHeight / 2 - 40);
+		g2d.drawString("Difficulty : ", vue.modele.gameWidth / 2 - 400, vue.modele.gameHeight / 2 - 100);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 
 
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		if(vue.sliderLevel.getValue() >= 0 && vue.sliderLevel.getValue()<=20) {
 
-			g2d.drawString("Grany Mode " + (vue.modele.levelDifficulty*10-10) +"%", vue.modele.gameWidth / 2, vue.modele.gameHeight / 2 + 80 );
+			g2d.drawString("Grany Mode " + (vue.modele.levelDifficulty*10-10) +"%", vue.modele.gameWidth / 2, vue.modele.gameHeight / 2 + 40 );
 
 		}else if(vue.sliderLevel.getValue()>20 && vue.sliderLevel.getValue()<=40) {
 
-			g2d.drawString("Easy " + (vue.modele.levelDifficulty*10-10)+"%", vue.modele.gameWidth / 2, vue.modele.gameHeight / 2 + 80 );
+			g2d.drawString("Easy " + (vue.modele.levelDifficulty*10-10)+"%", vue.modele.gameWidth / 2, vue.modele.gameHeight / 2 + 40 );
 
 		}else if(vue.sliderLevel.getValue()>40 && vue.sliderLevel.getValue()<=60) {
 
-			g2d.drawString("Normal " +(vue.modele.levelDifficulty*10-10)+"%", vue.modele.gameWidth / 2, vue.modele.gameHeight / 2 + 80 );
+			g2d.drawString("Normal " +(vue.modele.levelDifficulty*10-10)+"%", vue.modele.gameWidth / 2, vue.modele.gameHeight / 2 + 40 );
 		}
 		else if(vue.sliderLevel.getValue()>60 && vue.sliderLevel.getValue()<=80) {
 
-			g2d.drawString("Hard " + (vue.modele.levelDifficulty*10-10)+"%", vue.modele.gameWidth / 2, vue.modele.gameHeight / 2 + 80 );
+			g2d.drawString("Hard " + (vue.modele.levelDifficulty*10-10)+"%", vue.modele.gameWidth / 2, vue.modele.gameHeight / 2 + 40 );
 		}
 		else if(vue.sliderLevel.getValue()>80 && vue.sliderLevel.getValue()<=100) {
 
-			g2d.drawString("God Mode " + (vue.modele.levelDifficulty*10-10)+"%", vue.modele.gameWidth / 2, vue.modele.gameHeight / 2 + 80 );
+			g2d.drawString("God Mode " + (vue.modele.levelDifficulty*10-10)+"%", vue.modele.gameWidth / 2, vue.modele.gameHeight / 2 + 40 );
 		}
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
 
-		g2d.setTransform(oldTransform);
-		// dessine les sliders
-		vue.sliderMainSound.paintImmediately(this.getWidth()/2-200, this.getHeight()/2-220, this.getWidth()/2, 50);
-		vue.sliderMainSound.setBounds(this.getWidth()/2-200, this.getHeight()/2-220, this.getWidth()/2, 50);
-		vue.sliderFxSound.setBounds(this.getWidth()/2-200, this.getHeight()/2-140,  this.getWidth()/2, 50);
-		//dessine le slider pour le niveau de dificulté 
-		vue.sliderLevel.setBounds(this.getWidth()/2-200, this.getHeight()/2-60  ,  this.getWidth()/2, 50);
-		// dessine le bouton
-		this.vue.backButtonSetting.setBounds(this.getWidth()/2-400 , this.getHeight()-200,64,64);
 	}
 
 	// class interne qui redefinie le slider

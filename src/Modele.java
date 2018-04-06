@@ -1,6 +1,8 @@
-
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.TimerTask;
 
 public class Modele {
 
@@ -13,6 +15,8 @@ public class Modele {
 	protected ArrayList <AnimatedObject> effects = new ArrayList<AnimatedObject>();
 	
 	protected ArrayList <AnimatedObject> explosions = new ArrayList<AnimatedObject>();
+	
+	protected ArrayList <AnimatedObject> lostBallsAnimation = new ArrayList<AnimatedObject>();
 	
 	protected ArrayList <Level> levels = new ArrayList<Level>();
 	
@@ -64,7 +68,7 @@ public class Modele {
 		 * init le son
 		 */
 		this.impactSound = new SoundPlay();
-		this.impactSound.setPnogrameChange(39);
+		this.impactSound.setPnogrameChange(11);
 		
 		
 		
@@ -89,7 +93,8 @@ public class Modele {
 	
 	//initialise le terrain
 	public void intitlevel(String filLevel) throws IOException{
-this.win = false;
+		
+		this.win = false;
 		
 		this.lose = false;
 		briques = new ArrayList<Brique>(); 
@@ -318,7 +323,7 @@ this.win = false;
 				if(b.getdY() > gameHeight){
 					b.timer.cancel();
 
-					//ajouter un effet d'explosion
+					/*//ajouter un effet d'explosion
 					AnimatedObject explosion = new AnimatedObject(b.getIntX() + 10, gameHeight - 25,10,10);
 					synchronized(explosions) {explosions.add(explosion);}
 					explosion.timer.schedule(new TimerTask(){
@@ -330,6 +335,22 @@ this.win = false;
 							}
 						}
 					}, 0, 20);
+					*/
+					
+					/*
+					 * animation pour les balle perdu 
+					 */
+					AnimatedObject lostBall = new AnimatedObject(minX , gameHeight-5,gameWidth-minX,50);
+					synchronized(lostBallsAnimation) {lostBallsAnimation.add(lostBall);}
+					lostBall.timer.schedule(new TimerTask(){
+						public void run() {
+							lostBall.setAge(lostBall.getAge() + 1);
+							if(lostBall.getAge() >= 100){
+								synchronized(lostBallsAnimation){lostBallsAnimation.remove(lostBall);}
+								this.cancel();
+							}
+						}
+					}, 0, 5);
 					
 					synchronized(balles){
 						balles.remove(b);
