@@ -163,14 +163,15 @@ public class Modele {
 		}
 	}
 	
+	//le joueur utilise un bonus
 	public void useBonus(Bonus b) {
 		synchronized(bonus){
 			b.timer.cancel();
-			lancerBalles();
 			raquette.setWidth(raquette.getInitWidth());
 			
 			//Multiballes
 			if(b.getType() == 0) {
+				lancerBalles();
 				synchronized(balles){
 					if(balles.size() == 1){
 						Balle bi = balles.get(0);
@@ -196,17 +197,24 @@ public class Modele {
 			
 			//raquette agrandie
 			if(b.getType() == 1) {
+				lancerBalles();
 				raquette.setWidth(raquette.getInitWidth() + 50);
 			}
 
 			//raquette r�tr�cie
 			if(b.getType() == 2) {
+				lancerBalles();
 				raquette.setWidth(raquette.getInitWidth() - 50);
 			}
 			
+			//raquette collante
 			if(b.getType() == 3) {
 			}
-			
+
+			synchronized(raquette){
+				if(raquette.getX() + raquette.getWidth() > maxX)
+					raquette.setX(maxX - raquette.getWidth());
+			}
 			curBonus = b.getType();
 			bonus.remove(b);
 		}
@@ -282,24 +290,26 @@ public class Modele {
 			}, 0, 20);
 			
 			//ajoute un bonus
-			int btype = random.nextInt(4);
-			if((btype == 0 && balles.size() == 1) || (btype != 0 && btype != curBonus)){
-				Bonus b = new Bonus(brique.getX() + 10, brique.getY(), 50, 50, btype);
-				synchronized(bonus){bonus.add(b);}
-				b.timer.schedule(new TimerTask(){
-					public void run() {
-						//d�placement
-						b.setY(b.getY()+1);
-						//collision avec la raquette
-						if(b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth())
-							useBonus(b);
-						//bonus perdu
-						if(b.getX() > gameHeight){
-							b.timer.cancel();
-							bonus.remove(b);
+			if(random.nextInt(5) == 0){
+				int btype = random.nextInt(4);
+				if((btype == 0 && balles.size() == 1) || (btype != 0 && btype != curBonus)){
+					Bonus b = new Bonus(brique.getX() + 10, brique.getY(), 50, 50, btype);
+					synchronized(bonus){bonus.add(b);}
+					b.timer.schedule(new TimerTask(){
+						public void run() {
+							//d�placement
+							b.setY(b.getY()+1);
+							//collision avec la raquette
+							if(b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth())
+								useBonus(b);
+							//bonus perdu
+							if(b.getY() > gameHeight){
+								b.timer.cancel();
+								synchronized(bonus){bonus.remove(b);}
+							}
 						}
-					}
-				}, 0, 10);
+					}, 0, 10);
+				}
 			}
 			briques.remove(brique);
 			if(briques.isEmpty()) gagne();
@@ -433,9 +443,9 @@ public class Modele {
 							if(b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth())
 								useBonus(b);
 							//bonus perdu
-							if(b.getX() > gameHeight){
+							if(b.getY() > gameHeight){
 								b.timer.cancel();
-								bonus.remove(b);
+								synchronized(bonus){bonus.remove(b);}
 							}
 						}
 					}, 0, 10);
@@ -518,13 +528,15 @@ public class Modele {
 	//d�place la raquette vers la position x
 	public void deplacerRaquette(int x){
 		if(running){
-			int m = raquette.getWidth()/2;
-			if(x - m <= minX){
-				raquette.setX(minX);
-			}else if(x + m >= maxX){
-				raquette.setX(maxX - 2 * m);
-			}else{
-				raquette.setX(x - m);
+			synchronized(raquette){
+				int m = raquette.getWidth()/2;
+				if(x - m <= minX){
+					raquette.setX(minX);
+				}else if(x + m >= maxX){
+					raquette.setX(maxX - 2 * m);
+				}else{
+					raquette.setX(x - m);
+				}
 			}
 		}
 	}
