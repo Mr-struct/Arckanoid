@@ -70,10 +70,7 @@ public class ControleurJeu implements MouseMotionListener,MouseListener, KeyList
 			if(modele.isRunning()) {
 				modele.suspendreJeu();
 			}
-			else if(!modele.isRunning()) {
-				for(Balle b : modele.balles) b.timer = new Timer();
-				for(Bonus bn : modele.bonus) bn.timer = new Timer();// ne fonctione pas vraiment faut que stephane fasse attendre au lieu de l'arreter
-				modele.lancerBalles();
+			else {
 				modele.lancerJeu();
 			}
 		}else if(e.getKeyChar() == 'm' || e.getKeyChar() == 'M') {

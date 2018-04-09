@@ -175,7 +175,7 @@ public class Vue extends JFrame implements MouseListener {
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		
-		this.setUndecorated(true);
+		//this.setUndecorated(true);
 		
 		this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH); 
 

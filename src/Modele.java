@@ -1,8 +1,5 @@
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.TimerTask;
+import java.util.*;
 
 public class Modele {
 
@@ -296,6 +293,11 @@ public class Modele {
 						//collision avec la raquette
 						if(b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth())
 							useBonus(b);
+						//bonus perdu
+						if(b.getX() > gameHeight){
+							b.timer.cancel();
+							bonus.remove(b);
+						}
 					}
 				}, 0, 10);
 			}
@@ -322,20 +324,6 @@ public class Modele {
 				//balle perdue (sortie de l'�cran par le bas)
 				if(b.getdY() > gameHeight){
 					b.timer.cancel();
-
-					/*//ajouter un effet d'explosion
-					AnimatedObject explosion = new AnimatedObject(b.getIntX() + 10, gameHeight - 25,10,10);
-					synchronized(explosions) {explosions.add(explosion);}
-					explosion.timer.schedule(new TimerTask(){
-						public void run() {
-							explosion.setAge(explosion.getAge() + 2);
-							if(explosion.getAge() >= 50){
-								synchronized(explosions){explosions.remove(explosion);}
-								this.cancel();
-							}
-						}
-					}, 0, 20);
-					*/
 					
 					/*
 					 * animation pour les balle perdu 
@@ -428,9 +416,27 @@ public class Modele {
 			if(!running){
 				running = true;
 				for(Balle b : balles){
+					b.timer = new Timer();
 					b.timer.schedule(new TimerTask(){
 						public void run() {
 							physiqueBalle(b);
+						}
+					}, 0, 10);
+				}
+				for(Bonus b : bonus){
+					b.timer = new Timer();
+					b.timer.schedule(new TimerTask(){
+						public void run() {
+							//d�placement
+							b.setY(b.getY()+1);
+							//collision avec la raquette
+							if(b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth())
+								useBonus(b);
+							//bonus perdu
+							if(b.getX() > gameHeight){
+								b.timer.cancel();
+								bonus.remove(b);
+							}
 						}
 					}, 0, 10);
 				}

@@ -536,9 +536,6 @@ public class ControleurVue {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if(!modele.isRunning()) {
-					for(Balle b : vue.modele.balles) b.timer =new Timer();
-					for(Bonus bn : vue.modele.bonus) bn.timer = new Timer(); // ne fonctione pas vraiment faut que stephane fasse attendre au lieu de l'arreter
-					modele.lancerBalles();
 					modele.lancerJeu();
 					
 				}
