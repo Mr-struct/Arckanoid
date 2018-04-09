@@ -37,7 +37,14 @@ public class PanelGame extends JPanel{
 
 	private ArrayList <AnimatedObject> ballsTrac = new ArrayList<AnimatedObject>();
 
+	private Color transparentColor1 = new Color(255, 0, 203, 255);
+	private Color transparentColor2 = new Color(0, 200, 255, 255);
+	private Color transparentColor3 = new Color(0, 0, 0,108 );
+	private Color transparentColor4 = new Color(0, 0, 0,200); 
 
+	private AffineTransform tx = new AffineTransform();
+	private AffineTransform oldTransform = new AffineTransform();
+	
 	public PanelGame (int width,int height,Vue vue) {
 
 		super();
@@ -107,9 +114,7 @@ public class PanelGame extends JPanel{
 		vue.backLevelSelectButton.setBounds(-this.getWidth(), -this.getHeight(), 0, 0);
 		vue.nextLevelButton.setBounds(-this.getWidth(),-this.getHeight(), 0, 0);
 		vue.crossButton.setBounds(-this.getWidth(),-this.getHeight(), 0, 0);
-
-		AffineTransform tx = new AffineTransform();
-		AffineTransform oldTransform = new AffineTransform();
+		
 		oldTransform = g2d.getTransform();
 		tx.scale((float) this.getWidth()/ (float)vue.modele.gameWidth, (float) this.getHeight()/ (float)vue.modele.gameHeight);
 
@@ -317,12 +322,7 @@ public class PanelGame extends JPanel{
 			}
 		}
 
-		//de la transparance sur les coter de la fenaitre pour un effet !
-		Color transparentColor1 = new Color(255, 0, 203, 128);
-		Color transparentColor2 = new Color(0, 200, 255,180);
 		
-		Color transparentColor3 = new Color(0, 0, 0,128 );
-		Color transparentColor4 = new Color(0, 0, 0,220);
 
 
 		//degrade de  de couleur
@@ -336,15 +336,23 @@ public class PanelGame extends JPanel{
 		g2d.fillRect(0, 0, 200, vue.modele.gameHeight);
 		
 		//dessine les ombres des paneau du bonus et de du score 
-		g2d.setColor(new Color(5,5,5,128));
-	
+		g2d.setColor(Color.BLACK);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.fillRoundRect(vue.modele.gameWidth-170, 20, 160, vue.modele.gameHeight/2-vue.modele.gameHeight/20  + 74, 10, 10);//droite	
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+		
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.fillRoundRect(30, 20, 160, vue.modele.gameHeight/2-vue.modele.gameHeight/20  + 74,10,10);//gauche
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);
+		
+		/*
 		g2d.fillRoundRect(vue.modele.gameWidth-20, 15, 10, vue.modele.gameHeight/2-vue.modele.gameHeight/20  + 79,5,5);//droite Gauche
 		g2d.fillRoundRect(vue.modele.gameWidth-175,vue.modele.gameHeight/2-vue.modele.gameHeight/20  + 84, 155, 10,5,5);//droite BAS
 
 		g2d.fillRoundRect(180, 15, 10, vue.modele.gameHeight/2-vue.modele.gameHeight/20  + 79,5,5);//Gauche Gauche
 		g2d.fillRoundRect(25,vue.modele.gameHeight/2-vue.modele.gameHeight/20  + 84, 155, 10,5,5);//gauche Bas
-
-		// dessine le cadre a� droite 
+		*/
+		// dessine le cadre a droite 
 		GradientPaint gpCardre1 = new GradientPaint(vue.modele.gameWidth-180 + 160/2, 10, transparentColor1,vue.modele.gameWidth-180 + 160/2, vue.modele.gameHeight/2-vue.modele.gameHeight/20  + 74, transparentColor2, true);                
 		g2d.setPaint(gpCardre1);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
