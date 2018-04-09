@@ -41,9 +41,6 @@ public class PanelGame extends JPanel{
 	private Color transparentColor2 = new Color(0, 200, 255, 255);
 	private Color transparentColor3 = new Color(0, 0, 0,108 );
 	private Color transparentColor4 = new Color(0, 0, 0,200); 
-
-	private AffineTransform tx = new AffineTransform();
-	private AffineTransform oldTransform = new AffineTransform();
 	
 	public PanelGame (int width,int height,Vue vue) {
 
@@ -114,7 +111,8 @@ public class PanelGame extends JPanel{
 		vue.backLevelSelectButton.setBounds(-this.getWidth(), -this.getHeight(), 0, 0);
 		vue.nextLevelButton.setBounds(-this.getWidth(),-this.getHeight(), 0, 0);
 		vue.crossButton.setBounds(-this.getWidth(),-this.getHeight(), 0, 0);
-		
+		AffineTransform tx = new AffineTransform();
+		AffineTransform oldTransform = new AffineTransform();
 		oldTransform = g2d.getTransform();
 		tx.scale((float) this.getWidth()/ (float)vue.modele.gameWidth, (float) this.getHeight()/ (float)vue.modele.gameHeight);
 
