@@ -6,12 +6,12 @@ ooRRRRRoo
 oooVVVooo
 ooooBoooo
 ooooooooo
-./levels/level1.txt
+level5.txt
 Easy
-: 1330
-yes
+: 0
+no
 level 0
-The WAY
+Observation
 9
 8
 

@@ -8,9 +8,9 @@ BVRBVRBVR
 BSVRBSVRB
 level2.txt
 Easy
-: 1670
-yes
+: 0
+no
 level 1
-BETA
+let's begin
 9
 8

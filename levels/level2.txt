@@ -8,10 +8,10 @@ ooooBoooo
 ooooooooo
 level3.txt
 Easy
-: 1330
-yes
+: 0
+no
 level 0
-The WAY
+The start
 9
 8
 
