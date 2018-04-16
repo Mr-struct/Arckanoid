@@ -1,80 +1,78 @@
 package model;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import controlles.Level;
 import controlles.SoundPlay;
-import objects.AnimatedObject;
-import objects.Ball;
-import objects.Bonus;
-import objects.Brick;
-import objects.Raquette;
+import objects.*;
 import views.View;
 
 
+/**
+ * @author Stephane
+ *
+ */
 public class Modele {
-
-	public ArrayList<Brick> bricks = new ArrayList<Brick>(); 
 	
-	public ArrayList<Ball> balls = new ArrayList<Ball>();
+	public ArrayList<Brick> bricks = new ArrayList<Brick>(); //Liste des briques
 	
-	public ArrayList<Bonus> bonus = new ArrayList<Bonus>();
+	public ArrayList<Ball> balls = new ArrayList<Ball>(); //liste des balles
 	
-	public ArrayList <AnimatedObject> effects = new ArrayList<AnimatedObject>();
+	public ArrayList<Bonus> bonus = new ArrayList<Bonus>(); //liste des bonus
 	
-	public ArrayList <AnimatedObject> explosions = new ArrayList<AnimatedObject>();
+	public ArrayList <AnimatedObject> effects = new ArrayList<AnimatedObject>(); //nombre de points gagnes
 	
-	public ArrayList <AnimatedObject> lostBallsAnimation = new ArrayList<AnimatedObject>();
+	public ArrayList <AnimatedObject> explosions = new ArrayList<AnimatedObject>(); //ecplosions
+	
+	public ArrayList <AnimatedObject> lostBallsAnimation = new ArrayList<AnimatedObject>(); //effet des balles perdues
 		
-	public  AnimatedObject endScreen;
+	public  AnimatedObject endScreen; //ecran de fin de jeu (animation de d�filement)
 	
 	public Raquette raquette;
 	
-	protected int intScore = 0;
+	protected int intScore = 0; //score entier
 	
-	public int levelDifficulty = 5;
+	public int levelDifficulty = 5; //difficulte de base (choisie par le joueur)
 
-	protected int currentDifficulty;
+	protected int currentDifficulty; //difficulte actuelle (vitesse de base de la balle)
 	
-	public String stringScore = "00";
+	public String stringScore = "00"; //score sous forme de chaine de caract�re (affichage)
 	
-	public int vies = 3;
+	public int vies = 3; //nombre de vies
 	
-	private boolean running;
+	private boolean running; //True = jeu en cours; False = jeu suspendu ou fini
 	
-	private Object runningLock = new Object();
+	private Object runningLock = new Object(); //permet de synchroniser la pause
 	
-	private Random random = new Random();
+	private Random random = new Random(); //generateur d'aleatoire
 
+	//resolution interne du jeu
 	public int gameWidth = 1366;
-	
 	public int gameHeight = 768;
-
+	
+	//coordonnees limites du terrain de jeu
 	protected int minX = 200;
-
 	protected int maxX = gameWidth-200;
-
-	protected View  vueJeu;
 	
-	public SoundPlay impactSound;
+	protected View  vueJeu; //la vue
 	
-	private int musicImpacte = 60;
+	public SoundPlay impactSound; //effets sonores
 	
-	public Level level;
+	private int musicImpacte = 60; //instrument utilise
 	
-	public int curBonus;
+	public Level level; //les donnees du niveau
 	
-	public boolean win;
+	public int curBonus; //type de bonus actif (-1 = pas de bonus)
 	
-	public boolean lose;
+	public boolean win; //vrai si jeu gagne
+	
+	public boolean lose; //vrai si jeu perdu
 	
 	public Timer timerPreview = new Timer();
 	
-	//initialise le niveau selon les param�tres du fichier fileLevel
+	/**
+	 * initialise le niveau selon les parametres du fichier fileLevel
+	 */
 	public Modele() {
 		/*
 		 * init le son
@@ -92,11 +90,18 @@ public class Modele {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Cree une demo
+	 * @param level niveau dans lequel la demo a lieu
+	 */
 	public Modele(String level) {
 		this.preview(level);
 	}
-	/*
-	 * methode pour la demo 
+	
+	/**
+	 * Lance la demo
+	 * @param level niveau dans lequel la demo a lieu
 	 */
 	public void preview(String level) {
 		try {
@@ -125,7 +130,9 @@ public class Modele {
 				}
 			}, 1000, 20);
 		}
-	//initialise la premiere balle. sa position sera calculee automatiquement en fonction de la raquette
+	/*
+	 * initialise la premiere balle. sa position sera calculee automatiquement en fonction de la raquette
+	 */
 	public void initBalle(){
 
 		// la position de la balle est set dans le controleur dans le lancerJeu()
@@ -133,7 +140,10 @@ public class Modele {
 		balls.add(ball);
 	}
 	
-	//initialise le terrain
+	/**
+	 * initialise le terrain
+	 * @param level niveau a charger
+	 */
 	public void intitlevel(String filLevel) throws IOException{
 		
 		this.win = false;
@@ -163,13 +173,10 @@ public class Modele {
 		curBonus = -1;
 		
 		level = new Level(filLevel);
-		/*
-		 * init la raquette
-		 */
+		
+		//init la raquette
 		this.raquette = new Raquette(500,680,150,30);
-		/*
-		 * init la balle
-		 */
+		//init la balle
 		initBalle();
 		
 		char [] [] char2D = new char [level.bricksCols][level.bricksRows];
@@ -213,7 +220,11 @@ public class Modele {
 		}
 	}
 	
-	//le joueur utilise un bonus
+	
+	/**
+	 * le joueur utilise un bonus
+	 * @param b le type de bonus
+	 */
 	public void useBonus(Bonus b) {
 		synchronized(bonus){
 			b.timer.cancel();
@@ -251,7 +262,7 @@ public class Modele {
 				raquette.setWidth(raquette.getInitWidth() + 50);
 			}
 
-			//raquette r�tr�cie
+			//raquette retrecie
 			if(b.getType() == 2) {
 				lancerBalles();
 				raquette.setWidth(raquette.getInitWidth() - 50);
@@ -260,7 +271,8 @@ public class Modele {
 			//raquette collante
 			if(b.getType() == 3) {
 			}
-
+			
+			//empecher la raquette de depasser
 			synchronized(raquette){
 				if(raquette.getX() + raquette.getWidth() > maxX)
 					raquette.setX(maxX - raquette.getWidth());
@@ -270,7 +282,13 @@ public class Modele {
 		}
 	}
 	
-	//appel�e quand balle entre en collision avec brique, calcule les effets de la collision sur la balle et la brique
+	
+	/**
+	 * appeler quand balle entre en collision avec brique, calcule les effets de la collision sur la balle et la brique
+	 * @param ball la balle qui entre en collision
+	 * @param brick la brique affectee
+	 * @return True si collision (toujours vrai)
+	 */
 	private boolean collisionBrique(Ball ball, Brick brick){
 		boolean diagonale = true;
 		//dessus et dessous
@@ -303,6 +321,7 @@ public class Modele {
 				ball.setvY(-ball.getvY());
 		}
 		
+		//joue un son
 		musicImpacte = (brick.note);
 		impactSound.noteOn(musicImpacte);
 		if(brick.getNumberOfColision() > 1){
@@ -347,7 +366,7 @@ public class Modele {
 					synchronized(bonus){bonus.add(b);}
 					b.timer.schedule(new TimerTask(){
 						public void run() {
-							//d�placement
+							//deplacement
 							b.setY(b.getY()+1);
 							//collision avec la raquette
 							if(b.getY() + b.getHeight() >= raquette.getY() && b.getY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getX() + b.getWidth() > raquette.getX() && b.getX() < raquette.getX() + raquette.getWidth())
@@ -368,26 +387,26 @@ public class Modele {
 		
 		return true;
 	}
-
-	//met � jour la position de la balle b et teste ses collisions, appel� periodiquement/**
 	
 	
+	/**
+	 * physique de la balle, a appeler dans ses timers
+	 * @param b balle mise a jour
+	 */
 	private void physiqueBalle(Ball b){
 		synchronized(b){
-			if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachÃ©es Ã  la raquette (celles dont la vÃ©locitÃ© est nulle) suivent la raquette
+			if(b.getvX() == 0 && b.getvY() == 0){ //les balles attachees a la raquette (celles dont la velocite est nulle) suivent la raquette
 				b.setX((raquette.getX()) + b.getPaddleX());
 				b.setY((raquette.getY()) + b.getPaddleY());
-			}else{ 
-				//les balles ayant une vÃ©locitÃ© se dÃ©placent selon celle-ci
+			}else{
+				//les balles ayant une velocite non nulle se deplacent selon celle-ci
 				b.setX(b.getdX() + b.getvX());
 				b.setY(b.getdY() + b.getvY());
-				//balle perdue (sortie de l'�cran par le bas)
+				//balle perdue (sortie de l'ecran par le bas)
 				if(b.getdY() > gameHeight){
 					b.timer.cancel();
 					
-					/*
-					 * animation pour les balle perdu 
-					 */
+					//animation de la balle perdues
 					AnimatedObject lostBall = new AnimatedObject(minX , gameHeight-5,gameWidth-minX,50);
 					synchronized(lostBallsAnimation) {lostBallsAnimation.add(lostBall);}
 					lostBall.timer.schedule(new TimerTask(){
@@ -400,6 +419,7 @@ public class Modele {
 						}
 					}, 0, 5);
 					
+					//supprime la balle
 					synchronized(balls){
 						balls.remove(b);
 						if(balls.isEmpty()){
@@ -439,10 +459,11 @@ public class Modele {
 				//collision avec la raquette
 				if(b.getvY() > 0 && b.getdY() + b.getHeight() >= raquette.getY() && b.getdY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getdX() + b.getWidth() > raquette.getX() && b.getdX() < raquette.getX() + raquette.getWidth()){
 					
-					// son
+					// son lors de la collision
 					impactSound.noteOn(musicImpacte+2);
 					impactSound.noteOn(musicImpacte+5);
 					
+					//attache a la raquette si 
 					if(curBonus == 3){
 						b.setvX(0);
 						b.setvY(0);
