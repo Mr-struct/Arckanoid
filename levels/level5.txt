@@ -1,17 +1,17 @@
-RGRGRGRGR
-VBVBVBVBV
-BSBSBSBSB
-oGGGGGGGo
-ooRRRRRoo
-oooVVVooo
-ooooBoooo
-ooooooooo
-level6.txt
-Easy
+OOOBSBOOO
+OOBBSBBOO
+OBBBSBBBO
+OBSSSSSBO
+OBRBBBRBO
+OBRBBBRBO
+OBBBBBBBO
+OGGGGGGGO
+leOel6.txt
+Hard
 : 0
 no
-level 0
-Buy
+leOel 5
+BUY
 9
 8
 

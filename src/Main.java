@@ -1,5 +1,5 @@
-import Model.Modele;
-import Views.Vue;
+import model.Modele;
+import views.View;
 
 public class Main  {
 
@@ -8,6 +8,6 @@ public class Main  {
 		
 		Modele modele = new Modele();
 		
-		Vue vue = new Vue(modele);
+		View view = new View(modele);
 	}
 }

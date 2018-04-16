@@ -1,17 +1,17 @@
-RGRGRGRGR
-VBVBVBVBV
-BSBSBSBSB
-oGGGGGGGo
-ooRRRRRoo
-oooVVVooo
-ooooBoooo
-ooooooooo
+OOGGGGGOO
+GGOSSSOGG
+GGOSSSOGG
+GGOVVVOGG
+OOBRRRBOO
+OOOVVVOOO
+SSSOOOSSS
+SOGSOGSOG
 level8.txt
-Easy
+Normal
 : 0
 no
-level 0
-Selection
+level 7
+SELECT
 9
 8
 

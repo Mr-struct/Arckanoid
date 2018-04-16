@@ -1,4 +1,4 @@
-package Objects;
+package objects;
 
 import java.util.Timer;
 
@@ -6,13 +6,13 @@ public class Bonus {
 	
 	//attributs
 	
-	private  int x, y, width, height ,type; // les coordonnée x, y, la largeur, la hauteur, le type du bonus
+	private  int x, y, width, height ,type; // les coordonnee x, y, la largeur, la hauteur, le type du bonus
 	
 	public Timer timer = new Timer(); // timer du bonus pour son animation
 	/*
 	 * contructeur init le bonus
-	 * @param x la coordonnée x du bonus
-	 * @param y la coordonnée  y du bonus
+	 * @param x la coordonnee x du bonus
+	 * @param y la coordonnee  y du bonus
 	 * @param width la largeur du bonus
 	 * @param height la hauteur du bonus
 	 * @param type le type du bonus
@@ -31,7 +31,7 @@ public class Bonus {
 	}
 	
 	/*
-	 * @return x la coordonnée x du bonus
+	 * @return x la coordonnee x du bonus
 	 */
 	public int getX() {
 		
@@ -39,7 +39,7 @@ public class Bonus {
 	}
 	
 	/*
-	 * @param x met à jour la coordonnée x du bonus
+	 * @param x met a jour la coordonnee x du bonus
 	 */
 	public void setX(int x) {
 		
@@ -47,7 +47,7 @@ public class Bonus {
 	}
 	
 	/*
-	 * @return y la coordonnée y du bonus
+	 * @return y la coordonnee y du bonus
 	 */
 	public int getY() {
 		
@@ -55,7 +55,7 @@ public class Bonus {
 	}
 	
 	/*
-	 * @param y met à jour la coordonnée y du bonus
+	 * @param y met a jour la coordonnee y du bonus
 	 */
 	public void setY(int y) {
 		
@@ -63,7 +63,7 @@ public class Bonus {
 	}
 
 	/*
-	 * @return width la coordonnée width du bonus
+	 * @return width la coordonnee width du bonus
 	 */
 	public int getWidth() {
 		
@@ -71,7 +71,7 @@ public class Bonus {
 	}
 	
 	/*
-	 * @return height la coordonnée height du bonus
+	 * @return height la coordonnee height du bonus
 	 */
 	public int getHeight() {
 		
@@ -79,7 +79,7 @@ public class Bonus {
 	}
 	
 	/*
-	 * @return  type la coordonnée type du bonus
+	 * @return  type la coordonnee type du bonus
 	 */
 	public int getType() {
 		

@@ -1,21 +1,23 @@
-package Objects;
+package objects;
 
 import java.util.Timer;
 
 public class AnimatedObject {
 	// les attirbuts
-	private int x , y, width, height, age ; //les coordonnées + la largeur + la hauteur + age utilisé pour differant effets (durée de l'explosion ...)
+	private int x , y, width, height, age ; //les coordonnees + la largeur + la hauteur + age utilise pour differant effets (duree de l'explosion ...)
 	
-	private String popUp; // utiliser pour afficher le gain du score lors d'une collision brique balle
+	private String popUp; // utilise pour afficher le gain du score lors d'une collision brique balle
 	
-	public  Timer timer = new Timer(); // timer spécifique à l'objet 
+	public  Timer timer = new Timer(); // timer specifique a l'objet 
 	
 	/*
-	 * contructeur pour le score à afficher
+	 * contructeur pour le score a afficher
 	 * 
-	 * @param x le coordonnée x initial de l'objet
-	 * @pram y la coordonnée y initial de l'objet
-	 * @param popUp le message à afficher 
+	 * @param x le coordonnee x initial de l'objet
+	 * 
+	 * @pram y la coordonnee y initial de l'objet
+	 * 
+	 * @param popUp le message a afficher 
 	 */
 	public AnimatedObject(int x, int y,String popUp) {
 		this.x = x;
@@ -26,9 +28,13 @@ public class AnimatedObject {
 	
 	/*
 	 * contructeur pour differanttes animation 
-	 * @param x le coordonnée x initial de l'objet
-	 * @pram y la coordonnée y initial de l'objet
+	 * 
+	 * @param x le coordonnee x initial de l'objet
+	 * 
+	 * @pram y la coordonnee y initial de l'objet
+	 * 
 	 * @param width la largeur de l'objet
+	 * 
 	 * @param height la hauteur de l'objet
 	 */
 	public AnimatedObject(int x, int y,int width, int height) {
@@ -41,28 +47,28 @@ public class AnimatedObject {
 	}
 
 	/*
-	 * @return x la coordonnée x de l'objet
+	 * @return x la coordonnee x de l'objet
 	 */
 	public int getX() {
 		return x;
 	}
 
 	/*
-	 * @param x met à jour la coordonnée x de l'objet
+	 * @param x met a jour la coordonnee x de l'objet
 	 */
 	public void setX(int x) {
 		this.x = x;
 	}
 	
 	/*
-	 * @return y la coordonnée y de l'objet 
+	 * @return y la coordonnee y de l'objet 
 	 */
 	public int getY() {
 		return y;
 	}
 	
 	/*
-	 * @param y met à jour la coordonnée y de l'objet
+	 * @param y met a jour la coordonnee y de l'objet
 	 */
 	public void setY(int y) {
 		this.y = y;
@@ -76,7 +82,7 @@ public class AnimatedObject {
 	}
 	
 	/*
-	 * @param popUp met à jour le message à afficher
+	 * @param popUp met a jour le message a afficher
 	 */
 	public void setPopUp(String popUp) {
 		this.popUp = popUp;
@@ -90,7 +96,7 @@ public class AnimatedObject {
 	}
 	
 	/*
-	 * @param age met à jour la variable age
+	 * @param age met a jour la variable age
 	 */
 	public void setAge(int age) {
 		this.age = age;
@@ -104,7 +110,7 @@ public class AnimatedObject {
 	}
 	
 	/*
-	 * @param width met à jour la largeur de l'objet 
+	 * @param width met a jour la largeur de l'objet 
 	 */
 	public void setWidth(int width) {
 		this.width = width;
@@ -118,7 +124,7 @@ public class AnimatedObject {
 	}
 	
 	/*
-	 * @param height met à jour la hauteur de l'objet 
+	 * @param height met a jour la hauteur de l'objet 
 	 */
 	public void setHeight(int height) {
 		this.height = height;

@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,14 +7,14 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import Controls.Level;
-import Controls.SoundPlay;
-import Objects.AnimatedObject;
-import Objects.Ball;
-import Objects.Bonus;
-import Objects.Brick;
-import Objects.Raquette;
-import Views.Vue;
+import controlles.Level;
+import controlles.SoundPlay;
+import objects.AnimatedObject;
+import objects.Ball;
+import objects.Bonus;
+import objects.Brick;
+import objects.Raquette;
+import views.View;
 
 
 public class Modele {
@@ -61,7 +61,7 @@ public class Modele {
 
 	protected int maxX = gameWidth-200;
 
-	protected Vue  vueJeu;
+	protected View  vueJeu;
 	
 	public SoundPlay impactSound;
 	
@@ -79,6 +79,11 @@ public class Modele {
 	
 	//initialise le niveau selon les param�tres du fichier fileLevel
 	public Modele() {
+		/*
+		 * init le son
+		 */
+		this.impactSound  =new SoundPlay();
+		this.impactSound.setPnogrameChange(11);
 		
 		/*
 		 * init le niveau 
@@ -94,7 +99,7 @@ public class Modele {
 		this.preview(level);
 	}
 	/*
-	 * methode pour la d�mo 
+	 * methode pour la demo 
 	 */
 	public void preview(String level) {
 		try {
@@ -103,10 +108,9 @@ public class Modele {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.impactSound = new SoundPlay();
-		this.impactSound.volume = 0;
+		this.impactSound  =new SoundPlay();
 		this.impactSound.setPnogrameChange(11);
-		
+		this.impactSound.volume = 0;		
 		lancerJeu();
 		timerPreview.schedule( new TimerTask() {
 				public void run(){
@@ -138,12 +142,6 @@ public class Modele {
 		this.win = false;
 		
 		this.lose = false;
-		/*
-		 * init le son
-		 */
-		this.impactSound = new SoundPlay();
-		
-		this.impactSound.setPnogrameChange(11);
 		
 		bricks = new ArrayList<Brick>(); 
 		
@@ -173,41 +171,41 @@ public class Modele {
 		 */
 		initBalle();
 		
-		char [] [] char2D = new char [level.briquesCols][level.briquesRows];
+		char [] [] char2D = new char [level.bricksCols][level.bricksRows];
 		
-		char2D = level.arrayStringTo2DArrayChar(level.fileLevelParssed, level.briquesCols, level.briquesRows);
-		System.out.println("Cols : "+ level.briquesCols);
-		System.out.println("ROW : "+ level.briquesRows);
-		for(int i = 0; i < level.briquesCols; i++) {
+		char2D = level.arrayStringTo2DArrayChar(level.fileLevelParssed, level.bricksCols, level.bricksRows);
+		System.out.println("Cols : "+ level.bricksCols);
+		System.out.println("ROW : "+ level.bricksRows);
+		for(int i = 0; i < level.bricksCols; i++) {
 		
-			for(int j = 0; j < level.briquesRows ;j++) {
+			for(int j = 0; j < level.bricksRows ;j++) {
 			
 				// matrice inversser
 				switch(char2D[j][i]) {
 
 				case 'B': // pour les briques bleu
 
-					bricks.add(new Brick( (i*(level.briquesCols+1)*10)+240, (j*level.briquesRows*7)+50 ,80   ,30    ,0, 1,1,61) );
+					bricks.add(new Brick( (i*(level.bricksCols+1)*10)+240, (j*level.bricksRows*7)+50 ,80   ,30    ,0, 1,1,61) );
 					break;
 
 				case 'V': // pour les briques vertes 
 
-					bricks.add(new Brick( (i*(level.briquesCols+1)*10)+240, (j*level.briquesRows*7)+50 ,80   ,30    ,1, 2,1,63) );
+					bricks.add(new Brick( (i*(level.bricksCols+1)*10)+240, (j*level.bricksRows*7)+50 ,80   ,30    ,1, 2,1,63) );
 					break;
 
 				case 'S': //pour les briques en metal
 
-					bricks.add(new Brick( (i*(level.briquesCols+1)*10)+240, (j*level.briquesRows*7)+50 ,80   ,30    ,2, 3,2,65) );
+					bricks.add(new Brick( (i*(level.bricksCols+1)*10)+240, (j*level.bricksRows*7)+50 ,80   ,30    ,2, 3,2,65) );
 					break;
 
 				case 'R': // pour les briques rouge
 
-					bricks.add(new Brick( (i*(level.briquesCols+1)*10)+240, (j*level.briquesRows*7)+50 ,80   ,30    ,3, 4,1,68) );
+					bricks.add(new Brick( (i*(level.bricksCols+1)*10)+240, (j*level.bricksRows*7)+50 ,80   ,30    ,3, 4,1,68) );
 					break;
 
 				case 'G' : // pour les brique or
 
-					bricks.add(new Brick( (i*(level.briquesCols+1)*10)+240, (j*level.briquesRows*7)+50 ,80   ,30    ,4, 5,1,73) );
+					bricks.add(new Brick( (i*(level.bricksCols+1)*10)+240, (j*level.bricksRows*7)+50 ,80   ,30    ,4, 5,1,73) );
 					break;
 				};
 			}
@@ -305,7 +303,7 @@ public class Modele {
 		}
 		
 		musicImpacte = (brick.note);
-		impactSound.note_on(musicImpacte);
+		impactSound.noteOn(musicImpacte);
 		if(brick.getNumberOfColision() > 1){
 			brick.setNumberOfColision(brick.getNumberOfColision() - 1);
 			if(brick.getType() == 2) brick.setType(5);
@@ -423,8 +421,8 @@ public class Modele {
 				if((b.getvX() < 0 && b.getdX() <= minX) || (b.getvX() > 0 && b.getdX() + b.getWidth() >= maxX )){
 					
 					// son lors de la collision avec le mur
-					impactSound.note_on(musicImpacte);
-					impactSound.note_on(musicImpacte-3);
+					impactSound.noteOn(musicImpacte);
+					impactSound.noteOn(musicImpacte-3);
 					
 					b.setvX(-b.getvX());
 				}
@@ -432,8 +430,8 @@ public class Modele {
 				if(b.getvY() < 0 && b.getdY() <= 0){
 					
 					// son lors de la collision avec le plafond
-					impactSound.note_on(musicImpacte);
-					impactSound.note_on(musicImpacte-2);
+					impactSound.noteOn(musicImpacte);
+					impactSound.noteOn(musicImpacte-2);
 					
 					b.setvY(-b.getvY());
 				}
@@ -441,8 +439,8 @@ public class Modele {
 				if(b.getvY() > 0 && b.getdY() + b.getHeight() >= raquette.getY() && b.getdY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getdX() + b.getWidth() > raquette.getX() && b.getdX() < raquette.getX() + raquette.getWidth()){
 					
 					// son
-					impactSound.note_on(musicImpacte+2);
-					impactSound.note_on(musicImpacte+5);
+					impactSound.noteOn(musicImpacte+2);
+					impactSound.noteOn(musicImpacte+5);
 					
 					if(curBonus == 3){
 						b.setvX(0);

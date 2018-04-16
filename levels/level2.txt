@@ -1,17 +1,17 @@
-RGRGRGRGR
-VBVBVBVBV
-BSBSBSBSB
-oGGGGGGGo
-ooRRRRRoo
-oooVVVooo
-ooooBoooo
-ooooooooo
+OOOBBBOOO
+OOBRBRBOO
+OOOBRBOOO
+BBBBGBBBB
+BBOBGBOBB
+BBOBGBOBB
+OOOBGBOOO
+OOBBOBBOO
 level3.txt
-Easy
+Normal
 : 0
 no
-level 0
-The start
+level 2
+THE START
 9
 8
 

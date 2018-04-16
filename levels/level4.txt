@@ -1,17 +1,17 @@
-RGRGRGRGR
-VBVBVBVBV
-BSBSBSBSB
-oGGGGGGGo
-ooRRRRRoo
-oooVVVooo
-ooooBoooo
-ooooooooo
+OBBBBBBBO
+BOOBBBBOB
+BORRRRROB
+BROOBBORB
+VSSSSSSSV
+BSOOSOOSB
+SSOOBOOSS
+GGOOOOOGG
 level5.txt
-Easy
+Normal
 : 0
 no
-level 0
-Observation
+level 4
+FOCUS
 9
 8
 
