@@ -32,7 +32,7 @@ public class PanelLevelSelect extends JPanel{
 	
 	public Modele previewModele; // le modele de demo
 	
-	public LevelSelectView levelSelect; // le paneau de la demo
+	public LevelSelectView levelSelect; // le panneau de la demo
 
 	/*
 	 * Contructeur 
@@ -74,7 +74,7 @@ public class PanelLevelSelect extends JPanel{
 		//init le modele demo
 		previewModele = new Modele("./levels/level"+view.levelIndex+".txt");
 		
-		//init le paneau de demo
+		//init le panneau de demo
 		levelSelect = new LevelSelectView(previewModele,view);
 		
 		// on rajoute les boutons
@@ -84,7 +84,7 @@ public class PanelLevelSelect extends JPanel{
 		
 		this.add(view.backButtonMenuFromSelect);
 		
-		// on rajoute le paneau de demo
+		// on rajoute le panneau de demo
 		this.add(levelSelect);
 			
 	}
@@ -136,7 +136,7 @@ public class PanelLevelSelect extends JPanel{
 		view.nextSelectButton.drawButton(436 + modele.gameWidth-800,view.modele.gameHeight/2,64,64,scaleX,scaleY,g2d);
 		view.previousSelectButton.drawButton(300,view.modele.gameHeight/2,64,64,scaleX,scaleY,g2d);
 		
-		//dessine le paneau de demo
+		//dessine le panneau de demo
 		levelSelect.drawPreview(400, 150,modele.gameWidth-800, modele.gameHeight-300, scaleX, scaleY, g2d);
 	}
 }

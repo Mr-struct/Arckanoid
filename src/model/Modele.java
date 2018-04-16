@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import controlles.Level;
 import controlles.SoundPlay;
 import objects.AnimatedObject;
@@ -128,7 +127,7 @@ public class Modele {
 				}
 			}, 1000, 20);
 		}
-	//initialise la premi�re balle. sa position sera calcul�e automatiquement en fonction de la raquette
+	//initialise la premiere balle. sa position sera calculee automatiquement en fonction de la raquette
 	public void initBalle(){
 
 		// la position de la balle est set dans le controleur dans le lancerJeu()

@@ -29,9 +29,9 @@ import objects.Bonus;
 import objects.Brick;
 @SuppressWarnings("serial")
 /*
- * cette classe est utiliser pour afficher la demo dnas le paneau selecteur de niveau 
+ * cette classe est utiliser pour afficher la demo dnas le panneau selecteur de niveau 
  * 
- * elle fonctione comme le paneau de jeu et a presque les meme attributs
+ * elle fonctione comme le panneau de jeu et a presque les meme attributs
  */
 public class  LevelSelectView extends JPanel implements MouseListener{
 
@@ -61,7 +61,7 @@ public class  LevelSelectView extends JPanel implements MouseListener{
 
 	private Image imgChain;
 
-	private boolean entred; // boolean utiliser pour savoir si la souris survole ou non le paneau demo
+	private boolean entred; // boolean utiliser pour savoir si la souris survole ou non le panneau demo
 
 	@SuppressWarnings("unused")
 
@@ -141,7 +141,7 @@ public class  LevelSelectView extends JPanel implements MouseListener{
 
 
 	/*
-	 * dessine le paneau avec des coordonnee compatible avec le scale du parent 
+	 * dessine le panneau avec des coordonnee compatible avec le scale du parent 
 	 * 
 	 * @param x la position x 
 	 * 
@@ -164,14 +164,14 @@ public class  LevelSelectView extends JPanel implements MouseListener{
 
 		AffineTransform tx = new AffineTransform();
 
-		// on translate et scale le contenus du paneau cette fois 
+		// on translate et scale le contenus du panneau cette fois 
 		tx.translate((int)(scaleX*x), (int) (scaleY*y));
 
 		tx.scale((float) (scaleX*width)/ (float)modele.gameWidth, (float) (scaleY*height)/ (float)modele.gameHeight);
 
 		g2d.setTransform(tx);
 
-		// on test si la souris survole le paneau on affiche un carre blac autoure
+		// on test si la souris survole le panneau on affiche un carre blac autoure
 		if(entred) {
 
 			g2d.setColor(MousHoverClic);
@@ -343,7 +343,7 @@ public class  LevelSelectView extends JPanel implements MouseListener{
 		g2d.fillRect((view.modele.gameWidth-200), 0, 200, view.modele.gameHeight); // celui de droite
 		g2d.fillRect(0, 0, 200, view.modele.gameHeight); // celeui de gauche
 
-		//dessine les ombres des paneau du bonus et de du score 
+		//dessine les ombres des panneau du bonus et de du score 
 		g2d.setColor(Color.BLACK);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.fillRoundRect(view.modele.gameWidth-170, 20, 155, view.modele.gameHeight/2-view.modele.gameHeight/20  + 69, 10, 10);//droite	
@@ -481,13 +481,13 @@ public class  LevelSelectView extends JPanel implements MouseListener{
 	/*
 	 * lance le jeu lors du clique si le niveau est jouable 
 	 * 
-	 * le paneau general est vide 
+	 * le panneau general est vide 
 	 * 
-	 * les timer des autres paneaux sont arrete
+	 * les timer des autres panneaux sont arrete
 	 * 
-	 * le paneau du jeu selectione est init
+	 * le panneau du jeu selectione est init
 	 * 
-	 * on le rajoute au paneau central
+	 * on le rajoute au panneau central
 	 * 
 	 * et on lance son timer
 	 * 

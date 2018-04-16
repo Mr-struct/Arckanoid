@@ -4,19 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSlider;
-
-import controlles.ControllerGame;
 import controlles.ControllerViews;
 import controlles.SoundPlay;
 import model.Modele;
@@ -29,18 +22,18 @@ public class View extends JFrame {
 	
 	// les attributs//
 	
-	/////// les paneau ///////////////////////
+	/////// les panneau ///////////////////////
 	public PanelGame panelGame; //celui du jeu
 	
-	public JPanel thisPanel; // le paneau principal 
+	public JPanel thisPanel; // le panneau principal 
 	
-	public PanelMenu panelMenu; //le paneau du menu
+	public PanelMenu panelMenu; //le panneau du menu
 	
-	public PanelSettings panelSettings; // le paneau des parametre 
+	public PanelSettings panelSettings; // le panneau des parametre 
 	
-	protected LevelSelectView select; //le paneau de demo
+	protected LevelSelectView select; //le panneau de demo
 	
-	public PanelLevelSelect panelLevelSelect; //le paneau de selecteur de niveau 
+	public PanelLevelSelect panelLevelSelect; //le panneau de selecteur de niveau 
 	
 	////// les boutons//////
 	
@@ -99,7 +92,6 @@ public class View extends JFrame {
 	
 	protected ControllerViews ctrl; // le controleur de vue 
 		
-	@SuppressWarnings("unused")
 	public Modele modele;
 	
 	/*
@@ -219,10 +211,10 @@ public class View extends JFrame {
 		 */
 		sliderLevel = new JSlider(JSlider.HORIZONTAL, 0, 100, 40);
 
-		//init le paneau du menu 
+		//init le panneau du menu 
 		panelMenu = new PanelMenu(this.getWidth(),this.getHeight(),this);
 		
-		//init le paneau principal 
+		//init le panneau principal 
 		thisPanel = new JPanel();
 		
 		thisPanel.setLayout(new BorderLayout());

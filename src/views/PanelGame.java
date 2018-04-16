@@ -50,13 +50,13 @@ public class PanelGame extends JPanel{
 	/*
 	 * contructeur
 	 * 
-	 * @param width la largeur du paneau 
+	 * @param width la largeur du panneau 
 	 * 
-	 * @param height la heuteur du paneau 
+	 * @param height la heuteur du panneau 
 	 * 
 	 * @param view la vue general ou la frame
 	 * 
-	 * init le paneau 
+	 * init le panneau 
 	 */
 	public PanelGame (int width,int height,View view) {
 
@@ -359,7 +359,7 @@ public class PanelGame extends JPanel{
 		g2d.fillRect((view.modele.gameWidth-200), 0, 200, view.modele.gameHeight); // celui de droite
 		g2d.fillRect(0, 0, 200, view.modele.gameHeight); // celeui de gauche
 
-		//dessine les ombres des paneau du bonus et de du score 
+		//dessine les ombres des panneau du bonus et de du score 
 		g2d.setColor(Color.BLACK);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.fillRoundRect(view.modele.gameWidth-170, 20, 155, view.modele.gameHeight/2-view.modele.gameHeight/20  + 69, 10, 10);//droite	
@@ -493,7 +493,7 @@ public class PanelGame extends JPanel{
 		//dessine le message de fin lors du gain
 		if(view.modele.win) {
 			
-			// on enleve les bouton de pause et de son du paneau 
+			// on enleve les bouton de pause et de son du panneau 
 			if(view.pauseButton.getParent()!= null && view.crossButton.getParent()!=null) {
 				
 				this.remove(view.pauseButton);

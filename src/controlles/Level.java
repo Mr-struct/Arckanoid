@@ -25,7 +25,7 @@ import java.io.IOException;
  * les lignes(entier)
  * 
  * O c est un vide
- * R pour la birque rouge
+ * R pour la brique rouge
  * B pour la brique bleu
  * V pour la brique verte
  * G pour la brique en or

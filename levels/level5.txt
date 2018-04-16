@@ -6,11 +6,11 @@ OBRBBBRBO
 OBRBBBRBO
 OBBBBBBBO
 OGGGGGGGO
-leOel6.txt
+level6.txt
 Hard
 : 0
 no
-leOel 5
+level 5
 BUY
 9
 8

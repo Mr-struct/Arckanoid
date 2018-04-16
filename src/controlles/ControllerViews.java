@@ -34,13 +34,13 @@ public class ControllerViews {
 		/*
 		 * gere le clique sur le boutton play du menu
 		 * 
-		 * le paneau general est vide 
+		 * le panneau general est vide 
 		 * 
-		 * les timer des autres paneaux sont arrete
+		 * les timer des autres panneaux sont arrete
 		 * 
-		 * le paneau de selection de niveaux est init
+		 * le panneau de selection de niveaux est init
 		 * 
-		 * on le rajoute au paneau central
+		 * on le rajoute au panneau central
 		 * 
 		 * on lance son timer
 		 * 
@@ -123,13 +123,13 @@ public class ControllerViews {
 		/*
 		 * gere le clique sur le boutton parametre du menu
 		 * 
-		 * le paneau general est vide 
+		 * le panneau general est vide 
 		 * 
-		 * les timer des autres paneaux sont arrete
+		 * les timer des autres panneaux sont arrete
 		 * 
-		 * le paneau de parametre  est init
+		 * le panneau de parametre  est init
 		 * 
-		 * on le rajoute au paneau central
+		 * on le rajoute au panneau central
 		 * 
 		 * et on lance son timer
 		 * 
@@ -183,15 +183,15 @@ public class ControllerViews {
 		});
 
 		/*
-		 * gere le clique sur le boutton retour du paneau parametre 
+		 * gere le clique sur le boutton retour du panneau parametre 
 		 * 
-		 * le paneau general est vide 
+		 * le panneau general est vide 
 		 * 
-		 * les timer des autres paneaux sont arrete
+		 * les timer des autres panneaux sont arrete
 		 * 
-		 * le paneau du menu est init
+		 * le panneau du menu est init
 		 * 
-		 * on le rajoute au paneau central
+		 * on le rajoute au panneau central
 		 * 
 		 * et on lance son timer
 		 * 
@@ -245,15 +245,15 @@ public class ControllerViews {
 		});
 
 		/*
-		 * gere le clique sur le boutton retour du paneau selecteur de niveau  
+		 * gere le clique sur le boutton retour du panneau selecteur de niveau  
 		 * 
-		 * le paneau general est vide 
+		 * le panneau general est vide 
 		 * 
-		 * les timer des autres paneaux sont arrete
+		 * les timer des autres panneaux sont arrete
 		 * 
-		 * le paneau du menu est init
+		 * le panneau du menu est init
 		 * 
-		 * on le rajoute au paneau central
+		 * on le rajoute au panneau central
 		 * 
 		 * et on lance son timer
 		 * 
@@ -313,15 +313,15 @@ public class ControllerViews {
 		view.sliderLevel.addChangeListener( e-> levelChange()); 
 		
 		/*
-		 * gere le clique sur le boutton retour du paneau de jeu 
+		 * gere le clique sur le boutton retour du panneau de jeu 
 		 * 
-		 * le paneau general est vide 
+		 * le panneau general est vide 
 		 * 
-		 * les timer des autres paneaux sont arrete
+		 * les timer des autres panneaux sont arrete
 		 * 
-		 * le paneau du selecteur de niveau est init
+		 * le panneau du selecteur de niveau est init
 		 * 
-		 * on le rajoute au paneau central
+		 * on le rajoute au panneau central
 		 * 
 		 * et on lance son timer
 		 * 
@@ -373,15 +373,15 @@ public class ControllerViews {
 		});
 		
 		/*
-		 * gere le clique sur le boutton recommancer du paneau de jeu  
+		 * gere le clique sur le boutton recommancer du panneau de jeu  
 		 * 
-		 * le paneau general est vide 
+		 * le panneau general est vide 
 		 * 
-		 * les timer des autres paneaux sont arrete
+		 * les timer des autres panneaux sont arrete
 		 * 
-		 * le paneau du jeu est init
+		 * le panneau du jeu est init
 		 * 
-		 * on le rajoute au paneau central
+		 * on le rajoute au panneau central
 		 * 
 		 * et on lance son timer
 		 * 
@@ -443,17 +443,17 @@ public class ControllerViews {
 		});
 		
 		/*
-		 * gere le clique sur le boutton continuer du paneau de jeu  
+		 * gere le clique sur le boutton continuer du panneau de jeu  
 		 * 
-		 * le paneau general est vide 
+		 * le panneau general est vide 
 		 * 
-		 * les timer des autres paneaux sont arrete
+		 * les timer des autres panneaux sont arrete
 		 * 
 		 * le niveau suivant est init
 		 * 
-		 * le paneau de jeu suiviant est init avec le modele du niveau suivant 
+		 * le panneau de jeu suiviant est init avec le modele du niveau suivant 
 		 * 
-		 * on le rajoute au paneau central
+		 * on le rajoute au panneau central
 		 * 
 		 * et on lance son timer
 		 * 
@@ -516,7 +516,7 @@ public class ControllerViews {
 		});
 		
 		/*
-		 * gere le clique sur le boutton pause du paneau de jeu  
+		 * gere le clique sur le boutton pause du panneau de jeu  
 		 *
 		 *si le jeu tourn on le met en pause 
 		 */
@@ -547,7 +547,7 @@ public class ControllerViews {
 		});
 		
 		/*
-		 * gere le clique sur le boutton croix du paneau de jeu 
+		 * gere le clique sur le boutton croix du panneau de jeu 
 		 *
 		 *	on test si le jeu est bien en pause et on relance le jeu  
 		 */
@@ -588,7 +588,7 @@ public class ControllerViews {
 		});
 		
 		/*
-		 * gere le clique sur le boutton son du paneau de jeu  
+		 * gere le clique sur le boutton son du panneau de jeu  
 		 * 
 		 * avctive desactive le son selon l eta 
 		 *
@@ -648,9 +648,9 @@ public class ControllerViews {
 		});
 
 		/*
-		 * gere le clique sur le boutton niveau suivant du paneau de selecteur de niveau  
+		 * gere le clique sur le boutton niveau suivant du panneau de selecteur de niveau  
 		 * 
-		 * le paneau de demo est mis a jour avec le bon niveau a afficher 
+		 * le panneau de demo est mis a jour avec le bon niveau a afficher 
 		 */
 		view.nextSelectButton.addMouseListener(new MouseListener() {
 
@@ -667,13 +667,13 @@ public class ControllerViews {
 					
 					view.panelLevelSelect.previewModele = new Modele("./levels/level"+view.levelIndex+".txt"); // le bon niveau est charger 
 					
-					view.panelLevelSelect.imgBackground1 = new ImageIcon("./levels/level"+view.levelIndex+".txt.gif"); // on met a jour le fon du paneau de selecteur de niveau 
+					view.panelLevelSelect.imgBackground1 = new ImageIcon("./levels/level"+view.levelIndex+".txt.gif"); // on met a jour le fon du panneau de selecteur de niveau 
 					
-					view.panelLevelSelect.remove(view.panelLevelSelect.levelSelect); // on supprime la demo du paneau 
+					view.panelLevelSelect.remove(view.panelLevelSelect.levelSelect); // on supprime la demo du panneau 
 					
 					view.panelLevelSelect.levelSelect = new LevelSelectView(view.panelLevelSelect.previewModele,view); //on init la  nouvelle demo 
 					
-					view.panelLevelSelect.add(view.panelLevelSelect.levelSelect); // on rajoute la bonne demo dans le paneau 
+					view.panelLevelSelect.add(view.panelLevelSelect.levelSelect); // on rajoute la bonne demo dans le panneau 
 				}
 			}
 
@@ -781,7 +781,7 @@ public class ControllerViews {
 		view.soundBT.noteOn(60);
 
 		/*
-		 * petit test pour afficher le bon bouton de son dans le paneau du jeu 
+		 * petit test pour afficher le bon bouton de son dans le panneau du jeu 
 		 */
 		if(view.modele.impactSound.volume > 0) {
 

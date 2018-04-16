@@ -27,9 +27,9 @@ public class PanelSettings extends JPanel{
 	/*
 	 * contructeur 
 	 * 
-	 * @param width la largeur du paneau 
+	 * @param width la largeur du panneau 
 	 * 
-	 * @param height la hauteur du paneau 
+	 * @param height la hauteur du panneau 
 	 * 
 	 * @param view la vue general ou la frame
 	 * 
