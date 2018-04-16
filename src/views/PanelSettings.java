@@ -24,7 +24,7 @@ public class PanelSettings extends JPanel{
 	private float scaleY = 0.0f;
 
 	
-	/*
+	/**
 	 * contructeur 
 	 * 
 	 * @param width la largeur du panneau 

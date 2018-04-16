@@ -5,7 +5,8 @@ public class Raquette {
 
 	private int  x, y, width, height, initWidth;  //les coordonnees x, y, la largeur, la hauteur , la largeur inital de la raquette 
 	
-	/* constructeur init une raquette
+	/**
+	 *  constructeur init une raquette
 	 * @param x la coordonnee x de la raquette
 	 * @param y la coordonnee  y de la raquette
 	 * @param width la largeur de la raquette
@@ -25,7 +26,7 @@ public class Raquette {
 		
 	}
 
-	/*
+	/**
 	 * @return x la coordonnee x de la raquette
 	 */
 	public int getX() {
@@ -33,7 +34,7 @@ public class Raquette {
 		return x;
 	}
 
-	/*
+	/**
 	 * @param x met a jour la coordonnee x de la raquette
 	 */
 	public void setX(int x) {
@@ -41,7 +42,7 @@ public class Raquette {
 		this.x = x;
 	}
 	
-	/*
+	/**
 	 * @return width la largeur initial de la raquette
 	 */
 	public int getInitWidth() {
@@ -49,7 +50,7 @@ public class Raquette {
 		return initWidth;
 	}
 	
-	/*
+	/**
 	 * @return width la largeur de la raquette
 	 */
 	public int getWidth() {
@@ -57,7 +58,7 @@ public class Raquette {
 		return width;
 	}
 	
-	/*
+	/**
 	 * @param width met a jour la largeur de la raquette
 	 */
 	public void setWidth(int width) {
@@ -66,14 +67,15 @@ public class Raquette {
 		
 	}
 	
-	/*
+	/**
 	 * @return height la hauteur de la raquette
 	 */
 	public int getHeight() {
 		
 		return height;
 	}
-	/*
+	
+	/**
 	 * @param width met a jour la hauteur de la raquette
 	 */
 	public void setHeight(int height) {
@@ -82,7 +84,7 @@ public class Raquette {
 		
 	}
 	
-	/*
+	/**
 	 * @return y la coordonnee y de la raquette
 	 */
 	public int getY() {
@@ -91,7 +93,7 @@ public class Raquette {
 		
 	}
 	
-	/*
+	/**
 	 * @param y met a jour la coordonne y 
 	 */
 	public void setY(int y) {

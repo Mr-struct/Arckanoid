@@ -13,7 +13,8 @@ public class Brick {
 
 	public int note; // le son de la brique lors de la collision
 
-	/* constructeur init une brique
+	/**
+	 * constructeur init une brique
 	 * @param x la coordonnee x de la brique
 	 * @param y la coordonnee  y de la brique
 	 * @param width la largeur de la brique
@@ -43,7 +44,7 @@ public class Brick {
 
 	}
 
-	/*
+	/**
 	 * @return x la coordonnee x de la brique
 	 */
 
@@ -52,7 +53,7 @@ public class Brick {
 		return x;
 	}
 
-	/*
+	/**
 	 * @param x met a jour la coordonnee x de la brique
 	 */
 	public void setX(int x) {
@@ -61,7 +62,7 @@ public class Brick {
 
 	}
 
-	/*
+	/**
 	 * @param y met a jour la coordonne y 
 	 */
 	public void setY(int y) {
@@ -70,7 +71,7 @@ public class Brick {
 
 	}
 	
-	/*
+	/**
 	 * @return y la coordonnee y de la brique
 	 */
 	public int getY() {
@@ -81,7 +82,7 @@ public class Brick {
 
 
 
-	/*
+	/**
 	 * @return height la hauteur de la brique
 	 */
 
@@ -91,7 +92,7 @@ public class Brick {
 
 	}
 
-	/*
+	/**
 	 * @return width la largeur de la brique
 	 */
 
@@ -101,7 +102,7 @@ public class Brick {
 
 	}
 
-	/*
+	/**
 	 * @param width met a jour la largeur de la brique
 	 */
 	public void setWidth(int width) {
@@ -114,7 +115,7 @@ public class Brick {
 
 	}
 
-	/*
+	/**
 	 * @param type met a jour le type de la brique
 	 */
 	public void setType(int type) {
@@ -123,7 +124,7 @@ public class Brick {
 
 	}
 
-	/*
+	/**
 	 * @return value la valeur de la brique
 	 */
 	public int getValue() {
@@ -132,7 +133,7 @@ public class Brick {
 
 	}
 
-	/*
+	/**
 	 * @param value met a jour la valeur de la brique
 	 */
 	public void setValue(int value) {
@@ -142,7 +143,7 @@ public class Brick {
 	}
 
 
-	/*
+	/**
 	 * @return numberOfColision le nombre collision que peut avoir une brique
 	 */
 	public int getNumberOfColision() {
@@ -150,7 +151,7 @@ public class Brick {
 		return numberOfColision;
 	}
 
-	/*
+	/**
 	 * @param numberOfColision met a jour le nombre de collision que peut avoir une brique
 	 */
 	public void setNumberOfColision(int numberOfColision) {

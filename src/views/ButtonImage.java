@@ -21,7 +21,7 @@ public class ButtonImage extends JButton implements MouseListener  {
 	
 	protected SoundPlay sound;	 // le son du bouton
 	
-	/*
+	/**
 	 * le contructeur init le bouton normalement
 	 * 
 	 * @param defaultImg l'image par defaut du bouton
@@ -57,7 +57,7 @@ public class ButtonImage extends JButton implements MouseListener  {
 
 	}
 	
-	/*
+	/**
 	 * le contructeur init le bouton qui peut etre desactive
 	 * @param defaultImg l'image par defaut du bouton
 	 * @param enteredImg l'image du bouton lors du survole de la souris
@@ -97,7 +97,7 @@ public class ButtonImage extends JButton implements MouseListener  {
 	public void paintComponent(Graphics g){
 	}
 	
-	/*
+	/**
 	 * dessine le bouton avec des coordonnee compatible avec le scale du parent 
 	 * 
 	 * @param x la position x du bouton 

@@ -71,7 +71,7 @@ public class  LevelSelectView extends JPanel implements MouseListener{
 
 	private float scaleY = 0.0f;
 
-	/*
+	/**
 	 * constructeur 
 	 * 
 	 * @param view la vue generale
@@ -140,7 +140,7 @@ public class  LevelSelectView extends JPanel implements MouseListener{
 	}
 
 
-	/*
+	/**
 	 * dessine le panneau avec des coordonnee compatible avec le scale du parent 
 	 * 
 	 * @param x la position x 

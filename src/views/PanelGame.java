@@ -47,7 +47,7 @@ public class PanelGame extends JPanel{
 	private float scaleX = 0.0f;
 	private float scaleY = 0.0f;
 
-	/*
+	/**
 	 * contructeur
 	 * 
 	 * @param width la largeur du panneau 

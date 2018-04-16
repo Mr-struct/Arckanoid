@@ -94,7 +94,7 @@ public class View extends JFrame {
 		
 	public Modele modele;
 	
-	/*
+	/**
 	 * contructeur 
 	 * 
 	 * @param modele le modele Physique
@@ -211,10 +211,14 @@ public class View extends JFrame {
 		 */
 		sliderLevel = new JSlider(JSlider.HORIZONTAL, 0, 100, 40);
 
-		//init le panneau du menu 
+		/*
+		 * init le panneau du menu 
+		 */
 		panelMenu = new PanelMenu(this.getWidth(),this.getHeight(),this);
 		
-		//init le panneau principal 
+		/*
+		 * init le panneau principal 
+		 */
 		thisPanel = new JPanel();
 		
 		thisPanel.setLayout(new BorderLayout());

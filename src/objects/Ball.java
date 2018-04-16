@@ -17,7 +17,7 @@ public class Ball {
 	
 	public Timer timer = new Timer(); // timer de balle pour controller son mouvment
 	
-	/*
+	/**
 	 * constructeur init la balle avec ces coordonnees x, y ca vitesse sa taille
 	 *  
 	 * @param x coordonee x de la balle
@@ -58,7 +58,7 @@ public class Ball {
 		this.hadCollision = false;
 	}
 	
-	/*
+	/**
 	 * @return x coordonee x de la balle
 	 */
 	public double getdX() {
@@ -67,7 +67,7 @@ public class Ball {
 		
 	}
 	
-	/*
+	/**
 	 * @return x coordonee x de la balle en entier pour l'afficher
 	 */
 	public int getIntX() {
@@ -76,7 +76,7 @@ public class Ball {
 		
 	}
 	
-	/*
+	/**
 	 * @param x met a jour la coordonnee x de la balle
 	 */
 	public void setX(double x) {
@@ -85,7 +85,7 @@ public class Ball {
 		
 	}
 	
-	/*
+	/**
 	 * @return y la coordonnee y de la balle
 	 */
 	public double getdY() {
@@ -94,7 +94,7 @@ public class Ball {
 		
 	}
 	
-	/*
+	/**
 	 * @return y la coordonnee y de la balle en entier pour l'afficher
 	 */
 	public int getIntY() {
@@ -103,7 +103,7 @@ public class Ball {
 		
 	}
 
-	/*
+	/**
 	 * @param y met a jour la coordonnee y de la balle
 	 */
 	public void setY(double y) {
@@ -111,7 +111,7 @@ public class Ball {
 		this.y = y;
 		
 	}
-	/*
+	/**
 	 * @return width la largeur de la balle
 	 */
 	public int getWidth() {
@@ -120,7 +120,7 @@ public class Ball {
 		
 	}
 	
-	/*
+	/**
 	 * @param width  met a jour la largeur de la balle
 	 */
 	public void setWidth(int width) {
@@ -129,14 +129,14 @@ public class Ball {
 		
 	}
 	
-	/*
+	/**
 	 * @return height la hauteur de la balle
 	 */
 	public int getHeight() {
 		return height;
 	}
 
-	/*
+	/**
 	 * @param height met a la hauteur de la balle
 	 */
 	public void setHeight(int height) {
@@ -145,7 +145,7 @@ public class Ball {
 		
 	}
 	
-	/*
+	/**
 	 * @return vX la coordonnee vX du vecteur vitesse
 	 */
 	public double getvX() {
@@ -154,7 +154,7 @@ public class Ball {
 		
 	}
 
-	/*
+	/**
 	 * @param vX met a jour la coordonee vX du vecteur vitesse de la balle
 	 */
 	public void setvX(double vX) {
@@ -163,7 +163,7 @@ public class Ball {
 		
 	}
 
-	/*
+	/**
 	 * @return vY la coordonee vY du vecteur vitesse de la balle
 	 */
 	public double getvY() {
@@ -172,7 +172,7 @@ public class Ball {
 		
 	}
 	
-	/*
+	/**
 	 * @param vY met a jour la coordonnee y  du vecteur vitesse 
 	 */
 	public void setvY(double vY) {
@@ -181,7 +181,7 @@ public class Ball {
 		
 	}
 	
-	/*
+	/**
 	 * @return paddleX la coordonee x de la balle sur la raquette
 	 */
 	public int getPaddleX() {
@@ -190,7 +190,7 @@ public class Ball {
 		
 	}
 	
-	/*
+	/**
 	 * @param rX met a jour la coordonee x de la balle sur la raquette
 	 */
 	public void setPaddleX(int rX) {
@@ -198,7 +198,8 @@ public class Ball {
 		this.paddleX = rX;
 		
 	}
-	/*
+	
+	/**
 	 * @return paddleY la coordonee Y de la balle sur la raquette
 	 */
 	public int getPaddleY() {
@@ -207,7 +208,7 @@ public class Ball {
 		
 	}
 	
-	/*
+	/**
 	 *@param  met a jour  paddleY la coordonee Y de la balle sur la raquette
 	 */
 	public void setPaddleY(int rY) {

@@ -34,7 +34,7 @@ public class PanelLevelSelect extends JPanel{
 	
 	public LevelSelectView levelSelect; // le panneau de la demo
 
-	/*
+	/**
 	 * Contructeur 
 	 * 
 	 * @param view la vue generale

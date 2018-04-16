@@ -5,7 +5,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
 import model.Modele;
 import views.View;
 
@@ -15,7 +14,7 @@ public class ControllerGame implements MouseMotionListener,MouseListener, KeyLis
 	private View view;
 	private int currenteVolume;
 
-	/*
+	/**
 	 * constructeur 
 	 * @param modele le modele physique du jeu 
 	 * @param view la vue generale du jeu

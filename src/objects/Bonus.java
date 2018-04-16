@@ -9,7 +9,8 @@ public class Bonus {
 	private  int x, y, width, height ,type; // les coordonnee x, y, la largeur, la hauteur, le type du bonus
 	
 	public Timer timer = new Timer(); // timer du bonus pour son animation
-	/*
+	
+	/**
 	 * contructeur init le bonus
 	 * @param x la coordonnee x du bonus
 	 * @param y la coordonnee  y du bonus
@@ -30,7 +31,7 @@ public class Bonus {
 		this.type = type;
 	}
 	
-	/*
+	/**
 	 * @return x la coordonnee x du bonus
 	 */
 	public int getX() {
@@ -38,7 +39,7 @@ public class Bonus {
 		return x;
 	}
 	
-	/*
+	/**
 	 * @param x met a jour la coordonnee x du bonus
 	 */
 	public void setX(int x) {
@@ -46,7 +47,7 @@ public class Bonus {
 		this.x = x;
 	}
 	
-	/*
+	/**
 	 * @return y la coordonnee y du bonus
 	 */
 	public int getY() {
@@ -54,7 +55,7 @@ public class Bonus {
 		return y;
 	}
 	
-	/*
+	/**
 	 * @param y met a jour la coordonnee y du bonus
 	 */
 	public void setY(int y) {
@@ -62,7 +63,7 @@ public class Bonus {
 		this.y = y;
 	}
 
-	/*
+	/**
 	 * @return width la coordonnee width du bonus
 	 */
 	public int getWidth() {
@@ -70,7 +71,7 @@ public class Bonus {
 		return width;
 	}
 	
-	/*
+	/**
 	 * @return height la coordonnee height du bonus
 	 */
 	public int getHeight() {
@@ -78,7 +79,7 @@ public class Bonus {
 		return height;
 	}
 	
-	/*
+	/**
 	 * @return  type la coordonnee type du bonus
 	 */
 	public int getType() {

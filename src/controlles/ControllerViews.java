@@ -22,7 +22,7 @@ public class ControllerViews {
 
 	private View view;
 	private int currenteVolume;
-	/*
+	/**
 	 *  constructeur 
 	 *  @param view la Jframe (la vue principale)
 	 */
