@@ -31,7 +31,7 @@ public class ControllerGame implements MouseMotionListener,MouseListener, KeyLis
 
 	@Override
 	/*
-	 *controle la raquette avec la souris + la curseur de la souris est mit au centre de la raquette
+	 *controle la raquette avec la souris + le curseur de la souris est mit au centre de la raquette
 	 */
 	public void mouseMoved(MouseEvent e) {
 
