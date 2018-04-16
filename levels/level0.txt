@@ -8,7 +8,7 @@ OORGGGROO
 OOORRROOO
 level1.txt
 Easy
-: 0
+: 1400
 yes
 level 0
 The WAY
