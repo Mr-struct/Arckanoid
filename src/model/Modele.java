@@ -7,7 +7,6 @@ import controlles.SoundPlay;
 import objects.*;
 import views.View;
 
-
 /**
  * @author Stephane
  *
@@ -424,9 +423,10 @@ public class Modele {
 						balls.remove(b);
 						if(balls.isEmpty()){
 							vies --;
-							if(vies <= 0)
+							if(vies <= 0) //plus de vies, partie perdue
 								perdu();
 							else{
+								//vies restantes, nouvelle balle
 								Ball nb = new Ball (0, 0, 0, 0, (raquette.getWidth()/2), -20, 20, 20);
 								balls.add(nb);
 								nb.timer.schedule(new TimerTask(){
@@ -438,6 +438,7 @@ public class Modele {
 						}
 					}
 				}
+				
 				//collision avec les murs
 				if((b.getvX() < 0 && b.getdX() <= minX) || (b.getvX() > 0 && b.getdX() + b.getWidth() >= maxX )){
 					
@@ -447,6 +448,7 @@ public class Modele {
 					
 					b.setvX(-b.getvX());
 				}
+				
 				//collision avec le plafond
 				if(b.getvY() < 0 && b.getdY() <= 0){
 					
@@ -456,6 +458,7 @@ public class Modele {
 					
 					b.setvY(-b.getvY());
 				}
+				
 				//collision avec la raquette
 				if(b.getvY() > 0 && b.getdY() + b.getHeight() >= raquette.getY() && b.getdY() + b.getHeight() <= raquette.getY() + raquette.getHeight() && b.getdX() + b.getWidth() > raquette.getX() && b.getdX() < raquette.getX() + raquette.getWidth()){
 					
@@ -476,6 +479,7 @@ public class Modele {
 						b.setvY(-Math.sin(angle) * currentDifficulty);
 					}
 				}
+				
 				//collision avec les briques
 				synchronized (bricks){
 					Iterator<Brick> i = bricks.iterator();
@@ -491,7 +495,10 @@ public class Modele {
 		}
 	}
 
-	//active la logique du jeu
+	
+	/**
+	 * (re)lance les timers et active la logique du jeu
+	 */
 	public void lancerJeu(){
 		synchronized(runningLock){
 			if(!running){
@@ -524,8 +531,10 @@ public class Modele {
 			}
 		}
 	}
-
-	//suspend le jeu, le jeu peut reprendre en appelant lancerJeu
+	
+	/**
+	 * suspend le jeu, arrete les timers
+	 */
 	public void suspendreJeu(){
 		synchronized(runningLock){
 			if(running){
@@ -536,34 +545,33 @@ public class Modele {
 		}
 	}
 	
-	//renvoie true si la partie est en cours et false si elle est suspendue
+	/**
+	 * renvoie true si la partie est en cours et false si elle est suspendue
+	 * @return True = jeu en cours; False = jeu suspendu ou fini
+	 */
 	public boolean isRunning(){
 		return running;
 	}
 	
-	//appel� lorsque le jeu est gagn�
+	/**
+	 * appeler lorsque le jeu est gagne
+	 */
 	public void gagne(){
 		
-		//je met à jour le height score dans le fichier du niveau
+		//met a jour le high score dans le fichier du niveau
 		level.updateLevelHightScore(this.intScore);
 		
-		//je débloc le niveau suivant
+		//debloque le niveau suivant
 		level.unlockNextLevel();
 		
-		//je met le boolean de gagner à vrai
 		this.win = true;
 		
-		// le timer pour l'animation de fin
+		// animation de l'ecran de victoire
 		endScreen = new AnimatedObject(200, this.gameHeight,this.gameWidth-400, this.gameHeight);
-		
 		endScreen.timer.schedule(new TimerTask(){
-			
 			public  void run() {
-				
 				endScreen.setY(endScreen.getY() - 5);
-				
 				if(endScreen.getY() < 0){
-					
 					this.cancel();
 				}
 			}
@@ -572,16 +580,17 @@ public class Modele {
 		suspendreJeu();
 	}
 	
-	//appel� lorsque le jeu est perdu 
+	/**
+	 * appeler lorsque le jeu est perdu 
+	 */
 	public void perdu(){
-		
-		//je met a jour le height score dans le fichier du niveau
+
+		//met a jour le high score dans le fichier du niveau
 		level.updateLevelHightScore(this.intScore);
 		
-		//je met le boolean lose a vrai pour déclancher l'animation dans la vue
 		this.lose = true;
-		
-		// le timer pour l'animation de fin
+
+		// animation de l'ecran de game over
 		endScreen = new AnimatedObject(200, this.gameHeight,this.gameWidth-400, this.gameHeight);
 		endScreen.timer.schedule(new TimerTask(){
 			public void run() {
@@ -594,7 +603,10 @@ public class Modele {
 		suspendreJeu();
 	}
 
-	//d�place la raquette vers la position x
+	/**
+	 * deplacement de la raquette
+	 * @param x cible du deplacement
+	 */
 	public void deplacerRaquette(int x){
 		if(running){
 			synchronized(raquette){
@@ -610,16 +622,13 @@ public class Modele {
 		}
 	}
 
-	//Action permettant de lancer les balles attachées à la raquette (celles dont la vélocité est nulle) en leur donnant une velocité initiale
+	/**
+	 * lance les balles attachees a la raquette (celles dont la velocite est nulle) en calculant son angle et sa vitesse
+	 */
 	public void lancerBalles(){
-
-		//faire en sorte que le premier lancement de la balle suit le pointeur de la souris et attend qu'on clic dessus 
-		
 		if(running){
 			for(Ball b : balls){
-	
 				synchronized(b){
-	
 					if(b.getvX() == 0 && b.getvY() == 0){
 						double angle = ((b.getdX() + b.getWidth() - raquette.getX()) * Math.toRadians(140) / raquette.getWidth()) + Math.toRadians(20);
 						if(angle > Math.toRadians(160)) angle = Math.toRadians(160);
@@ -630,5 +639,4 @@ public class Modele {
 			}
 		}
 	}
-
 }
