@@ -29,9 +29,7 @@ public class Modele {
 	public ArrayList <AnimatedObject> explosions = new ArrayList<AnimatedObject>();
 	
 	public ArrayList <AnimatedObject> lostBallsAnimation = new ArrayList<AnimatedObject>();
-	
-	protected ArrayList <Level> levels = new ArrayList<Level>();
-	
+		
 	public  AnimatedObject endScreen;
 	
 	public Raquette raquette;
@@ -107,7 +105,7 @@ public class Modele {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.impactSound  =new SoundPlay();
+		this.impactSound  = new SoundPlay();
 		this.impactSound.setPnogrameChange(11);
 		this.impactSound.volume = 0;		
 		lancerJeu();
@@ -149,6 +147,10 @@ public class Modele {
 		bonus = new ArrayList<Bonus>();
 		
 		effects = new ArrayList<AnimatedObject>();
+		
+		explosions = new ArrayList<AnimatedObject>();
+		
+		lostBallsAnimation = new ArrayList<AnimatedObject>();
 		
 		stringScore = "00";
 		
