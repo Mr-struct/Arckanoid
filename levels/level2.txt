@@ -9,7 +9,7 @@ OOBBOBBOO
 level3.txt
 Normal
 : 0
-yes
+no
 level 2
 THE START
 9
